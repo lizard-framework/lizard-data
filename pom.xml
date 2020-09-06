@@ -19,5 +19,6 @@
     <modules>
         <module>lizard-data-orm</module>
         <module>lizard-data-cache</module>
+        <module>lizard-data-core</module>
     </modules>
 </project>
