@@ -1,2 +1,8 @@
 # lizard-data
-lizard-data是一个基于Java的数据持久化操作的中间件
+
+Lizard Data是一个提供数据访问的抽象与简化的框架。
+
+## 关系型数据库
+
+## 缓存数据库
+

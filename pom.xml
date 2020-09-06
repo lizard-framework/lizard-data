@@ -18,6 +18,6 @@
 
     <modules>
         <module>lizard-data-orm</module>
-        <module>lizard-data-redis</module>
+        <module>lizard-data-cache</module>
     </modules>
 </project>
