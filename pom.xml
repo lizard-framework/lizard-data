@@ -21,4 +21,49 @@
         <module>lizard-data-cache</module>
         <module>lizard-data-core</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--## module dependencies ##-->
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-orm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--## module dependencies ##-->
+
+            <!--## other dependencies define ##-->
+            <!-- lombok: 1.18.12 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.12</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- slf4j-api: 1.7.30 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.30</version>
+            </dependency>
+            <!-- commons-lang3: 3.11 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.11</version>
+            </dependency>
+
+            <!--## other dependencies define ##-->
+        </dependencies>
+    </dependencyManagement>
 </project>
