@@ -28,6 +28,7 @@
         <module>lizard-data-orm</module>
         <module>lizard-data-cache</module>
         <module>lizard-data-core</module>
+	    <module>lizard-data-admin</module>
     </modules>
 
     <dependencyManagement>
