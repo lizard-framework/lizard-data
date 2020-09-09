@@ -35,3 +35,22 @@ methods: {
       return name.trim().toLocaleLowerCase() === 'Lizard Data Admin'.toLocaleLowerCase()
 },
 ```
+
+**2. 添加API请求和Mock数据**
+```javascript
+// 1. 修改env.development, 请求不会自动加上前缀（production同理）
+VUE_APP_BASE_API = ''
+
+// 2. 在api文件夹和mock文件夹创建对应view路由的js文件，参考 database.js
+
+// 3. 修改 mock/index.js文件，添加新的mock配置，否则404
+const user = require('./user')
+const table = require('./table')
+const database = require('./database')
+
+const mocks = [
+  ...user,
+  ...table,
+  ...database
+]
+```

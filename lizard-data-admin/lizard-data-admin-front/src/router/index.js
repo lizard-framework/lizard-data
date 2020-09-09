@@ -43,16 +43,40 @@ export const constantRoutes = [
     hidden: true
   },
 
+  // 首页
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: 'Lizard Data Admin',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: 'Lizard Data Admin', icon: 'dashboard' }
     }]
+  },
+
+  // MixData配置页面
+  {
+    path: '/mix-data-config',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: 'MixDataConfig',
+    meta: { title: 'MixData配置', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'database',
+        name: 'Database',
+        component: () => import('@/views/database/index'),
+        meta: { title: '关系型数据库', icon: 'table' }
+      },
+      {
+        path: 'tree',
+        name: 'Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '缓存', icon: 'tree' }
+      }
+    ]
   },
 
   {
