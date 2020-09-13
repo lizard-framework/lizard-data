@@ -23,5 +23,4 @@ public class DataSourceSupport {
 		String dsName = mixDataName + "_" + groupName + "_" + atomName + "_" + type.getValue();
 		return dsName;
 	}
-
 }

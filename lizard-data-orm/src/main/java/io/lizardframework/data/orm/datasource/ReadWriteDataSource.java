@@ -1,9 +1,7 @@
 package io.lizardframework.data.orm.datasource;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Read Write DataSource
@@ -11,15 +9,16 @@ import java.util.Map;
  * @author xueqi
  * @date 2020-09-09
  */
-@Slf4j
-public class ReadWriteDataSource extends AbstractRoutingDataSource {
-	@Override
-	protected Object determineCurrentLookupKey() {
-		return null;
-	}
+public class ReadWriteDataSource extends RoutingDataSourceMBean {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReadWriteDataSource.class);
 
 	@Override
-	public void setTargetDataSources(Map<Object, Object> targetDataSources) {
-		super.setTargetDataSources(targetDataSources);
+	protected Object determineCurrentLookupKey() {
+		String dskey = super.dataSourceKey.getDataSourceKey();
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Select read/write atom datasource key is : {}", dskey);
+		}
+
+		return dskey;
 	}
 }

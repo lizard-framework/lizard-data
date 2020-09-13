@@ -1,8 +1,7 @@
 package io.lizardframework.data.orm.datasource;
 
-import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Repository Sharding DataSource
@@ -10,14 +9,17 @@ import java.util.Map;
  * @author xueqi
  * @date 2020-09-08
  */
-public class RepositoryShardingDataSource extends AbstractRoutingDataSource {
-	@Override
-	protected Object determineCurrentLookupKey() {
-		return null;
-	}
+public class RepositoryShardingDataSource extends RoutingDataSourceMBean {
+	private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryShardingDataSource.class);
 
 	@Override
-	public void setTargetDataSources(Map<Object, Object> targetDataSources) {
-		super.setTargetDataSources(targetDataSources);
+	protected Object determineCurrentLookupKey() {
+		String shardingkey = super.dataSourceKey.getRepositoryShardingKey();
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Select respository datasource key is : {}", shardingkey);
+		}
+
+		return shardingkey;
 	}
+
 }
