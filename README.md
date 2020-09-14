@@ -24,3 +24,43 @@ ReadWriteDataSource 1 --> N DataSource(write/read)
 
 ## 缓存数据库
 
+**JdbcTemplate方法调用梳理**
+```java
+public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
+    
+    // query方法底层调用execute()
+    @Override
+	@Nullable
+	public <T> T query(final String sql, final ResultSetExtractor<T> rse) throws DataAccessException {
+		Assert.notNull(sql, "SQL must not be null");
+		Assert.notNull(rse, "ResultSetExtractor must not be null");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Executing SQL query [" + sql + "]");
+		}
+
+		/**
+		 * Callback to execute the query.
+		 */
+		class QueryStatementCallback implements StatementCallback<T>, SqlProvider {
+			@Override
+			@Nullable
+			public T doInStatement(Statement stmt) throws SQLException {
+				ResultSet rs = null;
+				try {
+					rs = stmt.executeQuery(sql);
+					return rse.extractData(rs);
+				}
+				finally {
+					JdbcUtils.closeResultSet(rs);
+				}
+			}
+			@Override
+			public String getSql() {
+				return sql;
+			}
+		}
+
+		return execute(new QueryStatementCallback());
+	}
+}
+```
