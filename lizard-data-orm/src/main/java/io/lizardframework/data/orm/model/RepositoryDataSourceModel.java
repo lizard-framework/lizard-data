@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2020-09-07
  */
 @Data
-public class GroupDataSourceModel {
+public class RepositoryDataSourceModel {
 
 	/**
 	 * 数据源组名称，将一个库的读写数据源抽象成一个分组；当使用分库功能时，需要根据策略找到group名称，之后根据读写策略找到具体的读写数据源

@@ -1,7 +1,6 @@
 package io.lizardframework.data.orm.datasource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Read Write DataSource
@@ -9,14 +8,14 @@ import org.slf4j.LoggerFactory;
  * @author xueqi
  * @date 2020-09-09
  */
+@Slf4j
 public class ReadWriteDataSource extends RoutingDataSourceMBean {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ReadWriteDataSource.class);
 
 	@Override
 	protected Object determineCurrentLookupKey() {
 		String dskey = super.dataSourceKey.getDataSourceKey();
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Select read/write atom datasource key is : {}", dskey);
+		if (log.isDebugEnabled()) {
+			log.debug("Select read/write atom datasource key is : {}", dskey);
 		}
 
 		return dskey;

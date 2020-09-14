@@ -1,7 +1,6 @@
 package io.lizardframework.data.orm.datasource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Repository Sharding DataSource
@@ -9,14 +8,14 @@ import org.slf4j.LoggerFactory;
  * @author xueqi
  * @date 2020-09-08
  */
+@Slf4j
 public class RepositoryShardingDataSource extends RoutingDataSourceMBean {
-	private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryShardingDataSource.class);
 
 	@Override
 	protected Object determineCurrentLookupKey() {
 		String shardingkey = super.dataSourceKey.getRepositoryShardingKey();
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Select respository datasource key is : {}", shardingkey);
+		if (log.isDebugEnabled()) {
+			log.debug("Select respository datasource key is : {}", shardingkey);
 		}
 
 		return shardingkey;

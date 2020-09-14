@@ -27,8 +27,4 @@ public class DataSourceStrategy {
 	 * 是否在事务中
 	 */
 	private boolean       transaction   = false;
-
-	public DataSourceStrategy(String dataSourceKey) {
-		this.dataSourceKey = dataSourceKey;
-	}
 }

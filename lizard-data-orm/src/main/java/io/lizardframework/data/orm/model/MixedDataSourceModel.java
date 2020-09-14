@@ -17,17 +17,17 @@ public class MixedDataSourceModel {
 	/**
 	 * 混合数据源DataSource在Spring容器中的Bean id，事务管理器、MyBatis会话工厂、JdbcTemplete等通过该id引用DataSource
 	 */
-	private String                     mixedName;
+	private String                          mixedName;
 	/**
 	 * 配置状态，如果为OFFLINE，此配置不会初始化
 	 */
-	private State                      state;
+	private State                           state;
 	/**
 	 * 数据源连接的数据库类型
 	 */
-	private DBType                     type;
+	private DBType                          type;
 	/**
 	 * 数据源组列表，一个混合数据源中有多个数据库数据源的抽象
 	 */
-	private List<GroupDataSourceModel> groups;
+	private List<RepositoryDataSourceModel> repositories;
 }
