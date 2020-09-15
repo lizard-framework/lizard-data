@@ -104,20 +104,6 @@ public class DataSourceKey {
 	}
 
 	/**
-	 * 获取分库数据源key值
-	 *
-	 * @return
-	 */
-	public String getRepositoryShardingKey() {
-		Stack<DataSourceStrategy> strategyStack = DATASOURCE_STRATEGY_STACK.get();
-		if (!CollectionUtils.isEmpty(strategyStack)) {
-			DataSourceStrategy strategy = strategyStack.peek();
-			return strategy.getRepositoryShardingKey();
-		}
-		return null;
-	}
-
-	/**
 	 * 将DataSourceStrategy加入到当前线程ThreadLocal
 	 *
 	 * @param strategy
@@ -162,5 +148,35 @@ public class DataSourceKey {
 
 		DataSourceStrategy strategy = stack.peek();
 		return strategy.isTransaction();
+	}
+
+	/**
+	 * 获取分库key值
+	 *
+	 * @return
+	 */
+	public static String getRepositoryShardingKey() {
+		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
+		if (CollectionUtils.isEmpty(stack)) {
+			return null;
+		}
+
+		DataSourceStrategy strategy = stack.peek();
+		return strategy.getRepositoryShardingKey();
+	}
+
+	/**
+	 * 获取当前线程的DataSourceKey
+	 *
+	 * @return
+	 */
+	public static String getCurrentDataSourceKey() {
+		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
+		if (CollectionUtils.isEmpty(stack)) {
+			return null;
+		}
+
+		DataSourceStrategy strategy = stack.peek();
+		return strategy.getDataSourceKey();
 	}
 }

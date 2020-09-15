@@ -43,6 +43,8 @@ public class ReadWriteAnnotationInterceptor implements MethodInterceptor {
 			if (!DataSourceKey.hasTransactional()) {
 				DataSourceStrategy strategy = new DataSourceStrategy();
 				strategy.setReadWriteType(readWrite.type());
+				strategy.setRepositoryShardingKey(DataSourceKey.getRepositoryShardingKey());
+				strategy.setDataSourceKey(DataSourceKey.getCurrentDataSourceKey());
 				strategy.setTransaction(false);
 				DataSourceKey.addDataSourceStrategy(strategy);
 				needClean = true;
