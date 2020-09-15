@@ -12,5 +12,11 @@
     <packaging>jar</packaging>
     <name>lizard-data-core</name>
     <description>Lizard Data Core</description>
-    
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+    </dependencies>
 </project>
