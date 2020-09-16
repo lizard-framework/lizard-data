@@ -151,6 +151,20 @@ public class DataSourceKey {
 	}
 
 	/**
+	 * 获取当前ThreadLocal中的数据源策略
+	 *
+	 * @return
+	 */
+	public static DataSourceStrategy getDataSourceStrategy() {
+		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
+		if (CollectionUtils.isEmpty(stack)) {
+			return null;
+		}
+
+		return stack.peek();
+	}
+
+	/**
 	 * 获取分库key值
 	 *
 	 * @return

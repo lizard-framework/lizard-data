@@ -13,6 +13,13 @@ import java.lang.reflect.Method;
 
 /**
  * ReadWrite注解 读写分离拦截器 (优先级高于@Transactional注解)
+ * <p>
+ * 需要在DATASOURCE_STRATEGY_STACK中添加DataSourceStrategy的场景：
+ *  1. txAnno == null: 当前方法没有被@Transactional注解标注，可能是无事务运行或已经在一个嵌套事务中
+ *      a. DataSourceKey.hasTransactional() == false
+ *  2. txAnno != null && propagation = Propagation.REQUIRES_NEW
+ *  3. txAnno != null
+ * </p>
  *
  * @author xueqi
  * @date 2020-09-15
@@ -56,4 +63,5 @@ public class ReadWriteAnnotationInterceptor implements MethodInterceptor {
 
 		return invocation.proceed();
 	}
+
 }
