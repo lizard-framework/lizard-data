@@ -90,9 +90,11 @@ public class DataSourceKey {
 
 		// 如果分库sharding key存在（一定是从stack中获取的），从group的ds mapper中获取数据源bean name
 		ReadWriteType readWriteType = strategy.getReadWriteType();
-		if (ReadWriteType.WRITE.equals(readWriteType)) {
+		if (readWriteType == null || ReadWriteType.WRITE.equals(readWriteType)) {
 			// 默认获取第一个主库atom datasource bean name
 			dataSourceKey = repositoryWriteAtomDsMapper.get(shardingKey).get(0);
+			// 针对readWriteType==null的情况，即只有@RepositorySharding注解，默认ReadWriteType.WRITE
+			strategy.setReadWriteType(ReadWriteType.WRITE);
 		} else {
 			// todo: loadbalance
 			dataSourceKey = repositoryReadAtomDsMapper.get(shardingKey).get(0);
@@ -177,20 +179,5 @@ public class DataSourceKey {
 
 		DataSourceStrategy strategy = stack.peek();
 		return strategy.getRepositoryShardingKey();
-	}
-
-	/**
-	 * 获取当前线程的DataSourceKey
-	 *
-	 * @return
-	 */
-	public static String getCurrentDataSourceKey() {
-		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
-		if (CollectionUtils.isEmpty(stack)) {
-			return null;
-		}
-
-		DataSourceStrategy strategy = stack.peek();
-		return strategy.getDataSourceKey();
 	}
 }

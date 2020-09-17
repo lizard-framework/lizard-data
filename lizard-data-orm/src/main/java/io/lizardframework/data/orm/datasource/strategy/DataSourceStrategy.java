@@ -12,9 +12,9 @@ import lombok.Data;
 @Data
 public class DataSourceStrategy {
 	/**
-	 * 读写类型: 默认为写库
+	 * 读写类型
 	 */
-	private ReadWriteType readWriteType = ReadWriteType.WRITE;
+	private ReadWriteType readWriteType;
 	/**
 	 * 分库sharding key
 	 */
@@ -26,5 +26,5 @@ public class DataSourceStrategy {
 	/**
 	 * 是否在事务中
 	 */
-	private boolean       transaction   = false;
+	private boolean       transaction = false;
 }

@@ -31,7 +31,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 		RepositorySharding rsAnno = MethodUtils.getAnnotation(realMethod, methodInvocation, RepositorySharding.class);
 		Transactional      txAnno = MethodUtils.getAnnotation(realMethod, methodInvocation, Transactional.class);
 
-		// 分库策略注解存在
+		// 是否需要清理DataSourceStrategy标志位
 		boolean needClean = false;
 		try {
 			// 获取当前线程的DataSourceStrategy
@@ -50,6 +50,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 					DataSourceStrategy newStrategy = new DataSourceStrategy();
 					newStrategy.setTransaction(true);
 					newStrategy.setRepositoryShardingKey("todo:");  //  todo:
+					newStrategy.setReadWriteType(dataSourceStrategy.getReadWriteType());    // @RepositorySharding只负责分库，读写数据源还是从当前DataSourceStrategy获取
 					DataSourceKey.addDataSourceStrategy(dataSourceStrategy);
 					needClean = true;
 				}
@@ -58,6 +59,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 				DataSourceStrategy newStrategy = new DataSourceStrategy();
 				newStrategy.setTransaction(txAnno != null);
 				newStrategy.setRepositoryShardingKey("todo:");  //  todo:
+				newStrategy.setReadWriteType(dataSourceStrategy.getReadWriteType());
 				DataSourceKey.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
 			}
