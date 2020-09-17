@@ -27,4 +27,10 @@ public class DataSourceStrategy {
 	 * 是否在事务中
 	 */
 	private boolean       transaction = false;
+
+	public DataSourceStrategy(ReadWriteType readWriteType, String repositoryShardingKey, boolean transaction) {
+		this.readWriteType = readWriteType;
+		this.repositoryShardingKey = repositoryShardingKey;
+		this.transaction = transaction;
+	}
 }

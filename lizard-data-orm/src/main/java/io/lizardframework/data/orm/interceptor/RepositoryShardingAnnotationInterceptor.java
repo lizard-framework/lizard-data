@@ -39,28 +39,24 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 
 			// 如果当前线程中没有DataSourceStrategy，表示进入到第一个@RepositorySharding注解的方法
 			if (dataSourceStrategy == null) {
-				dataSourceStrategy = new DataSourceStrategy();
-				dataSourceStrategy.setTransaction(txAnno != null);
-				dataSourceStrategy.setRepositoryShardingKey("todo:");   //  todo:
+				//  todo: shardingkey计算逻辑待完善
+				dataSourceStrategy = new DataSourceStrategy(null, "todo:", txAnno != null);
 				DataSourceKey.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
 			} else if (dataSourceStrategy.isTransaction()) {
-				// 当前线程已经运行在一个事务中,需要根据@Transactional注解判断是否开启新事务,开启新事务需要添加新的DataSourceStrategy
+				// 当前线程已经运行在一个事务中,需要根据@Transactional注解判断是否开启新事务(REQUIRES_NEW or NOT_SUPPORTED),开启新事务需要添加新的DataSourceStrategy
 				if (txAnno != null && Propagation.REQUIRES_NEW.equals(txAnno.propagation())) {
-					DataSourceStrategy newStrategy = new DataSourceStrategy();
-					newStrategy.setTransaction(true);
-					newStrategy.setRepositoryShardingKey("todo:");  //  todo:
-					newStrategy.setReadWriteType(dataSourceStrategy.getReadWriteType());    // @RepositorySharding只负责分库，读写数据源还是从当前DataSourceStrategy获取
-					DataSourceKey.addDataSourceStrategy(dataSourceStrategy);
+					// @RepositorySharding只负责分库，不负责读写
+					DataSourceStrategy newStrategy = new DataSourceStrategy(null, "todo:", true);
+					DataSourceKey.addDataSourceStrategy(newStrategy);
 					needClean = true;
 				}
+
+				// 当前线程已经在一个事务中，即使标注@RepositorySharding注解，也不再切换分库数据源
 			} else {
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
-				DataSourceStrategy newStrategy = new DataSourceStrategy();
-				newStrategy.setTransaction(txAnno != null);
-				newStrategy.setRepositoryShardingKey("todo:");  //  todo:
-				newStrategy.setReadWriteType(dataSourceStrategy.getReadWriteType());
-				DataSourceKey.addDataSourceStrategy(dataSourceStrategy);
+				DataSourceStrategy newStrategy = new DataSourceStrategy(null, "todo:", txAnno != null);
+				DataSourceKey.addDataSourceStrategy(newStrategy);
 				needClean = true;
 			}
 
