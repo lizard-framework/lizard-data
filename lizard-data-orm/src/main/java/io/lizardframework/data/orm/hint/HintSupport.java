@@ -1,4 +1,4 @@
-package io.lizardframework.data.orm.support;
+package io.lizardframework.data.orm.hint;
 
 /**
  * @author xueqi
