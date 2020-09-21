@@ -93,7 +93,7 @@ public class DataSourceKey {
 		if (readWriteType == null || ReadWriteType.WRITE.equals(readWriteType)) {
 			// 默认获取第一个主库atom datasource bean name
 			dataSourceKey = repositoryWriteAtomDsMapper.get(shardingKey).get(0);
-			// 针对readWriteType==null的情况，即只有@RepositorySharding注解，默认ReadWriteType.WRITE
+			// 针对readWriteType==null的情况，即只有@RepositorySharding注解，默认ReadWriteType.WRITE，并写入到strategy中
 			strategy.setReadWriteType(ReadWriteType.WRITE);
 		} else {
 			// todo: loadbalance

@@ -37,7 +37,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 			// 获取当前线程的DataSourceStrategy
 			DataSourceStrategy dataSourceStrategy = DataSourceKey.getDataSourceStrategy();
 
-			// 如果当前线程中没有DataSourceStrategy，表示进入到第一个@RepositorySharding注解的方法
+			// 如果当前线程中没有DataSourceStrategy，表示第一次进入到@RepositorySharding注解的方法
 			if (dataSourceStrategy == null) {
 				//  todo: shardingkey计算逻辑待完善
 				dataSourceStrategy = new DataSourceStrategy(null, "todo:", txAnno != null);
@@ -45,7 +45,10 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 				needClean = true;
 			} else if (dataSourceStrategy.isTransaction()) {
 				// 当前线程已经运行在一个事务中,需要根据@Transactional注解判断是否开启新事务(REQUIRES_NEW or NOT_SUPPORTED),开启新事务需要添加新的DataSourceStrategy
-				if (txAnno != null && Propagation.REQUIRES_NEW.equals(txAnno.propagation())) {
+				if (txAnno != null &&
+						(Propagation.REQUIRES_NEW.equals(txAnno.propagation())
+								|| Propagation.NOT_SUPPORTED.equals(txAnno.propagation()))
+				) {
 					// @RepositorySharding只负责分库，不负责读写
 					DataSourceStrategy newStrategy = new DataSourceStrategy(null, "todo:", true);
 					DataSourceKey.addDataSourceStrategy(newStrategy);
