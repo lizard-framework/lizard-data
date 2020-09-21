@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2020-09-08
  */
 @Slf4j
-public class RepositoryShardingDataSource extends RoutingDataSourceMBean {
+public class RepositoryShardingDataSource extends BaseRoutingDataSource {
 
 	@Override
 	protected Object determineCurrentLookupKey() {

@@ -1,7 +1,6 @@
 package io.lizardframework.data.orm.interceptor;
 
 import io.lizardframework.data.orm.annotation.ReadWrite;
-import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
 import io.lizardframework.data.utils.MethodUtils;

@@ -9,7 +9,7 @@ import java.util.Map;
  * @author xueqi
  * @date 2020-09-13
  */
-public abstract class RoutingDataSourceMBean extends AbstractRoutingDataSource {
+public abstract class BaseRoutingDataSource extends AbstractRoutingDataSource {
 
 	/**
 	 * 数据源选择工具，将数据源选择逻辑抽象到DataSourceKey，不在DataSource中进行负载等操作
