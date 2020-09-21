@@ -3,6 +3,7 @@ package io.lizardframework.data.orm.interceptor;
 import io.lizardframework.data.orm.annotation.RepositorySharding;
 import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
+import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
 import io.lizardframework.data.utils.MethodUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -35,13 +36,13 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 		boolean needClean = false;
 		try {
 			// 获取当前线程的DataSourceStrategy
-			DataSourceStrategy dataSourceStrategy = DataSourceKey.getDataSourceStrategy();
+			DataSourceStrategy dataSourceStrategy = StrategyHolder.getDataSourceStrategy();
 
 			// 如果当前线程中没有DataSourceStrategy，表示第一次进入到@RepositorySharding注解的方法
 			if (dataSourceStrategy == null) {
 				//  todo: shardingkey计算逻辑待完善
 				dataSourceStrategy = new DataSourceStrategy(null, "todo:", txAnno != null);
-				DataSourceKey.addDataSourceStrategy(dataSourceStrategy);
+				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
 			} else if (dataSourceStrategy.isTransaction()) {
 				// 当前线程已经运行在一个事务中,需要根据@Transactional注解判断是否开启新事务(REQUIRES_NEW or NOT_SUPPORTED),开启新事务需要添加新的DataSourceStrategy
@@ -51,7 +52,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 				) {
 					// @RepositorySharding只负责分库，不负责读写
 					DataSourceStrategy newStrategy = new DataSourceStrategy(null, "todo:", true);
-					DataSourceKey.addDataSourceStrategy(newStrategy);
+					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
 				}
 
@@ -59,14 +60,14 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 			} else {
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
 				DataSourceStrategy newStrategy = new DataSourceStrategy(null, "todo:", txAnno != null);
-				DataSourceKey.addDataSourceStrategy(newStrategy);
+				StrategyHolder.addDataSourceStrategy(newStrategy);
 				needClean = true;
 			}
 
 			return methodInvocation.proceed();
 		} finally {
 			if (needClean) {
-				DataSourceKey.removeDataSourceStrategy();
+				StrategyHolder.removeDataSourceStrategy();
 			}
 		}
 	}

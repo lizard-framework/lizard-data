@@ -1,6 +1,7 @@
 package io.lizardframework.data.orm.datasource;
 
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
+import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
 import io.lizardframework.data.orm.enums.ReadWriteType;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +21,6 @@ import java.util.Stack;
  */
 @Slf4j
 public class DataSourceKey {
-	// 保存线程DataSourceStrategy栈
-	private static final ThreadLocal<Stack<DataSourceStrategy>> DATASOURCE_STRATEGY_STACK = new ThreadLocal<>();
-
 	// 数据源所属的mix-data名称
 	@Setter
 	private String                    mixDataName;
@@ -43,7 +41,7 @@ public class DataSourceKey {
 	 * @return
 	 */
 	public String getDataSourceKey() {
-		Stack<DataSourceStrategy> strategyStack = DATASOURCE_STRATEGY_STACK.get();
+		Stack<DataSourceStrategy> strategyStack = StrategyHolder.getStrategyStack();
 
 		// 从ThreadLocal中获取strategy栈不为空（注解拦截场景和使用Hint的方式）
 		DataSourceStrategy strategy      = null;
@@ -78,13 +76,13 @@ public class DataSourceKey {
 				dataSourceKey = repositoryReadAtomDsMapper.entrySet().iterator().next().getValue().get(0);
 			}
 
+			// strategy的创建在拦截器中完成，如果strategy为null，直接返回dataSourceKey
 			if (strategy != null) {
 				// 从当前栈顶获取的策略，将datasource key写入
 				strategy.setDataSourceKey(dataSourceKey);
 			}
 
 			log.debug("Mix-Data:{} sharding key is null. Single repository read/write datasource key:{}", mixDataName, dataSourceKey);
-			// 如果 strategy 为null，栈为空，单库且读取主库的场景；只有不使用@ReadWrite和Hint的场景会出现该问题，由于没有配置拦截器，该场景的datasource key直接返回，否则写入ThreadLocal中是无法回收的
 			return dataSourceKey;
 		}
 
@@ -106,73 +104,12 @@ public class DataSourceKey {
 	}
 
 	/**
-	 * 将DataSourceStrategy加入到当前线程ThreadLocal
-	 *
-	 * @param strategy
-	 */
-	public static void addDataSourceStrategy(DataSourceStrategy strategy) {
-		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
-		if (stack == null) {
-			stack = new Stack<>();
-		}
-
-		stack.push(strategy);
-		DATASOURCE_STRATEGY_STACK.set(stack);
-	}
-
-	/**
-	 * 移除DataSourceStrategy
-	 */
-	public static void removeDataSourceStrategy() {
-		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
-		if (CollectionUtils.isEmpty(stack)) return;
-
-		stack.pop();
-		// 判断当前栈是否为空，如果为空从ThreadLocal中移除
-		if (CollectionUtils.isEmpty(stack)) {
-			log.debug("Remove datasource key from thread local.");
-			DATASOURCE_STRATEGY_STACK.remove();
-		}
-	}
-
-	/**
-	 * 当前线程是否在事务中
-	 *
-	 * <p>如果在事务中，根据事务的特性连接是不会再次改变，所以无需addDataSourceStrategy到当前线程栈</p>
+	 * 获取分库key
 	 *
 	 * @return
 	 */
-	public static boolean hasTransactional() {
-		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
-		if (CollectionUtils.isEmpty(stack)) {
-			return false;
-		}
-
-		DataSourceStrategy strategy = stack.peek();
-		return strategy.isTransaction();
-	}
-
-	/**
-	 * 获取当前ThreadLocal中的数据源策略
-	 *
-	 * @return
-	 */
-	public static DataSourceStrategy getDataSourceStrategy() {
-		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
-		if (CollectionUtils.isEmpty(stack)) {
-			return null;
-		}
-
-		return stack.peek();
-	}
-
-	/**
-	 * 获取分库key值
-	 *
-	 * @return
-	 */
-	public static String getRepositoryShardingKey() {
-		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
+	public String getRepositoryShardingKey() {
+		Stack<DataSourceStrategy> stack = StrategyHolder.getStrategyStack();
 		if (CollectionUtils.isEmpty(stack)) {
 			return null;
 		}

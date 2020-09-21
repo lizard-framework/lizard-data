@@ -3,6 +3,7 @@ package io.lizardframework.data.orm.interceptor;
 import io.lizardframework.data.orm.annotation.ReadWrite;
 import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
+import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
 import io.lizardframework.data.utils.MethodUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -37,14 +38,14 @@ public class ReadWriteAnnotationInterceptor implements MethodInterceptor {
 		boolean needClean = false;
 		try {
 			// 获取当前线程的DataSourceStrategy
-			DataSourceStrategy dataSourceStrategy = DataSourceKey.getDataSourceStrategy();
+			DataSourceStrategy dataSourceStrategy = StrategyHolder.getDataSourceStrategy();
 
 			// 如果当前线程中没有DataSourceStrategy，表示第一次进入@ReadWrite注解的方法
 			if (dataSourceStrategy == null) {
 				dataSourceStrategy = new DataSourceStrategy(readWrite.type(), null, txAnno != null);
-				DataSourceKey.addDataSourceStrategy(dataSourceStrategy);
+				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
-			} else if (DataSourceKey.hasTransactional()) {
+			} else if (StrategyHolder.hasTransactional()) {
 				// 当前线程已经运行在一个事务中,需要根据@Transactional注解判断是否开启新事务,开启新事务需要添加新的DataSourceStrategy
 				if (txAnno != null &&
 						(Propagation.REQUIRES_NEW.equals(txAnno.propagation())
@@ -52,25 +53,25 @@ public class ReadWriteAnnotationInterceptor implements MethodInterceptor {
 				) {
 					// @ReadWrite只负责切换读写数据源，新的DataSourceStrategy不从上一个策略中获取分库key
 					DataSourceStrategy newStrategy = new DataSourceStrategy(readWrite.type(), null, true);
-					DataSourceKey.addDataSourceStrategy(newStrategy);
+					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
 				} else if (dataSourceStrategy.getReadWriteType() == null) {
 					// hasTransactional()==true可能是RepositorySharding拦截器设置的，此时需要判断dataSourceStrategy中的rw type是否存在，如果不存在则添加新的DataSourceStrategy
 					DataSourceStrategy newStrategy = new DataSourceStrategy(readWrite.type(), dataSourceStrategy.getRepositoryShardingKey(), true);
-					DataSourceKey.addDataSourceStrategy(newStrategy);
+					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
 				}
 			} else {
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
 				DataSourceStrategy newStrategy = new DataSourceStrategy(readWrite.type(), dataSourceStrategy.getRepositoryShardingKey(), txAnno != null);
-				DataSourceKey.addDataSourceStrategy(newStrategy);
+				StrategyHolder.addDataSourceStrategy(newStrategy);
 				needClean = true;
 			}
 
 			return invocation.proceed();
 		} finally {
 			if (needClean) {
-				DataSourceKey.removeDataSourceStrategy();
+				StrategyHolder.removeDataSourceStrategy();
 			}
 		}
 	}
