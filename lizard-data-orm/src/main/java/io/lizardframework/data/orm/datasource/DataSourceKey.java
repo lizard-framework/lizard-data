@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Stack;
 
 /**
- * DataSource Key : 获取数据源Key工具类、LB
+ * DataSource Key
  *
  * @author xueqi
  * @date 2020-09-10
@@ -23,13 +23,13 @@ import java.util.Stack;
 public class DataSourceKey {
 	// 数据源所属的mix-data名称
 	@Setter
-	private String                    mixDataName;
+	private String                             mixDataName;
 	// repository与写数据源Bean-Name列表映射,每个group必须有且仅有一个有效的写数据源
 	@Setter
-	private Map<String, List<String>> repositoryWriteAtomDsMapper = new HashMap<>();
+	private Map<String, List<DataSourceMBean>> repositoryWriteAtomDsMapper = new HashMap<>();
 	// repository与读数据源Bean-Name列表映射,每个group不一定要有多个读数据源
 	@Setter
-	private Map<String, List<String>> repositoryReadAtomDsMapper  = new HashMap<>();
+	private Map<String, List<DataSourceMBean>> repositoryReadAtomDsMapper  = new HashMap<>();
 
 	public DataSourceKey(String mixDataName) {
 		this.mixDataName = mixDataName;
@@ -70,10 +70,10 @@ public class DataSourceKey {
 			ReadWriteType readWriteType = (strategy == null) ? ReadWriteType.WRITE : strategy.getReadWriteType();
 			if (ReadWriteType.WRITE.equals(readWriteType)) {
 				// 默认获取第一个主库atom datasource bean name
-				dataSourceKey = repositoryWriteAtomDsMapper.entrySet().iterator().next().getValue().get(0);
+				dataSourceKey = this.getOneWriteDataSource().getBeanName();
 			} else {
 				// todo: loadbalance
-				dataSourceKey = repositoryReadAtomDsMapper.entrySet().iterator().next().getValue().get(0);
+				dataSourceKey = repositoryReadAtomDsMapper.entrySet().iterator().next().getValue().get(0).getBeanName();
 			}
 
 			// strategy的创建在拦截器中完成，如果strategy为null，直接返回dataSourceKey
@@ -90,12 +90,12 @@ public class DataSourceKey {
 		ReadWriteType readWriteType = strategy.getReadWriteType();
 		if (readWriteType == null || ReadWriteType.WRITE.equals(readWriteType)) {
 			// 默认获取第一个主库atom datasource bean name
-			dataSourceKey = repositoryWriteAtomDsMapper.get(shardingKey).get(0);
+			dataSourceKey = this.getOneWriteDataSource().getBeanName();
 			// 针对readWriteType==null的情况，即只有@RepositorySharding注解，默认ReadWriteType.WRITE，并写入到strategy中
 			strategy.setReadWriteType(ReadWriteType.WRITE);
 		} else {
 			// todo: loadbalance
-			dataSourceKey = repositoryReadAtomDsMapper.get(shardingKey).get(0);
+			dataSourceKey = repositoryReadAtomDsMapper.get(shardingKey).get(0).getBeanName();
 		}
 		strategy.setDataSourceKey(dataSourceKey);
 
@@ -104,7 +104,7 @@ public class DataSourceKey {
 	}
 
 	/**
-	 * 获取分库key
+	 * get repository sharding key
 	 *
 	 * @return
 	 */
@@ -116,5 +116,14 @@ public class DataSourceKey {
 
 		DataSourceStrategy strategy = stack.peek();
 		return strategy.getRepositoryShardingKey();
+	}
+
+	/**
+	 * get one write datasource from repositoryWriteAtomDsMapper
+	 *
+	 * @return
+	 */
+	private DataSourceMBean getOneWriteDataSource() {
+		return repositoryWriteAtomDsMapper.entrySet().iterator().next().getValue().get(0);
 	}
 }
