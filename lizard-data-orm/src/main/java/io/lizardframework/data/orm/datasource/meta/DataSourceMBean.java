@@ -1,4 +1,4 @@
-package io.lizardframework.data.orm.datasource;
+package io.lizardframework.data.orm.datasource.meta;
 
 import lombok.Getter;
 

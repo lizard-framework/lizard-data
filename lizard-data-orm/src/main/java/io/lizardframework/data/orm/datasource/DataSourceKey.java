@@ -1,5 +1,6 @@
 package io.lizardframework.data.orm.datasource;
 
+import io.lizardframework.data.orm.datasource.meta.DataSourceMBean;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
 import io.lizardframework.data.orm.enums.ReadWriteType;

@@ -2,134 +2,181 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>io.lizardframework</groupId>
-    <artifactId>lizard-data</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>lizard-data</name>
-    <description>Lizard Data Framework</description>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.lizardframework</groupId>
+	<artifactId>lizard-data</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>lizard-data</name>
+	<description>Lizard Data Framework</description>
 
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- dependency version define -->
-        <lombok.version>1.18.12</lombok.version>
-        <slf4j.version>1.7.30</slf4j.version>
-        <apache-commons-lang3.version>3.11</apache-commons-lang3.version>
+		<!-- dependency version define -->
+		<lombok.version>1.18.12</lombok.version>
+		<slf4j.version>1.7.30</slf4j.version>
+		<apache-commons-lang3.version>3.11</apache-commons-lang3.version>
+		<mysql.driver.version>8.0.21</mysql.driver.version>
+		<alibaba.druid.version>1.1.24</alibaba.druid.version>
+		<c3p0.version>0.9.5.5</c3p0.version>
+		<dbcp2.version>2.7.0</dbcp2.version>
+		<hikariCP.version>3.4.5</hikariCP.version>
 
-        <spring.version>5.2.8.RELEASE</spring.version>
-        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
-    </properties>
+		<spring.version>5.2.8.RELEASE</spring.version>
+		<spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+	</properties>
 
-    <modules>
-        <module>lizard-data-orm</module>
-        <module>lizard-data-cache</module>
-        <module>lizard-data-core</module>
-	    <module>lizard-data-admin</module>
-    </modules>
+	<modules>
+		<module>lizard-data-orm</module>
+		<module>lizard-data-cache</module>
+		<module>lizard-data-core</module>
+		<module>lizard-data-admin</module>
+	</modules>
 
-    <dependencyManagement>
-        <dependencies>
-            <!--## module dependencies ##-->
-            <dependency>
-                <groupId>io.lizardframework</groupId>
-                <artifactId>lizard-data-cache</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.lizardframework</groupId>
-                <artifactId>lizard-data-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.lizardframework</groupId>
-                <artifactId>lizard-data-orm</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <!--## module dependencies ##-->
+	<dependencyManagement>
+		<dependencies>
+			<!--## module dependencies ##-->
+			<dependency>
+				<groupId>io.lizardframework</groupId>
+				<artifactId>lizard-data-cache</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.lizardframework</groupId>
+				<artifactId>lizard-data-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.lizardframework</groupId>
+				<artifactId>lizard-data-orm</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<!--## module dependencies ##-->
 
-            <!--## other dependencies define ##-->
-            <!-- lombok -->
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-                <scope>provided</scope>
-            </dependency>
+			<!--## other dependencies define ##-->
+			<!-- lombok -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
-            <!-- slf4j -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jul-to-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
+			<!-- slf4j -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
 
-            <!-- commons-lang3 -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${apache-commons-lang3.version}</version>
-            </dependency>
+			<!-- commons-lang3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${apache-commons-lang3.version}</version>
+			</dependency>
 
-            <!-- Spring Framework -->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
+			<!-- # database dependencies scope is provided -->
+			<!-- mysql driver -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.driver.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
+			<!-- alibaba druid -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${alibaba.druid.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
+			<!-- c3p0-->
+			<dependency>
+				<groupId>com.mchange</groupId>
+				<artifactId>c3p0</artifactId>
+				<version>${c3p0.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
-            <!--## other dependencies define ##-->
-        </dependencies>
-    </dependencyManagement>
+			<!-- dbcp2 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-dbcp2</artifactId>
+				<version>${dbcp2.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
-    <!-- all project scope dependencies -->
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+			<!-- HikariCP -->
+			<dependency>
+				<groupId>com.zaxxer</groupId>
+				<artifactId>HikariCP</artifactId>
+				<version>${hikariCP.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<!-- # database dependencies scope is provided -->
 
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
+			<!-- Spring Framework -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jul-to-slf4j</artifactId>
-        </dependency>
-    </dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<!--## other dependencies define ##-->
+		</dependencies>
+	</dependencyManagement>
+
+	<!-- all project scope dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+		</dependency>
+	</dependencies>
 </project>
