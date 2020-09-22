@@ -12,7 +12,7 @@ import java.util.Properties;
 
 /**
  * @author xueqi
- * @date 2020/9/22
+ * @date 2020-09-22
  */
 @Slf4j
 public class HikariCPDataSourcePoolRegister extends IDataSourcePoolRegister {
