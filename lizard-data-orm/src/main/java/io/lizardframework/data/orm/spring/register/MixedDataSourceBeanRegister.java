@@ -18,7 +18,13 @@ public class MixedDataSourceBeanRegister {
 	 * @param beanDefinitionRegistry
 	 */
 	public void doRegistry(BeanDefinitionRegistry beanDefinitionRegistry) {
-
+		// 1. get mixed-data config
+		// 2. registry mixed datasource
+		// 3. registry repository sharding and read write interceptor
+		// 4. registry transaction manager
+		// 5. registry mybatis bean and table sharding plugin
+		// 6. register jdbcTemplate table sharding plugin
+		// 7. report framework version and metric info
 	}
 
 }
