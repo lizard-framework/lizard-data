@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.lizardframework.io/schema/lizard-data-orm"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.lizardframework.io/schema/lizard-data-orm"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+
+	<!-- Mixed-DataSource Label-->
+	<xs:element name="mixed-datasource">
+		<xsd:complexType>
+			<!-- mixed datasource name -->
+			<xs:attribute name="mixed-name" use="required" type="xs:string"/>
+		</xsd:complexType>
+	</xs:element>
+</xsd:schema>
