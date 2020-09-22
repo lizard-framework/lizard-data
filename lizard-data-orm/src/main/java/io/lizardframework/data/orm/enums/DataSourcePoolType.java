@@ -10,8 +10,6 @@ import org.apache.commons.lang3.StringUtils;
  */
 public enum DataSourcePoolType {
 	DRUID("druid"),
-	C3P0("c3p0"),
-	DBCP("dbcp"),
 	HikariCP("HikariCP");
 
 	private String value;

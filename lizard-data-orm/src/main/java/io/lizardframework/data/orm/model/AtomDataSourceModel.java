@@ -16,47 +16,47 @@ import java.util.Map;
 public class AtomDataSourceModel {
 
 	/**
-	 * 原子数据源名称，一个group中必须唯一
+	 * atom datasource name，must be uninq in repository
 	 */
 	private String              atomName;
 	/**
-	 * 数据库连接host地址
+	 * database connection host address
 	 */
 	private String              host;
 	/**
-	 * 数据库连接端口信息
+	 * database connection port
 	 */
 	private int                 port;
 	/**
-	 * 数据库连接用户名
+	 * database connection username
 	 */
 	private String              username;
 	/**
-	 * 数据库连接密码
+	 * database connection password
 	 */
 	private String              password;
 	/**
-	 * 数据库名称
+	 * database connection schema name
 	 */
 	private String              database;
 	/**
-	 * 数据库连接参数
+	 * database connection params
 	 */
 	private String              params;
 	/**
-	 * 是否为主库
+	 * datasource is master flag
 	 */
 	private boolean             isMaster;
 	/**
-	 * 原子数据源状态，如果为offline则不初始化
+	 * atom status，if 'offline' not init
 	 */
 	private State               state;
 	/**
-	 * 权重比例
+	 * atom loadbalance weight
 	 */
 	private int                 weight;
 	/**
-	 * 数据库连接池类型
+	 * datasource connection pool type
 	 */
 	private DataSourcePoolType  dataSourcePoolType;
 	/**
