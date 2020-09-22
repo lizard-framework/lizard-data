@@ -1,4 +1,4 @@
-package io.lizardframework.data.orm.spring.register;
+package io.lizardframework.data.orm.spring.xml;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
@@ -11,6 +11,6 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class NamespaceHandler extends NamespaceHandlerSupport {
 	@Override
 	public void init() {
-
+		super.registerBeanDefinitionParser("lizard-data-orm", new MixedDataSourceBeanParser());
 	}
 }
