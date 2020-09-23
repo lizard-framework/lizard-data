@@ -1,8 +1,8 @@
 package io.lizardframework.data.orm.spring.register;
 
-import io.lizardframework.data.enums.State;
 import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.MasterSlaveDataSource;
+import io.lizardframework.data.orm.datasource.RepositoryShardingDataSource;
 import io.lizardframework.data.orm.datasource.meta.DataSourceMBean;
 import io.lizardframework.data.orm.model.AtomDataSourceModel;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
@@ -10,17 +10,15 @@ import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
 import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
+import io.lizardframework.data.utils.BeanUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.ManagedMap;
-import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.support.BeanDefinitionDsl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Mixed DataSource Spring Bean Register
@@ -78,63 +76,88 @@ public class MixedDataSourceBeanRegister {
 		Map<String, List<DataSourceMBean>> repositoryMasterAtomDsMapper = new HashMap<>();
 		Map<String, List<DataSourceMBean>> repositorySlaveAtomDsMapper  = new HashMap<>();
 
+		// registry atom datasource pool in spring context
+		this.registryAtomDataSource(mixedDataSourceModel, beanDefinitionRegistry, dataSources, repositoryMasterAtomDsMapper, repositorySlaveAtomDsMapper);
+
+
+		// create DataSourceKey spring bean - PROTOTYPE, each MixedDataSource have one DataSourceKey, no share
+		String dataSourceKeyBeanName = BeanUtils.genBeanName(mixedDataSourceName, "DataSourceKey");
+		BeanUtils.registryBean(dataSourceKeyBeanName, beanDefinitionRegistry, DataSourceKey.class, BeanDefinitionDsl.Scope.PROTOTYPE, Arrays.asList(
+				new PropertyValue("mixDataName", mixedDataSourceName),
+				new PropertyValue("repositoryMasterAtomDsMapper", repositoryMasterAtomDsMapper),
+				new PropertyValue("repositorySlaveAtomDsMapper", repositorySlaveAtomDsMapper)
+		));
+
+		// create DataSource Spring Bean, if only one repository, create MasterSlaveDataSource
+		Class datasourceClazz = mixedDataSourceModel.getRepositories().size() == 1 ? MasterSlaveDataSource.class : RepositoryShardingDataSource.class;
+		BeanUtils.registryBean(mixedDataSourceName, beanDefinitionRegistry, datasourceClazz, Arrays.asList(
+				new PropertyValue("dataSourceKey", new RuntimeBeanReference(dataSourceKeyBeanName)),
+				new PropertyValue("dataSources", dataSources)
+		));
+	}
+
+	/**
+	 * registry atom datasource
+	 *
+	 * @param mixedDataSourceModel
+	 * @param beanDefinitionRegistry
+	 * @param dataSources
+	 * @param repositoryMasterAtomDsMapper
+	 * @param repositorySlaveAtomDsMapper
+	 */
+	private void registryAtomDataSource(MixedDataSourceModel mixedDataSourceModel,
+	                                    BeanDefinitionRegistry beanDefinitionRegistry,
+	                                    Map<String, RuntimeBeanReference> dataSources,
+	                                    Map<String, List<DataSourceMBean>> repositoryMasterAtomDsMapper,
+	                                    Map<String, List<DataSourceMBean>> repositorySlaveAtomDsMapper) {
+		String mixedDataSourceName = mixedDataSourceModel.getMixedName();
+
+		// each repository create atom datasource and registry in spring context
 		List<RepositoryDataSourceModel> repositories = mixedDataSourceModel.getRepositories();
-		repositories.forEach(repository -> {
+		for (RepositoryDataSourceModel repository : repositories) {
 			String repositoryName = repository.getRepositoryName();
 
 			// only process online statue
-			if (State.ONLINE.equals(repository.getState())) {
-				// init atoms datasource
-				List<AtomDataSourceModel> atoms = repository.getAtoms();
-				atoms.forEach(atom -> {
-					String atomName = atom.getAtomName();
-
-					// only process online state atom
-					if (State.ONLINE.equals(atom.getState())) {
-						IDataSourcePoolRegister dsRegistry          = DataSourcePoolRegisterFactory.getRegister(atom.getDataSourcePoolType());
-						DataSourcePoolMBean     dataSourcePoolMBean = new DataSourcePoolMBean(mixedDataSourceModel, atom);
-						String                  beanName            = mixedDataSourceName + "-" + repositoryName + "-" + atomName + "-" + atom.getMasterSlaveType();
-						dsRegistry.doRegistry(beanName, dataSourcePoolMBean, beanDefinitionRegistry);
-						dataSources.put(beanName, new RuntimeBeanReference(beanName));
-
-						if (atom.isMaster()) {
-							List<DataSourceMBean> masterAtomDsList = repositoryMasterAtomDsMapper.get(repositoryName);
-							if (masterAtomDsList == null) {
-								masterAtomDsList = new ArrayList<>();
-							}
-							masterAtomDsList.add(new DataSourceMBean(beanName, repositoryName, atom));
-							repositoryMasterAtomDsMapper.put(repositoryName, masterAtomDsList);
-						} else {
-							List<DataSourceMBean> slaveAtomDsList = repositorySlaveAtomDsMapper.get(repositoryName);
-							if (slaveAtomDsList == null) {
-								slaveAtomDsList = new ArrayList<>();
-							}
-							slaveAtomDsList.add(new DataSourceMBean(beanName, repositoryName, atom));
-							repositorySlaveAtomDsMapper.put(repositoryName, slaveAtomDsList);
-						}
-					} else {
-						log.warn("Registry mixed-datasource:{}, repository:{}, atom:{} no processor, because state is:{}",
-								mixedDataSourceName, repositoryName, atomName, atom.getState());
-					}
-				});
-			} else {
-				log.warn("Registry mixed-datasource:{}, repository:{} no prcessor, because state is:{}",
-						mixedDataSourceName, repositoryName, repository.getState());
+			if (!repository.isOnline()) {
+				log.warn("Registry mixed-datasource:{}, repository:{} no prcessor, because state is:{}", mixedDataSourceName, repositoryName, repository.getState());
+				continue;
 			}
-		});
 
-		// create DataSourceKey spring bean
-		RootBeanDefinition dsKeyRootBeanDefinition = new RootBeanDefinition(DataSourceKey.class);
-		dsKeyRootBeanDefinition.setScope(BeanDefinitionDsl.Scope.PROTOTYPE.toString().toLowerCase());
-		dsKeyRootBeanDefinition.getPropertyValues().add("mixDataName", mixedDataSourceName);
-		dsKeyRootBeanDefinition.getPropertyValues().add("repositoryMasterAtomDsMapper", repositoryMasterAtomDsMapper);
-		dsKeyRootBeanDefinition.getPropertyValues().add("repositorySlaveAtomDsMapper", repositorySlaveAtomDsMapper);
-		beanDefinitionRegistry.registerBeanDefinition(mixedDataSourceName + "-" + "DataSourceKey", dsKeyRootBeanDefinition);
+			// init atoms datasource
+			List<AtomDataSourceModel> atoms = repository.getAtoms();
+			for (AtomDataSourceModel atom : atoms) {
+				String atomName = atom.getAtomName();
 
-		// create DataSource Spring Bean
-		RootBeanDefinition datasourceRootBeanDefinition = new RootBeanDefinition(MasterSlaveDataSource.class);
-		datasourceRootBeanDefinition.getPropertyValues().add("dataSourceKey", new RuntimeBeanReference(mixedDataSourceName + "-" + "DataSourceKey"));
-		datasourceRootBeanDefinition.getPropertyValues().add("dataSources", dataSources);
-		beanDefinitionRegistry.registerBeanDefinition(mixedDataSourceName, datasourceRootBeanDefinition);
+				// only process online statue
+				if (!atom.isOnline()) {
+					log.warn("Registry mixed-datasource:{}, repository:{}, atom:{} no processor, because state is:{}", mixedDataSourceName, repositoryName, atomName, atom.getState());
+					continue;
+				}
+
+				// get datasource pool register
+				IDataSourcePoolRegister dsRegistry          = DataSourcePoolRegisterFactory.getRegister(atom.getDataSourcePoolType());
+				DataSourcePoolMBean     dataSourcePoolMBean = new DataSourcePoolMBean(mixedDataSourceModel, atom);
+				String                  atomDsBeanName      = BeanUtils.genBeanName(mixedDataSourceName, repositoryName, atomName, atom.getMasterSlaveType());
+				dsRegistry.doRegistry(atomDsBeanName, dataSourcePoolMBean, beanDefinitionRegistry);
+				dataSources.put(atomDsBeanName, new RuntimeBeanReference(atomDsBeanName));
+
+				// add DataSourceMBean to DataSourceKey atom datasource mapper
+				if (atom.isMaster()) {
+					List<DataSourceMBean> masterAtomDsList = repositoryMasterAtomDsMapper.get(repositoryName);
+					if (masterAtomDsList == null) {
+						masterAtomDsList = new ArrayList<>();
+					}
+					masterAtomDsList.add(new DataSourceMBean(atomDsBeanName, repositoryName, atom));
+					repositoryMasterAtomDsMapper.put(repositoryName, masterAtomDsList);
+				} else {
+					List<DataSourceMBean> slaveAtomDsList = repositorySlaveAtomDsMapper.get(repositoryName);
+					if (slaveAtomDsList == null) {
+						slaveAtomDsList = new ArrayList<>();
+					}
+					slaveAtomDsList.add(new DataSourceMBean(atomDsBeanName, repositoryName, atom));
+					repositorySlaveAtomDsMapper.put(repositoryName, slaveAtomDsList);
+				}
+			}
+		}
 	}
 }

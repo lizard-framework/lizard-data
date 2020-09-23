@@ -33,4 +33,13 @@ public class RepositoryDataSourceModel {
 	 * 原子数据源列表，一个库的数据源组包括多个原子数据源；当使用读写分离时，会根据负载策略使用相应的数据库连接
 	 */
 	private List<AtomDataSourceModel> atoms;
+
+	/**
+	 * check state is online
+	 *
+	 * @return
+	 */
+	public boolean isOnline() {
+		return State.ONLINE.equals(this.state);
+	}
 }

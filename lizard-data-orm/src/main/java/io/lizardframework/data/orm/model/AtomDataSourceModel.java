@@ -74,4 +74,13 @@ public class AtomDataSourceModel {
 	public boolean isMaster() {
 		return MasterSlaveType.MASTER.equals(this.masterSlaveType);
 	}
+
+	/**
+	 * check online state
+	 *
+	 * @return
+	 */
+	public boolean isOnline() {
+		return State.ONLINE.equals(this.state);
+	}
 }
