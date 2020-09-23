@@ -20,7 +20,7 @@ public class RepositoryDataSourceModel {
 	 * <p>
 	 * 一个混合数据源中必须唯一
 	 */
-	private String                    groupName;
+	private String                    repositoryName;
 	/**
 	 * 数据源组状态，如果为offline则不初始化该数据源组
 	 */

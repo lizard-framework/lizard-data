@@ -27,14 +27,11 @@ public class DataSourceKey {
 	private String                             mixDataName;
 	// repository与写数据源Bean-Name列表映射,每个group必须有且仅有一个有效的写数据源
 	@Setter
-	private Map<String, List<DataSourceMBean>> repositoryWriteAtomDsMapper = new HashMap<>();
+	private Map<String, List<DataSourceMBean>> repositoryMasterAtomDsMapper = new HashMap<>();
 	// repository与读数据源Bean-Name列表映射,每个group不一定要有多个读数据源
 	@Setter
-	private Map<String, List<DataSourceMBean>> repositoryReadAtomDsMapper  = new HashMap<>();
+	private Map<String, List<DataSourceMBean>> repositorySlaveAtomDsMapper  = new HashMap<>();
 
-	public DataSourceKey(String mixDataName) {
-		this.mixDataName = mixDataName;
-	}
 
 	/**
 	 * 获取读写数据源key值
@@ -63,7 +60,7 @@ public class DataSourceKey {
 
 		// 如果分库sharding key不存在，必须只能有一个repository，单库读写分离的场景
 		if (StringUtils.isEmpty(shardingKey)) {
-			if (this.repositoryWriteAtomDsMapper.size() > 1) {
+			if (this.repositoryMasterAtomDsMapper.size() > 1) {
 				throw new IllegalArgumentException("Can not select read/write key. because mix-data have more than 1 group.");
 			}
 
@@ -74,7 +71,7 @@ public class DataSourceKey {
 				dataSourceKey = this.getOneWriteDataSource().getBeanName();
 			} else {
 				// todo: loadbalance
-				dataSourceKey = repositoryReadAtomDsMapper.entrySet().iterator().next().getValue().get(0).getBeanName();
+				dataSourceKey = repositorySlaveAtomDsMapper.entrySet().iterator().next().getValue().get(0).getBeanName();
 			}
 
 			// strategy的创建在拦截器中完成，如果strategy为null，直接返回dataSourceKey
@@ -96,7 +93,7 @@ public class DataSourceKey {
 			strategy.setReadWriteType(ReadWriteType.WRITE);
 		} else {
 			// todo: loadbalance
-			dataSourceKey = repositoryReadAtomDsMapper.get(shardingKey).get(0).getBeanName();
+			dataSourceKey = repositorySlaveAtomDsMapper.get(shardingKey).get(0).getBeanName();
 		}
 		strategy.setDataSourceKey(dataSourceKey);
 
@@ -125,6 +122,6 @@ public class DataSourceKey {
 	 * @return
 	 */
 	private DataSourceMBean getOneWriteDataSource() {
-		return repositoryWriteAtomDsMapper.entrySet().iterator().next().getValue().get(0);
+		return repositoryMasterAtomDsMapper.entrySet().iterator().next().getValue().get(0);
 	}
 }

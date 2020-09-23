@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * @see io.lizardframework.data.orm.annotation.ReadWrite
  */
 @Slf4j
-public class ReadWriteAnnotationInterceptor implements MethodInterceptor {
+public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {

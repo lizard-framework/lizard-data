@@ -7,7 +7,7 @@ import org.springframework.context.support.GenericApplicationContext;
 
 /**
  * @author xueqi
- * @date 2020/9/22
+ * @date 2020-09-22
  */
 @Slf4j
 public class MixedDataSourceApplicationContextInitializer implements ApplicationContextInitializer<GenericApplicationContext> {
@@ -16,6 +16,6 @@ public class MixedDataSourceApplicationContextInitializer implements Application
 
 	@Override
 	public void initialize(GenericApplicationContext genericApplicationContext) {
-		MIXED_DATA_SOURCE_BEAN_REGISTER.doRegistry(genericApplicationContext);
+		MIXED_DATA_SOURCE_BEAN_REGISTER.doRegistry(null, genericApplicationContext);
 	}
 }

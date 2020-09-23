@@ -17,7 +17,7 @@ public abstract class BaseRoutingDataSource extends AbstractRoutingDataSource {
 	@Setter
 	protected DataSourceKey       dataSourceKey;
 	/**
-	 * 数据源集合，分库：groupName - ReadWriteDataSource; 读写分离：atomName - DataSource
+	 * datasource mapper: key is datasource beanname, value is actual DataSource
 	 */
 	@Setter
 	protected Map<Object, Object> dataSources;

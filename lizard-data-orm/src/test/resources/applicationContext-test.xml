@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:lizard-data-orm="http://www.lizardframework.io/schema/lizard-data-orm"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.lizardframework.io/schema/lizard-data-orm http://www.lizardframework.io/schema/lizard-data-orm.xsd"
+       default-lazy-init="false">
+
+	<lizard-data-orm:mixed-datasource mixed-name="TestDataSourceSDK,TestDataSourceSDK2"/>
+
+</beans>

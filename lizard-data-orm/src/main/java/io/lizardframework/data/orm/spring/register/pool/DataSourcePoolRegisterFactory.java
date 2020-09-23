@@ -27,7 +27,7 @@ public class DataSourcePoolRegisterFactory {
 	 * @param type
 	 * @return
 	 */
-	public IDataSourcePoolRegister getRegister(DataSourcePoolType type) {
+	public static IDataSourcePoolRegister getRegister(DataSourcePoolType type) {
 		IDataSourcePoolRegister registry = REGISTER_MAP.get(type);
 		log.info("Selector datasource pool register, type:{}, register:{}", type, registry);
 

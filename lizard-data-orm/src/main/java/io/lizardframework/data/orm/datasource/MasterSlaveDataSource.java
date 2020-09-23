@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2020-09-09
  */
 @Slf4j
-public class ReadWriteDataSource extends BaseRoutingDataSource {
+public class MasterSlaveDataSource extends BaseRoutingDataSource {
 
 	@Override
 	protected Object determineCurrentLookupKey() {

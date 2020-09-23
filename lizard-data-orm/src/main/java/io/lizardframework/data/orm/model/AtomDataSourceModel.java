@@ -1,9 +1,11 @@
 package io.lizardframework.data.orm.model;
 
+import io.lizardframework.data.enums.MasterSlaveType;
 import io.lizardframework.data.enums.State;
 import io.lizardframework.data.orm.enums.DataSourcePoolType;
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -44,9 +46,9 @@ public class AtomDataSourceModel {
 	 */
 	private String              params;
 	/**
-	 * datasource is master flag
+	 * datasource is master or slave flag
 	 */
-	private boolean             isMaster;
+	private MasterSlaveType     masterSlaveType;
 	/**
 	 * atom status，if 'offline' not init
 	 */
@@ -62,5 +64,14 @@ public class AtomDataSourceModel {
 	/**
 	 * DataSource Pool Config Mapper
 	 */
-	private Map<String, Object> poolConfigMapper;
+	private Map<String, Object> poolConfigMapper = new HashMap<>();
+
+	/**
+	 * return master type
+	 *
+	 * @return
+	 */
+	public boolean isMaster() {
+		return MasterSlaveType.MASTER.equals(this.masterSlaveType);
+	}
 }

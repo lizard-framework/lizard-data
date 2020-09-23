@@ -1,5 +1,7 @@
 package io.lizardframework.data.orm.datasource.meta;
 
+import io.lizardframework.data.enums.MasterSlaveType;
+import io.lizardframework.data.orm.model.AtomDataSourceModel;
 import lombok.Getter;
 
 /**
@@ -12,19 +14,31 @@ import lombok.Getter;
 public class DataSourceMBean {
 
 	/**
-	 * 数据源Bean Name
+	 * datasource bean name
 	 */
-	private String  beanName;
+	private String          beanName;
 	/**
-	 * 原子数据源名称，一个group中必须唯一
+	 * repository name
 	 */
-	private String  atomName;
+	private String          repositoryName;
 	/**
-	 * 是否为主库
+	 * atom name
 	 */
-	private boolean isMaster;
+	private String          atomName;
 	/**
-	 * 权重比例
+	 * master flag
 	 */
-	private int     weight;
+	private MasterSlaveType masterSlaveType;
+	/**
+	 * loadbalance weight
+	 */
+	private int             weight;
+
+	public DataSourceMBean(String beanName, String repositoryName, AtomDataSourceModel atomDataSourceModel) {
+		this.beanName = beanName;
+		this.repositoryName = repositoryName;
+		this.atomName = atomDataSourceModel.getAtomName();
+		this.masterSlaveType = atomDataSourceModel.getMasterSlaveType();
+		this.weight = atomDataSourceModel.getWeight();
+	}
 }
