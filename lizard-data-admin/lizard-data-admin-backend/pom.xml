@@ -10,5 +10,60 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>lizard-data-admin-backend</artifactId>
 	<packaging>jar</packaging>
+	<name>lizard-data-admin-backend</name>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.lizardframework</groupId>
+			<artifactId>lizard-data-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.lizardframework</groupId>
+			<artifactId>lizard-data-orm-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.redisson</groupId>
+			<artifactId>redisson</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>lizard-data-admin-backend</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<fork>true</fork>
+				</configuration>
+				<executions>
+					<!-- 打包jar-->
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

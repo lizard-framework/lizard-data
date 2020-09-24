@@ -22,6 +22,7 @@
 		<mysql.driver.version>8.0.21</mysql.driver.version>
 		<alibaba.druid.version>1.1.24</alibaba.druid.version>
 		<hikariCP.version>3.4.5</hikariCP.version>
+		<redission.version>3.13.4</redission.version>
 
 		<spring.version>5.2.8.RELEASE</spring.version>
 		<spring-boot.version>2.3.3.RELEASE</spring-boot.version>
@@ -30,7 +31,7 @@
 	<modules>
 		<module>lizard-data-orm</module>
 		<module>lizard-data-cache</module>
-		<module>lizard-data-core</module>
+		<module>lizard-data-common</module>
 		<module>lizard-data-admin</module>
 	</modules>
 
@@ -39,12 +40,19 @@
 			<!--## module dependencies ##-->
 			<dependency>
 				<groupId>io.lizardframework</groupId>
+				<artifactId>lizard-data-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<!-- lizard-data-cache -->
+			<dependency>
+				<groupId>io.lizardframework</groupId>
 				<artifactId>lizard-data-cache</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<!-- lizard-data-orm -->
 			<dependency>
 				<groupId>io.lizardframework</groupId>
-				<artifactId>lizard-data-core</artifactId>
+				<artifactId>lizard-data-orm-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -132,6 +140,14 @@
 				<version>${spring.version}</version>
 			</dependency>
 
+			<!-- redission -->
+			<dependency>
+				<groupId>org.redisson</groupId>
+				<artifactId>redisson</artifactId>
+				<version>${redission.version}</version>
+			</dependency>
+
+
 			<!--## other dependencies define ##-->
 		</dependencies>
 	</dependencyManagement>
@@ -161,4 +177,17 @@
 			<artifactId>jul-to-slf4j</artifactId>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<generateBackupPoms>false</generateBackupPoms>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

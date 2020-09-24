@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: lizard-data-admin-backend
+
+server:
+  port: 8888
+
+lizard:
+  redis:
+    server: lizard-redis-server
+    port: 6379
+    password: G!75b%g$aeUiuzeK
+  crypto:
+    password: 123456123456123456123456
