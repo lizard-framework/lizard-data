@@ -1,18 +1,19 @@
 package io.lizardframework.data.orm.enums;
 
 /**
- * Read Write Type Enum
+ * Master Slave Type Enum
  *
  * @author xueqi
  * @date 2020-09-10
  */
-public enum ReadWriteType {
-	READ("read"),
-	WRITE("write");
+public enum MasterSlaveType {
+	MASTER("master"),
+	SLAVE("slave"),
+	;
 
 	private String value;
 
-	ReadWriteType(String value) {
+	MasterSlaveType(String value) {
 		this.value = value;
 	}
 

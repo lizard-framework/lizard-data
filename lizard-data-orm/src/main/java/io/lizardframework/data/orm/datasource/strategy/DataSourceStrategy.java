@@ -1,6 +1,6 @@
 package io.lizardframework.data.orm.datasource.strategy;
 
-import io.lizardframework.data.orm.enums.ReadWriteType;
+import io.lizardframework.data.orm.enums.MasterSlaveType;
 import lombok.Data;
 
 /**
@@ -14,22 +14,22 @@ public class DataSourceStrategy {
 	/**
 	 * 读写类型
 	 */
-	private ReadWriteType readWriteType;
+	private MasterSlaveType masterSlaveType;
 	/**
 	 * 分库sharding key
 	 */
-	private String        repositoryShardingKey;
+	private String          repositoryShardingKey;
 	/**
 	 * 数据源key - 实际的数据源bean name
 	 */
-	private String        dataSourceKey;
+	private String          dataSourceKey;
 	/**
 	 * 是否在事务中
 	 */
-	private boolean       transaction = false;
+	private boolean         transaction = false;
 
-	public DataSourceStrategy(ReadWriteType readWriteType, String repositoryShardingKey, boolean transaction) {
-		this.readWriteType = readWriteType;
+	public DataSourceStrategy(MasterSlaveType masterSlaveType, String repositoryShardingKey, boolean transaction) {
+		this.masterSlaveType = masterSlaveType;
 		this.repositoryShardingKey = repositoryShardingKey;
 		this.transaction = transaction;
 	}

@@ -1,6 +1,6 @@
 package io.lizardframework.data.orm.interceptor;
 
-import io.lizardframework.data.orm.annotation.ReadWrite;
+import io.lizardframework.data.orm.annotation.MasterSlave;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
 import io.lizardframework.data.utils.MethodUtils;
@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
  *
  * @author xueqi
  * @date 2020-09-15
- * @see io.lizardframework.data.orm.annotation.ReadWrite
+ * @see MasterSlave
  */
 @Slf4j
 public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
@@ -30,8 +30,8 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 		Method realMethod = MethodUtils.realMethod(invocation);
 
 		// 获取ReadWrite和Transactional注解
-		ReadWrite     readWrite = MethodUtils.getAnnotation(realMethod, invocation, ReadWrite.class);
-		Transactional txAnno    = MethodUtils.getAnnotation(realMethod, invocation, Transactional.class);
+		MasterSlave   masterSlave = MethodUtils.getAnnotation(realMethod, invocation, MasterSlave.class);
+		Transactional txAnno      = MethodUtils.getAnnotation(realMethod, invocation, Transactional.class);
 
 		// 是否需要清理DataSourceStrategy标志位
 		boolean needClean = false;
@@ -41,7 +41,7 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 
 			// 如果当前线程中没有DataSourceStrategy，表示第一次进入@ReadWrite注解的方法
 			if (dataSourceStrategy == null) {
-				dataSourceStrategy = new DataSourceStrategy(readWrite.type(), null, txAnno != null);
+				dataSourceStrategy = new DataSourceStrategy(masterSlave.type(), null, txAnno != null);
 				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
 			} else if (StrategyHolder.hasTransactional()) {
@@ -51,18 +51,18 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 								|| Propagation.NOT_SUPPORTED.equals(txAnno.propagation()))
 				) {
 					// @ReadWrite只负责切换读写数据源，新的DataSourceStrategy不从上一个策略中获取分库key
-					DataSourceStrategy newStrategy = new DataSourceStrategy(readWrite.type(), null, true);
+					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), null, true);
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
-				} else if (dataSourceStrategy.getReadWriteType() == null) {
+				} else if (dataSourceStrategy.getMasterSlaveType() == null) {
 					// hasTransactional()==true可能是RepositorySharding拦截器设置的，此时需要判断dataSourceStrategy中的rw type是否存在，如果不存在则添加新的DataSourceStrategy
-					DataSourceStrategy newStrategy = new DataSourceStrategy(readWrite.type(), dataSourceStrategy.getRepositoryShardingKey(), true);
+					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), dataSourceStrategy.getRepositoryShardingKey(), true);
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
 				}
 			} else {
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
-				DataSourceStrategy newStrategy = new DataSourceStrategy(readWrite.type(), dataSourceStrategy.getRepositoryShardingKey(), txAnno != null);
+				DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), dataSourceStrategy.getRepositoryShardingKey(), txAnno != null);
 				StrategyHolder.addDataSourceStrategy(newStrategy);
 				needClean = true;
 			}

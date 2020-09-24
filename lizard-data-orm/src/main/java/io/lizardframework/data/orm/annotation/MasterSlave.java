@@ -1,6 +1,6 @@
 package io.lizardframework.data.orm.annotation;
 
-import io.lizardframework.data.orm.enums.ReadWriteType;
+import io.lizardframework.data.orm.enums.MasterSlaveType;
 
 import java.lang.annotation.*;
 
@@ -14,13 +14,13 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface ReadWrite {
+public @interface MasterSlave {
 
 	/**
 	 * 读写类型
 	 *
 	 * @return
 	 */
-	ReadWriteType type() default ReadWriteType.WRITE;
+	MasterSlaveType type() default MasterSlaveType.MASTER;
 
 }

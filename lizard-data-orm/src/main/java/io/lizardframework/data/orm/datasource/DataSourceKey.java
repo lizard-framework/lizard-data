@@ -3,7 +3,7 @@ package io.lizardframework.data.orm.datasource;
 import io.lizardframework.data.orm.datasource.meta.DataSourceMBean;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
-import io.lizardframework.data.orm.enums.ReadWriteType;
+import io.lizardframework.data.orm.enums.MasterSlaveType;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
@@ -65,8 +65,8 @@ public class DataSourceKey {
 			}
 
 			// 获取读写类型
-			ReadWriteType readWriteType = (strategy == null) ? ReadWriteType.WRITE : strategy.getReadWriteType();
-			if (ReadWriteType.WRITE.equals(readWriteType)) {
+			MasterSlaveType masterSlaveType = (strategy == null) ? MasterSlaveType.MASTER : strategy.getMasterSlaveType();
+			if (MasterSlaveType.MASTER.equals(masterSlaveType)) {
 				// 默认获取第一个主库atom datasource bean name
 				dataSourceKey = this.getOneWriteDataSource().getBeanName();
 			} else {
@@ -85,12 +85,12 @@ public class DataSourceKey {
 		}
 
 		// 如果分库sharding key存在（一定是从stack中获取的），从group的ds mapper中获取数据源bean name
-		ReadWriteType readWriteType = strategy.getReadWriteType();
-		if (readWriteType == null || ReadWriteType.WRITE.equals(readWriteType)) {
+		MasterSlaveType masterSlaveType = strategy.getMasterSlaveType();
+		if (masterSlaveType == null || MasterSlaveType.MASTER.equals(masterSlaveType)) {
 			// 默认获取第一个主库atom datasource bean name
 			dataSourceKey = this.getOneWriteDataSource().getBeanName();
 			// 针对readWriteType==null的情况，即只有@RepositorySharding注解，默认ReadWriteType.WRITE，并写入到strategy中
-			strategy.setReadWriteType(ReadWriteType.WRITE);
+			strategy.setMasterSlaveType(MasterSlaveType.MASTER);
 		} else {
 			// todo: loadbalance
 			dataSourceKey = repositorySlaveAtomDsMapper.get(shardingKey).get(0).getBeanName();
