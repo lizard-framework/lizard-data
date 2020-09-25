@@ -1,3 +1,6 @@
+server:
+  port: 8888
+
 spring:
   application:
     name: lizard-data-admin-backend
@@ -6,13 +9,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://lizard-mysql-server:3306/lizard_data?charset=utf8mb4&useSSL=false
     username: root
-    password: ${LIZARD_DATA_MYSQL_PASSWORD}
+    password: ${DATA_MYSQL_PASSWORD}
+
     hikari:
       maximum-pool-size: 20
-      minimum-idle: 5
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL57Dialect
-    show-sql: true
+      minimum-idle: 3
 
-server:
-  port: 8888
+
+
+crypto:
+  key: ${CRYPTO_KEY}
+

@@ -116,4 +116,8 @@ public class CryptoUtils {
 		}
 		return data;
 	}
+
+	public static void main(String[] args) {
+		System.out.println(encryptByECB("e78d491a0b9042072773ca8aec8d525f", "@K4lAqyBcxLEu@uB"));
+	}
 }
