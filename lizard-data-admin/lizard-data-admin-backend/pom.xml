@@ -27,7 +27,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.lizardframework</groupId>
-			<artifactId>lizard-data-common</artifactId>
+			<artifactId>lizard-data-core</artifactId>
 		</dependency>
 
 		<dependency>

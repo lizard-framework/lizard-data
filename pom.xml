@@ -34,7 +34,7 @@
 	<modules>
 		<module>lizard-data-orm</module>
 		<module>lizard-data-cache</module>
-		<module>lizard-data-common</module>
+		<module>lizard-data-core</module>
 		<module>lizard-data-admin</module>
 	</modules>
 
@@ -43,7 +43,7 @@
 			<!--## module dependencies ##-->
 			<dependency>
 				<groupId>io.lizardframework</groupId>
-				<artifactId>lizard-data-common</artifactId>
+				<artifactId>lizard-data-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- lizard-data-cache -->
