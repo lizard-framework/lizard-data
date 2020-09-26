@@ -1,9 +1,7 @@
 package io.lizardframework.data.utils;
 
 import org.apache.commons.lang3.StringUtils;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.core.env.Environment;
 
 /**
  * get env value and cuurent env name utils
@@ -14,28 +12,36 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2020-09-06
  */
 public class EnvUtils {
-	// spring properties value mapper
-	private static Map<String, Object> springPropertiesMapper = new ConcurrentHashMap<>();
+	private static Environment environment;
 
 	/**
-	 * spring context init hook
+	 * Spring Environment init
 	 *
-	 * @param properties
+	 * @param environment
 	 */
-	public static void initHook(Map<String, Object> properties) {
-		if (properties != null && properties.size() > 0) {
-			springPropertiesMapper.putAll(properties);
-		}
+	public static void initEnvironment(Environment environment) {
+		EnvUtils.environment = environment;
 	}
 
 	/**
-	 * gey application profile active name
+	 * get application profile active name
 	 *
 	 * @return if profiles is null ,return default
 	 */
 	public static String getProfilesName() {
-		String profile = getEnvValue("SPRING_PROFILES_ACTIVE", "spring.profiles.active", "spring.profiles.active");
-		return StringUtils.isNoneEmpty(profile) ? profile : "default";
+		String[] activeProfiles = environment.getActiveProfiles();
+		if (activeProfiles == null || activeProfiles.length == 0) return "default";
+
+		return activeProfiles[0];
+	}
+
+	/**
+	 * get application name. use spring.application.name
+	 *
+	 * @return
+	 */
+	public static String getApplicationName() {
+		return environment.getProperty("spring.application.name");
 	}
 
 	/**
@@ -64,7 +70,7 @@ public class EnvUtils {
 		// get value from spring context properties
 		if (value == null) {
 			if (StringUtils.isNotEmpty(springProperty)) {
-				value = springPropertiesMapper.get(springProperty) == null ? null : springPropertiesMapper.get(springProperty).toString();
+				value = environment.getProperty(springProperty);
 			}
 		}
 

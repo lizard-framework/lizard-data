@@ -10,7 +10,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Map;
 
 /**
@@ -18,7 +18,7 @@ import java.util.Map;
  * @date 2020-09-26
  */
 @Slf4j
-public class HttpUtils {
+public class NetUtils {
 
 	public static String post(Map<String, String> params, String url) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -58,4 +58,13 @@ public class HttpUtils {
 		return null;
 	}
 
+	public static String getHostName() {
+		try {
+			return InetAddress.getLocalHost().getHostName();
+		} catch (Exception e) {
+			log.warn("Get localhost name error.", e);
+		}
+
+		return "unknown";
+	}
 }

@@ -37,4 +37,8 @@ public class JSONUtils {
 	public static String toJSONString(Object object) {
 		return DEFAULT_GSON.toJson(object);
 	}
+
+	public static Gson getDefaultGson() {
+		return DEFAULT_GSON;
+	}
 }
