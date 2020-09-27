@@ -5,6 +5,8 @@ import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.MasterSlaveDataSource;
 import io.lizardframework.data.orm.datasource.RepositoryShardingDataSource;
 import io.lizardframework.data.orm.datasource.meta.DataSourceMBean;
+import io.lizardframework.data.orm.interceptor.MasterSlaveAnnotationInterceptor;
+import io.lizardframework.data.orm.interceptor.RepositoryShardingAnnotationInterceptor;
 import io.lizardframework.data.orm.model.AtomDataSourceModel;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
@@ -17,6 +19,8 @@ import io.lizardframework.data.utils.BeanUtils;
 import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -34,6 +38,10 @@ import java.util.*;
  */
 @Slf4j
 public class MixedDataSourceBeanRegister {
+	private static final String REPOSITORY_SHARDING_POINTCUT_EXPRESSION = "@annotation(io.lizardframework.data.orm.annotation.RepositorySharding)";
+	private static final String MASTERSLAVE_POINTCUT_EXPRESSION         = "@annotation(io.lizardframework.data.orm.annotation.MasterSlave)";
+	private static final int    REPOSITORY_SHARDING_POINTCUT_ORDER      = 100;
+	private static final int    MASTERSLAVE_POINTCUT_ORDER              = 200;
 
 	/**
 	 * do bean registry processor
@@ -48,7 +56,10 @@ public class MixedDataSourceBeanRegister {
 		// 2. registry mixed datasource bean
 		this.registryMixDataSourceBean(mixedDataSourceModel, beanDefinitionRegistry);
 
-		// 3. registry repository sharding and read write interceptor bean
+		// 3. registry repository sharding and master slave interceptor bean
+		this.registryRepositoryShardingInterceptor(beanDefinitionRegistry);
+		this.registryMasterSlaveAnnotationInterceptor(beanDefinitionRegistry);
+
 		// 4. registry transaction manager bean
 		// 5. registry mybatis bean and table sharding plugin bean
 		// 6. register jdbcTemplate table sharding plugin bean
@@ -186,6 +197,50 @@ public class MixedDataSourceBeanRegister {
 					repositorySlaveAtomDsMapper.put(repositoryName, slaveAtomDsList);
 				}
 			}
+		}
+	}
+
+	/**
+	 * resitry RepositoryShardingAnnotationInterceptor
+	 *
+	 * @param beanDefinitionRegistry
+	 */
+	private void registryRepositoryShardingInterceptor(BeanDefinitionRegistry beanDefinitionRegistry) {
+		String beanName = "RepositoryShardingAnnotationInterceptor-PointcutAdvisor";
+		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
+			log.info("Creating RepositoryShardingAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
+
+			RepositoryShardingAnnotationInterceptor interceptor = new RepositoryShardingAnnotationInterceptor();
+			AspectJExpressionPointcut               pointcut    = new AspectJExpressionPointcut();
+			pointcut.setExpression(REPOSITORY_SHARDING_POINTCUT_EXPRESSION);
+
+			BeanUtils.registryBean(beanName, beanDefinitionRegistry, DefaultPointcutAdvisor.class, Arrays.asList(
+					new PropertyValue("pointcut", pointcut),
+					new PropertyValue("advice", interceptor),
+					new PropertyValue("order", REPOSITORY_SHARDING_POINTCUT_ORDER)
+			));
+		}
+	}
+
+	/**
+	 * registry MasterSlaveAnnotationInterceptor
+	 *
+	 * @param beanDefinitionRegistry
+	 */
+	private void registryMasterSlaveAnnotationInterceptor(BeanDefinitionRegistry beanDefinitionRegistry) {
+		String beanName = "MasterSlaveAnnotationInterceptor-PointcutAdvisor";
+		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
+			log.info("Creating MasterSlaveAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
+
+			MasterSlaveAnnotationInterceptor interceptor = new MasterSlaveAnnotationInterceptor();
+			AspectJExpressionPointcut        pointcut    = new AspectJExpressionPointcut();
+			pointcut.setExpression(MASTERSLAVE_POINTCUT_EXPRESSION);
+
+			BeanUtils.registryBean(beanName, beanDefinitionRegistry, DefaultPointcutAdvisor.class, Arrays.asList(
+					new PropertyValue("pointcut", pointcut),
+					new PropertyValue("advice", interceptor),
+					new PropertyValue("order", MASTERSLAVE_POINTCUT_ORDER)
+			));
 		}
 	}
 }

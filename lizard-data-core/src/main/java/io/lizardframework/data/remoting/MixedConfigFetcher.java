@@ -1,7 +1,5 @@
 package io.lizardframework.data.remoting;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.lizardframework.data.enums.MixedType;
 import io.lizardframework.data.utils.EnvUtils;
 import io.lizardframework.data.utils.NetUtils;
@@ -9,13 +7,11 @@ import io.lizardframework.data.utils.PropertiesUtils;
 import io.lizardframework.data.utils.VersionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +29,7 @@ public class MixedConfigFetcher extends Fetcher {
 	}
 
 	private static class InstanceHolder {
-		private static MixedConfigFetcher INSTANCE = new MixedConfigFetcher();
+		private static final MixedConfigFetcher INSTANCE = new MixedConfigFetcher();
 	}
 
 	public static MixedConfigFetcher getInstance() {
