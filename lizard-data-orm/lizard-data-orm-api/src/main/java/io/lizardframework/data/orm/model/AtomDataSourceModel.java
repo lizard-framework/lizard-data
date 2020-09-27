@@ -3,6 +3,7 @@ package io.lizardframework.data.orm.model;
 import io.lizardframework.data.enums.MasterSlaveType;
 import io.lizardframework.data.enums.State;
 import io.lizardframework.data.orm.enums.DataSourcePoolType;
+import io.lizardframework.data.utils.JSONUtils;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -82,5 +83,26 @@ public class AtomDataSourceModel {
 	 */
 	public boolean isOnline() {
 		return State.ONLINE.equals(this.state);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder(super.toString());
+		builder.append("[");
+		builder.append("atomName=").append(atomName).append(",");
+		builder.append("host=").append(host).append(",");
+		builder.append("port=").append(port).append(",");
+		builder.append("username=").append(username).append(",");
+		builder.append("password=").append("******").append(",");
+		builder.append("database=").append(database).append(",");
+		builder.append("params=").append(params).append(",");
+		builder.append("masterSlaveType=").append(masterSlaveType).append(",");
+		builder.append("state=").append(state).append(",");
+		builder.append("weight=").append(weight).append(",");
+		builder.append("dataSourcePoolType=").append(dataSourcePoolType).append(",");
+		builder.append("poolConfigMapper=").append(JSONUtils.toJSONString(poolConfigMapper));
+		builder.append("]");
+
+		return builder.toString();
 	}
 }

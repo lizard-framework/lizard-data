@@ -1,18 +1,24 @@
 package io.lizardframework.data.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
-import java.util.Map;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * @author xueqi
  * @date 2020-09-25
  */
 public class JSONUtils {
+
 	private static final Gson DEFAULT_GSON = new GsonBuilder()
 			.disableHtmlEscaping()
 			.registerTypeAdapter(Double.class, (JsonSerializer<Double>) (src, type, jsonSerializationContext) -> {
@@ -26,7 +32,7 @@ public class JSONUtils {
 		Map<String, Object> mapper = null;
 
 		if (StringUtils.isNotEmpty(json)) {
-			java.lang.reflect.Type type = new com.google.gson.reflect.TypeToken<Map<String, Object>>() {
+			Type type = new TypeToken<Map<String, Object>>() {
 			}.getType();
 			mapper = DEFAULT_GSON.fromJson(json, type);
 		}

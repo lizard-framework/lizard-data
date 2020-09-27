@@ -6,6 +6,6 @@
        http://www.lizardframework.io/schema/lizard-data-orm http://www.lizardframework.io/schema/lizard-data-orm.xsd"
        default-lazy-init="false">
 
-	<lizard-data-orm:mixed-datasource mixed-name="TestDataSourceSDK,TestDataSourceSDK2"/>
+	<lizard-data-orm:mixed-datasource mixed-name="TestMixedDataSource"/>
 
 </beans>

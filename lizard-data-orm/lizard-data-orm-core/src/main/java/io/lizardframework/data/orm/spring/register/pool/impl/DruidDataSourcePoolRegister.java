@@ -7,7 +7,9 @@ import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -22,8 +24,7 @@ public class DruidDataSourcePoolRegister extends IDataSourcePoolRegister {
 		log.info("Begin registry druid datasource pool bean:{} in spring context.", beanName);
 
 		// pool config properties
-		Properties properties = new Properties();
-		properties.putAll(dataSourcePoolMBean.getPoolConfigMapper());
+		Properties properties = pollConfigProperties(dataSourcePoolMBean.getPoolConfigMapper());
 
 		RootBeanDefinition dsBeanDefinition = new RootBeanDefinition(DruidDataSource.class);
 		dsBeanDefinition.getPropertyValues().add("url", buildJdbcUrl(dataSourcePoolMBean));

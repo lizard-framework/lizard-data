@@ -22,8 +22,7 @@ public class HikariCPDataSourcePoolRegister extends IDataSourcePoolRegister {
 		log.info("Begin registry HikariCP datasource pool bean:{} in spring context.", beanName);
 
 		// pool config properties
-		Properties properties = new Properties();
-		properties.putAll(dataSourcePoolMBean.getPoolConfigMapper());
+		Properties properties = pollConfigProperties(dataSourcePoolMBean.getPoolConfigMapper());
 
 		RootBeanDefinition dsRootBeanDefinition = new RootBeanDefinition(HikariDataSource.class);
 		dsRootBeanDefinition.getPropertyValues().add("driverClassName", dataSourcePoolMBean.getDbType().getJdbcDriver());

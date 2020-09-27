@@ -9,7 +9,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class XmlApplication {
 
 	public static void main(String[] args) {
-		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext-test.xml");
+		ClassPathXmlApplicationContext classPathXmlApplicationContext
+				= new ClassPathXmlApplicationContext("classpath:applicationContext-test.xml");
 
 		System.out.println("....");
 	}

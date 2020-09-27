@@ -6,6 +6,10 @@ import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * DataSource Pool Register
@@ -55,5 +59,35 @@ public abstract class IDataSourcePoolRegister {
 
 		log.debug("Registry jdbc url:{}", urlBuilder.toString());
 		return urlBuilder.toString();
+	}
+
+	/**
+	 * convert pool config
+	 *
+	 * @param poolConfigMapper
+	 * @return
+	 */
+	protected Properties pollConfigProperties(Map<String, Object> poolConfigMapper) {
+		Properties properties = new Properties();
+		if (!CollectionUtils.isEmpty(poolConfigMapper)) {
+			for (Map.Entry<String, Object> entry : poolConfigMapper.entrySet()) {
+				if (entry.getValue() == null) {
+					properties.setProperty(entry.getKey(), null);
+				} else {
+					// checker double value to long
+					if (entry.getValue() instanceof Double) {
+						Double src = (Double) entry.getValue();
+						if (src == src.longValue()) {
+							properties.setProperty(entry.getKey(), src.longValue() + "");
+							continue;
+						}
+					}
+
+					properties.setProperty(entry.getKey(), entry.getValue().toString());
+				}
+			}
+		}
+
+		return properties;
 	}
 }

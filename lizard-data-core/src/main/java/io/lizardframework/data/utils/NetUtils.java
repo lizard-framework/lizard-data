@@ -40,7 +40,7 @@ public class NetUtils {
 			response = httpclient.execute(post);
 
 			HttpEntity entity = response.getEntity();
-			if (entity != null) {
+			if (entity != null && response.getStatusLine().getStatusCode() == 200) {
 				return EntityUtils.toString(entity, "UTF-8");
 			}
 		} catch (Exception e) {

@@ -2,6 +2,7 @@ package io.lizardframework.data.orm.spring;
 
 import io.lizardframework.data.orm.spring.register.MixedDataSourceBeanRegister;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.support.GenericApplicationContext;
 
@@ -16,6 +17,10 @@ public class MixedDataSourceApplicationContextInitializer implements Application
 
 	@Override
 	public void initialize(GenericApplicationContext genericApplicationContext) {
-		MIXED_DATA_SOURCE_BEAN_REGISTER.doRegistry(null, genericApplicationContext);
+		try {
+			MIXED_DATA_SOURCE_BEAN_REGISTER.doRegistry(null, genericApplicationContext);
+		} catch (Exception e) {
+			throw new ContextedRuntimeException(e);
+		}
 	}
 }

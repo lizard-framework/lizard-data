@@ -1,5 +1,6 @@
 package io.lizardframework.data.orm.spring.register;
 
+import io.lizardframework.data.enums.MixedType;
 import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.MasterSlaveDataSource;
 import io.lizardframework.data.orm.datasource.RepositoryShardingDataSource;
@@ -10,13 +11,18 @@ import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
 import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
+import io.lizardframework.data.remoting.MixedConfigFetcher;
+import io.lizardframework.data.remoting.SecurityFetcher;
 import io.lizardframework.data.utils.BeanUtils;
+import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.context.support.BeanDefinitionDsl;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -35,7 +41,7 @@ public class MixedDataSourceBeanRegister {
 	 * @param mixedDataSourceName
 	 * @param beanDefinitionRegistry
 	 */
-	public void doRegistry(String mixedDataSourceName, BeanDefinitionRegistry beanDefinitionRegistry) {
+	public void doRegistry(String mixedDataSourceName, BeanDefinitionRegistry beanDefinitionRegistry) throws Exception {
 		// 1. get mixed-data config
 		MixedDataSourceModel mixedDataSourceModel = this.fetchAndConvertModel(mixedDataSourceName);
 
@@ -55,10 +61,32 @@ public class MixedDataSourceBeanRegister {
 	 * @param mixedDataSourceName
 	 * @return
 	 */
-	private MixedDataSourceModel fetchAndConvertModel(String mixedDataSourceName) {
-		// todo:
-		MixedDataSourceModel mixedDataSourceModel = new MixedDataSourceModel();
+	private MixedDataSourceModel fetchAndConvertModel(String mixedDataSourceName) throws Exception {
+		String               modelJson            = MixedConfigFetcher.getInstance().getMixedConfig(mixedDataSourceName, MixedType.ORM);
+		MixedDataSourceModel mixedDataSourceModel = JSONUtils.getDefaultGson().fromJson(modelJson, MixedDataSourceModel.class);
 
+		// encode database password and username
+		if (!CollectionUtils.isEmpty(mixedDataSourceModel.getRepositories())) {
+			mixedDataSourceModel.getRepositories().forEach(repository -> {
+				List<AtomDataSourceModel> atoms = repository.getAtoms();
+				if (!CollectionUtils.isEmpty(atoms)) {
+					atoms.forEach(atom -> {
+						try {
+							atom.setUsername(
+									SecurityFetcher.getInstance().decrypt(atom.getUsername())
+							);
+							atom.setPassword(
+									SecurityFetcher.getInstance().decrypt(atom.getPassword())
+							);
+						} catch (Exception e) {
+							throw new ContextedRuntimeException("Decrypt error. mixed datasource:" + mixedDataSourceName
+									+ " ,repository:" + repository.getRepositoryName()
+									+ " , atom:" + atom.getAtomName(), e);
+						}
+					});
+				}
+			});
+		}
 
 		return mixedDataSourceModel;
 	}
