@@ -5,9 +5,16 @@ import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
 import io.lizardframework.data.utils.MethodUtils;
+import io.lizardframework.data.utils.SpELUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang3.exception.ContextedRuntimeException;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +27,9 @@ import java.lang.reflect.Method;
  * @date 2020-09-16
  */
 @Slf4j
-public class RepositoryShardingAnnotationInterceptor implements MethodInterceptor {
+public class RepositoryShardingAnnotationInterceptor implements MethodInterceptor, ApplicationContextAware {
+	private ApplicationContext      applicationContext;
+	private ParameterNameDiscoverer paraNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -40,8 +49,10 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 
 			// 如果当前线程中没有DataSourceStrategy，表示第一次进入到@RepositorySharding注解的方法
 			if (dataSourceStrategy == null) {
-				//  todo: shardingkey计算逻辑待完善
-				dataSourceStrategy = new DataSourceStrategy(null, "todo:", txAnno != null);
+				dataSourceStrategy = new DataSourceStrategy(null,
+						getShardingkey(rsAnno, methodInvocation, realMethod),
+						txAnno != null);
+
 				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
 			} else if (dataSourceStrategy.isTransaction()) {
@@ -51,7 +62,10 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 								|| Propagation.NOT_SUPPORTED.equals(txAnno.propagation()))
 				) {
 					// @RepositorySharding只负责分库，不负责读写
-					DataSourceStrategy newStrategy = new DataSourceStrategy(null, "todo:", true);
+					DataSourceStrategy newStrategy = new DataSourceStrategy(null,
+							getShardingkey(rsAnno, methodInvocation, realMethod),
+							true);
+
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
 				}
@@ -59,7 +73,10 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 				// 当前线程已经在一个事务中，即使标注@RepositorySharding注解，也不再切换分库数据源
 			} else {
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
-				DataSourceStrategy newStrategy = new DataSourceStrategy(null, "todo:", txAnno != null);
+				DataSourceStrategy newStrategy = new DataSourceStrategy(null,
+						getShardingkey(rsAnno, methodInvocation, realMethod),
+						txAnno != null);
+
 				StrategyHolder.addDataSourceStrategy(newStrategy);
 				needClean = true;
 			}
@@ -70,5 +87,22 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 				StrategyHolder.removeDataSourceStrategy();
 			}
 		}
+	}
+
+	private String getShardingkey(RepositorySharding rsAnno, MethodInvocation methodInvocation, Method realMethod) {
+		Object[] args       = methodInvocation.getArguments();
+		String[] paramsName = paraNameDiscoverer.getParameterNames(realMethod);
+
+		Object value = SpELUtils.calculation(args, paramsName, rsAnno.strategy(), applicationContext);
+		if (value == null) {
+			throw new ContextedRuntimeException("Repository sharding strategy spel calculation result is null. strategy: " + rsAnno.strategy());
+		}
+
+		return value.toString();
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }
