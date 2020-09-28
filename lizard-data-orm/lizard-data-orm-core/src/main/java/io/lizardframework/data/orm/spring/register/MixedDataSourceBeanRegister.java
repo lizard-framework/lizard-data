@@ -14,6 +14,7 @@ import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
 import io.lizardframework.data.orm.spring.register.beans.MixedDataBeanFactoryPostProcessor;
 import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
+import io.lizardframework.data.orm.spring.register.meta.DataSourceRegisterMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
 import io.lizardframework.data.remoting.MixedConfigFetcher;
@@ -28,6 +29,7 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.ManagedArray;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.util.CollectionUtils;
 
@@ -45,15 +47,14 @@ public class MixedDataSourceBeanRegister implements Constants {
 	/**
 	 * do bean registry processor
 	 *
-	 * @param mixedDataSourceName
+	 * @param dataSourceRegisterMBean
 	 * @param beanDefinitionRegistry
 	 */
-	public void doRegistry(String mixedDataSourceName, BeanDefinitionRegistry beanDefinitionRegistry) throws Exception {
+	public void doRegistry(DataSourceRegisterMBean dataSourceRegisterMBean, BeanDefinitionRegistry beanDefinitionRegistry) throws Exception {
+		String mixedDataSourceName = dataSourceRegisterMBean.getMixedDataSourceName();
+
 		// get mixed-data config
 		MixedDataSourceModel mixedDataSourceModel = this.fetchAndConvertModel(mixedDataSourceName);
-
-		// registry BeanFactoryPostPorcessor for modify bean definition
-		this.registryBeanFactoryPostProcessor(beanDefinitionRegistry);
 
 		// registry mixed datasource bean
 		this.registryMixDataSourceBean(mixedDataSourceModel, beanDefinitionRegistry);
@@ -65,6 +66,10 @@ public class MixedDataSourceBeanRegister implements Constants {
 		// registry mybatis bean and table sharding plugin bean
 
 		// register jdbcTemplate table sharding plugin bean
+
+		// registry BeanFactoryPostPorcessor for modify bean definition
+		this.registryBeanFactoryPostProcessor(beanDefinitionRegistry, dataSourceRegisterMBean);
+
 		// report framework version and metric info
 	}
 
@@ -108,11 +113,18 @@ public class MixedDataSourceBeanRegister implements Constants {
 	 * registry BeanFactoryPostProcessor for modify beanDefinition
 	 *
 	 * @param beanDefinitionRegistry
+	 * @param dataSourceRegisterMBean
 	 */
-	private void registryBeanFactoryPostProcessor(BeanDefinitionRegistry beanDefinitionRegistry) {
+	private void registryBeanFactoryPostProcessor(BeanDefinitionRegistry beanDefinitionRegistry, DataSourceRegisterMBean dataSourceRegisterMBean) {
 		String beanName = ClassUtils.getName(MixedDataBeanFactoryPostProcessor.class);
 		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
-			BeanUtils.registryBean(beanName, beanDefinitionRegistry, MixedDataBeanFactoryPostProcessor.class);
+			List<DataSourceRegisterMBean> dataSourceRegisterMBeanList = Arrays.asList(dataSourceRegisterMBean);
+			BeanUtils.registryBean(beanName, beanDefinitionRegistry, MixedDataBeanFactoryPostProcessor.class, Arrays.asList(
+					new PropertyValue("dataSourceRegisterMBeanList", dataSourceRegisterMBeanList)
+			));
+		} else {
+			// todo:
+
 		}
 	}
 

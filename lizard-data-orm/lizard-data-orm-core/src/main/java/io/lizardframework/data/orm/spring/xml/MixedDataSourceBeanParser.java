@@ -1,6 +1,7 @@
 package io.lizardframework.data.orm.spring.xml;
 
 import io.lizardframework.data.orm.spring.register.MixedDataSourceBeanRegister;
+import io.lizardframework.data.orm.spring.register.meta.DataSourceRegisterMBean;
 import io.lizardframework.data.utils.EnvUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +35,9 @@ public class MixedDataSourceBeanParser implements BeanDefinitionParser {
 			if (StringUtils.isNotEmpty(mixedNames)) {
 				String[] mixedNameList = StringUtils.split(mixedNames, ",");
 				for (String mixedName : mixedNameList) {
-					MIXED_DATA_SOURCE_BEAN_REGISTER.doRegistry(mixedName, beanDefinitionRegistry);
+					DataSourceRegisterMBean dataSourceRegisterMBean = new DataSourceRegisterMBean();
+					dataSourceRegisterMBean.setMixedDataSourceName(mixedName);
+					MIXED_DATA_SOURCE_BEAN_REGISTER.doRegistry(dataSourceRegisterMBean, beanDefinitionRegistry);
 				}
 			}
 
