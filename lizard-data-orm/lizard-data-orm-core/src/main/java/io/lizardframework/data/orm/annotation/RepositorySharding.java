@@ -15,16 +15,9 @@ import java.lang.annotation.*;
 public @interface RepositorySharding {
 
 	/**
-	 * 分库策略Bean-Name
+	 * repository sharding strategy, use spring SpEl expression
 	 *
 	 * @return
 	 */
 	String strategy();
-
-	/**
-	 * 分库参数
-	 *
-	 * @return
-	 */
-	String param();
 }

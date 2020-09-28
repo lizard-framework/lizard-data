@@ -1,6 +1,7 @@
 package io.lizardframework.data.orm.spring.register;
 
 import io.lizardframework.data.enums.MixedType;
+import io.lizardframework.data.orm.Constants;
 import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.MasterSlaveDataSource;
 import io.lizardframework.data.orm.datasource.RepositoryShardingDataSource;
@@ -10,6 +11,7 @@ import io.lizardframework.data.orm.interceptor.RepositoryShardingAnnotationInter
 import io.lizardframework.data.orm.model.AtomDataSourceModel;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
+import io.lizardframework.data.orm.spring.register.beans.MixedDataBeanFactoryPostProcessor;
 import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
@@ -18,6 +20,7 @@ import io.lizardframework.data.remoting.SecurityFetcher;
 import io.lizardframework.data.utils.BeanUtils;
 import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -25,7 +28,6 @@ import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.ManagedMap;
-import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -37,11 +39,7 @@ import java.util.*;
  * @date 2020-09-22
  */
 @Slf4j
-public class MixedDataSourceBeanRegister {
-	private static final String REPOSITORY_SHARDING_POINTCUT_EXPRESSION = "@annotation(io.lizardframework.data.orm.annotation.RepositorySharding)";
-	private static final String MASTERSLAVE_POINTCUT_EXPRESSION         = "@annotation(io.lizardframework.data.orm.annotation.MasterSlave)";
-	private static final int    REPOSITORY_SHARDING_POINTCUT_ORDER      = 100;
-	private static final int    MASTERSLAVE_POINTCUT_ORDER              = 200;
+public class MixedDataSourceBeanRegister implements Constants {
 
 	/**
 	 * do bean registry processor
@@ -50,20 +48,23 @@ public class MixedDataSourceBeanRegister {
 	 * @param beanDefinitionRegistry
 	 */
 	public void doRegistry(String mixedDataSourceName, BeanDefinitionRegistry beanDefinitionRegistry) throws Exception {
-		// 1. get mixed-data config
+		// get mixed-data config
 		MixedDataSourceModel mixedDataSourceModel = this.fetchAndConvertModel(mixedDataSourceName);
 
-		// 2. registry mixed datasource bean
+		// registry BeanFactoryPostPorcessor for modify bean definition
+		this.registryBeanFactoryPostProcessor(beanDefinitionRegistry);
+
+		// registry mixed datasource bean
 		this.registryMixDataSourceBean(mixedDataSourceModel, beanDefinitionRegistry);
 
-		// 3. registry repository sharding and master slave interceptor bean
+		// registry repository sharding and master slave interceptor bean
 		this.registryRepositoryShardingInterceptor(beanDefinitionRegistry);
 		this.registryMasterSlaveAnnotationInterceptor(beanDefinitionRegistry);
 
-		// 4. registry transaction manager bean
-		// 5. registry mybatis bean and table sharding plugin bean
-		// 6. register jdbcTemplate table sharding plugin bean
-		// 7. report framework version and metric info
+		// registry mybatis bean and table sharding plugin bean
+
+		// register jdbcTemplate table sharding plugin bean
+		// report framework version and metric info
 	}
 
 	/**
@@ -103,6 +104,18 @@ public class MixedDataSourceBeanRegister {
 	}
 
 	/**
+	 * registry BeanFactoryPostProcessor for modify beanDefinition
+	 *
+	 * @param beanDefinitionRegistry
+	 */
+	private void registryBeanFactoryPostProcessor(BeanDefinitionRegistry beanDefinitionRegistry) {
+		String beanName = ClassUtils.getName(MixedDataBeanFactoryPostProcessor.class);
+		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
+			BeanUtils.registryBean(beanName, beanDefinitionRegistry, MixedDataBeanFactoryPostProcessor.class);
+		}
+	}
+
+	/**
 	 * registry datasource bean in spring context
 	 *
 	 * @param mixedDataSourceModel
@@ -118,19 +131,16 @@ public class MixedDataSourceBeanRegister {
 		// registry atom datasource pool in spring context
 		this.registryAtomDataSource(mixedDataSourceModel, beanDefinitionRegistry, dataSources, repositoryMasterAtomDsMapper, repositorySlaveAtomDsMapper);
 
-
-		// create DataSourceKey spring bean - PROTOTYPE, each MixedDataSource have one DataSourceKey, no share
-		String dataSourceKeyBeanName = BeanUtils.genBeanName(mixedDataSourceName, "DataSourceKey");
-		BeanUtils.registryBean(dataSourceKeyBeanName, beanDefinitionRegistry, DataSourceKey.class, BeanDefinitionDsl.Scope.PROTOTYPE, Arrays.asList(
-				new PropertyValue("mixDataName", mixedDataSourceName),
-				new PropertyValue("repositoryMasterAtomDsMapper", repositoryMasterAtomDsMapper),
-				new PropertyValue("repositorySlaveAtomDsMapper", repositorySlaveAtomDsMapper)
-		));
+		// create DataSourceKey
+		DataSourceKey dataSourceKey = new DataSourceKey();
+		dataSourceKey.setMixDataName(mixedDataSourceName);
+		dataSourceKey.setRepositoryMasterAtomDsMapper(repositoryMasterAtomDsMapper);
+		dataSourceKey.setRepositorySlaveAtomDsMapper(repositorySlaveAtomDsMapper);
 
 		// create DataSource Spring Bean, if only one repository, create MasterSlaveDataSource
 		Class datasourceClazz = mixedDataSourceModel.getRepositories().size() == 1 ? MasterSlaveDataSource.class : RepositoryShardingDataSource.class;
 		BeanUtils.registryBean(mixedDataSourceName, beanDefinitionRegistry, datasourceClazz, Arrays.asList(
-				new PropertyValue("dataSourceKey", new RuntimeBeanReference(dataSourceKeyBeanName)),
+				new PropertyValue("dataSourceKey", dataSourceKey),
 				new PropertyValue("dataSources", dataSources)
 		));
 	}

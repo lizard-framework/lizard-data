@@ -2,10 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:lizard-data-orm="http://www.lizardframework.io/schema/lizard-data-orm"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.lizardframework.io/schema/lizard-data-orm http://www.lizardframework.io/schema/lizard-data-orm.xsd"
+       http://www.lizardframework.io/schema/lizard-data-orm http://www.lizardframework.io/schema/lizard-data-orm.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd"
        default-lazy-init="false">
 
 	<lizard-data-orm:mixed-datasource mixed-name="TestMixedDataSource"/>
 
+	<tx:annotation-driven/>
+
+	<bean id="TestMixedDataSourceTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="TestMixedDataSource"/>
+	</bean>
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
 </beans>
