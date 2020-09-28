@@ -9,7 +9,8 @@ import org.apache.commons.lang3.StringUtils;
  * @date 2020-09-07
  */
 public enum LoadBalanceType {
-	ROUND_ROBIN("roundRobin");
+	ROUND_ROBIN("roundRobin"),
+	RANDOM("random");
 
 	private String value;
 

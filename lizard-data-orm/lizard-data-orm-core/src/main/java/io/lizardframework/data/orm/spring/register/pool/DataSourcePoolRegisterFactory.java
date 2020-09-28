@@ -21,6 +21,9 @@ public class DataSourcePoolRegisterFactory {
 		REGISTER_MAP.put(DataSourcePoolType.HikariCP, new HikariCPDataSourcePoolRegister());
 	}
 
+	private DataSourcePoolRegisterFactory() {
+	}
+
 	/**
 	 * get DataSourcePoolRegister
 	 *

@@ -1,5 +1,6 @@
 package io.lizardframework.data.orm.spring.register;
 
+import io.lizardframework.data.enums.LoadBalanceType;
 import io.lizardframework.data.enums.MixedType;
 import io.lizardframework.data.orm.Constants;
 import io.lizardframework.data.orm.datasource.DataSourceKey;
@@ -127,15 +128,14 @@ public class MixedDataSourceBeanRegister implements Constants {
 		Map<String, RuntimeBeanReference>  dataSources                  = new ManagedMap<>();
 		Map<String, List<DataSourceMBean>> repositoryMasterAtomDsMapper = new HashMap<>();
 		Map<String, List<DataSourceMBean>> repositorySlaveAtomDsMapper  = new HashMap<>();
+		Map<String, LoadBalanceType>       repositoryLoadBalanceMapper  = new HashMap<>();
 
 		// registry atom datasource pool in spring context
-		this.registryAtomDataSource(mixedDataSourceModel, beanDefinitionRegistry, dataSources, repositoryMasterAtomDsMapper, repositorySlaveAtomDsMapper);
+		this.registryAtomDataSource(mixedDataSourceModel, beanDefinitionRegistry, dataSources, repositoryMasterAtomDsMapper,
+				repositorySlaveAtomDsMapper, repositoryLoadBalanceMapper);
 
 		// create DataSourceKey
-		DataSourceKey dataSourceKey = new DataSourceKey();
-		dataSourceKey.setMixDataName(mixedDataSourceName);
-		dataSourceKey.setRepositoryMasterAtomDsMapper(repositoryMasterAtomDsMapper);
-		dataSourceKey.setRepositorySlaveAtomDsMapper(repositorySlaveAtomDsMapper);
+		DataSourceKey dataSourceKey = new DataSourceKey(mixedDataSourceName, repositoryMasterAtomDsMapper, repositorySlaveAtomDsMapper, repositoryLoadBalanceMapper);
 
 		// create DataSource Spring Bean, if only one repository, create MasterSlaveDataSource
 		Class datasourceClazz = mixedDataSourceModel.getRepositories().size() == 1 ? MasterSlaveDataSource.class : RepositoryShardingDataSource.class;
@@ -153,12 +153,14 @@ public class MixedDataSourceBeanRegister implements Constants {
 	 * @param dataSources
 	 * @param repositoryMasterAtomDsMapper
 	 * @param repositorySlaveAtomDsMapper
+	 * @param repositoryLoadBalanceMapper
 	 */
 	private void registryAtomDataSource(MixedDataSourceModel mixedDataSourceModel,
 	                                    BeanDefinitionRegistry beanDefinitionRegistry,
 	                                    Map<String, RuntimeBeanReference> dataSources,
 	                                    Map<String, List<DataSourceMBean>> repositoryMasterAtomDsMapper,
-	                                    Map<String, List<DataSourceMBean>> repositorySlaveAtomDsMapper) {
+	                                    Map<String, List<DataSourceMBean>> repositorySlaveAtomDsMapper,
+	                                    Map<String, LoadBalanceType> repositoryLoadBalanceMapper) {
 		String mixedDataSourceName = mixedDataSourceModel.getMixedName();
 
 		// each repository create atom datasource and registry in spring context
@@ -207,6 +209,9 @@ public class MixedDataSourceBeanRegister implements Constants {
 					repositorySlaveAtomDsMapper.put(repositoryName, slaveAtomDsList);
 				}
 			}
+
+			// save repository loadbalance mapper
+			repositoryLoadBalanceMapper.put(repositoryName, repository.getLoadBalance());
 		}
 	}
 
