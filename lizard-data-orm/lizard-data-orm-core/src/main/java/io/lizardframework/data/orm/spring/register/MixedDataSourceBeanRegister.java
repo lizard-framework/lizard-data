@@ -19,10 +19,12 @@ import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import io.lizardframework.data.orm.spring.register.meta.MixedDataSourceRegisterMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
-import io.lizardframework.data.remoting.MixedConfigFetcher;
-import io.lizardframework.data.remoting.SecurityFetcher;
+import io.lizardframework.data.orm.validator.MixedDataSourceModelValidator;
+import io.lizardframework.data.remoting.impl.MixedConfigFetcher;
+import io.lizardframework.data.remoting.impl.SecurityFetcher;
 import io.lizardframework.data.utils.BeanUtils;
 import io.lizardframework.data.utils.JSONUtils;
+import io.lizardframework.data.validator.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -45,6 +47,7 @@ import java.util.*;
  */
 @Slf4j
 public class MixedDataSourceBeanRegister implements Constants {
+	private static final Validator<MixedDataSourceModel> MIXED_DATA_SOURCE_MODEL_VALIDATOR = new MixedDataSourceModelValidator();
 
 	/**
 	 * do bean registry processor
@@ -112,6 +115,7 @@ public class MixedDataSourceBeanRegister implements Constants {
 			});
 		}
 
+		MIXED_DATA_SOURCE_MODEL_VALIDATOR.validate(mixedDataSourceModel);
 		return mixedDataSourceModel;
 	}
 

@@ -1,6 +1,7 @@
-package io.lizardframework.data.remoting;
+package io.lizardframework.data.remoting.impl;
 
 import io.lizardframework.data.enums.MixedType;
+import io.lizardframework.data.remoting.Fetcher;
 import io.lizardframework.data.utils.EnvUtils;
 import io.lizardframework.data.utils.NetUtils;
 import io.lizardframework.data.utils.PropertiesUtils;

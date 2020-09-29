@@ -8,7 +8,7 @@
        default-lazy-init="false">
 
 	<lizard-data-orm:mixed-datasource mixed-name="TestMixedMSDataSource"/>
-	<lizard-data-orm:mixed-datasource mixed-name="TestMixedDataSource"/>
+	<!--<lizard-data-orm:mixed-datasource mixed-name="TestMixedDataSource"/>-->
 
 	<tx:annotation-driven/>
 

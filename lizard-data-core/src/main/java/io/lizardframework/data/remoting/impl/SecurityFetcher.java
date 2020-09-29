@@ -1,10 +1,10 @@
-package io.lizardframework.data.remoting;
+package io.lizardframework.data.remoting.impl;
 
+import io.lizardframework.data.remoting.Fetcher;
 import io.lizardframework.data.utils.NetUtils;
 import io.lizardframework.data.utils.PropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ContextedRuntimeException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +40,8 @@ public class SecurityFetcher extends Fetcher {
 		// do post request
 		String response = NetUtils.post(params, url);
 		if (StringUtils.isEmpty(response)) {
-			throw new ContextedRuntimeException("Decrypt password from url: " + url + " ,response is null");
+			log.warn("Decrypt password from url: " + url + " ,response is null. return original value.");
+			return text;
 		}
 
 		return getRespData(response);
