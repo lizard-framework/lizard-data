@@ -9,12 +9,14 @@ import io.lizardframework.data.orm.datasource.RepositoryShardingDataSource;
 import io.lizardframework.data.orm.datasource.meta.DataSourceMBean;
 import io.lizardframework.data.orm.interceptor.MasterSlaveAnnotationInterceptor;
 import io.lizardframework.data.orm.interceptor.RepositoryShardingAnnotationInterceptor;
+import io.lizardframework.data.orm.interceptor.TableShardingAnnotationInterceptor;
 import io.lizardframework.data.orm.model.AtomDataSourceModel;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
+import io.lizardframework.data.orm.plugin.MyBatisTableShardingPlugin;
 import io.lizardframework.data.orm.spring.register.beans.MixedDataBeanFactoryPostProcessor;
 import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
-import io.lizardframework.data.orm.spring.register.meta.DataSourceRegisterMBean;
+import io.lizardframework.data.orm.spring.register.meta.MixedDataSourceRegisterMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
 import io.lizardframework.data.remoting.MixedConfigFetcher;
@@ -22,15 +24,15 @@ import io.lizardframework.data.remoting.SecurityFetcher;
 import io.lizardframework.data.utils.BeanUtils;
 import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.exception.ContextedRuntimeException;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.PropertyValue;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.ManagedArray;
 import org.springframework.beans.factory.support.ManagedMap;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
@@ -47,11 +49,11 @@ public class MixedDataSourceBeanRegister implements Constants {
 	/**
 	 * do bean registry processor
 	 *
-	 * @param dataSourceRegisterMBean
+	 * @param mixedDataSourceRegisterMBean
 	 * @param beanDefinitionRegistry
 	 */
-	public void doRegistry(DataSourceRegisterMBean dataSourceRegisterMBean, BeanDefinitionRegistry beanDefinitionRegistry) throws Exception {
-		String mixedDataSourceName = dataSourceRegisterMBean.getMixedDataSourceName();
+	public void doRegistry(MixedDataSourceRegisterMBean mixedDataSourceRegisterMBean, BeanDefinitionRegistry beanDefinitionRegistry) throws Exception {
+		String mixedDataSourceName = mixedDataSourceRegisterMBean.getMixedDataSourceName();
 
 		// get mixed-data config
 		MixedDataSourceModel mixedDataSourceModel = this.fetchAndConvertModel(mixedDataSourceName);
@@ -59,16 +61,20 @@ public class MixedDataSourceBeanRegister implements Constants {
 		// registry mixed datasource bean
 		this.registryMixDataSourceBean(mixedDataSourceModel, beanDefinitionRegistry);
 
-		// registry repository sharding and master slave interceptor bean
+		// registry repository sharding interceptor
 		this.registryRepositoryShardingInterceptor(beanDefinitionRegistry);
+
+		// registry master slave interceptor
 		this.registryMasterSlaveAnnotationInterceptor(beanDefinitionRegistry);
 
-		// registry mybatis bean and table sharding plugin bean
+		// registry table sharding interceptor
+		this.registryTableShardingAnnotationInterceptor(beanDefinitionRegistry);
 
-		// register jdbcTemplate table sharding plugin bean
+		// register mybatis table sharding plugin
+		this.registryMybatisTableShardingPlugin(beanDefinitionRegistry);
 
 		// registry BeanFactoryPostPorcessor for modify bean definition
-		this.registryBeanFactoryPostProcessor(beanDefinitionRegistry, dataSourceRegisterMBean);
+		this.registryBeanFactoryPostProcessor(mixedDataSourceRegisterMBean, beanDefinitionRegistry);
 
 		// report framework version and metric info
 	}
@@ -107,25 +113,6 @@ public class MixedDataSourceBeanRegister implements Constants {
 		}
 
 		return mixedDataSourceModel;
-	}
-
-	/**
-	 * registry BeanFactoryPostProcessor for modify beanDefinition
-	 *
-	 * @param beanDefinitionRegistry
-	 * @param dataSourceRegisterMBean
-	 */
-	private void registryBeanFactoryPostProcessor(BeanDefinitionRegistry beanDefinitionRegistry, DataSourceRegisterMBean dataSourceRegisterMBean) {
-		String beanName = ClassUtils.getName(MixedDataBeanFactoryPostProcessor.class);
-		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
-			List<DataSourceRegisterMBean> dataSourceRegisterMBeanList = Arrays.asList(dataSourceRegisterMBean);
-			BeanUtils.registryBean(beanName, beanDefinitionRegistry, MixedDataBeanFactoryPostProcessor.class, Arrays.asList(
-					new PropertyValue("dataSourceRegisterMBeanList", dataSourceRegisterMBeanList)
-			));
-		} else {
-			// todo:
-
-		}
 	}
 
 	/**
@@ -233,7 +220,8 @@ public class MixedDataSourceBeanRegister implements Constants {
 	 * @param beanDefinitionRegistry
 	 */
 	private void registryRepositoryShardingInterceptor(BeanDefinitionRegistry beanDefinitionRegistry) {
-		String beanName = "RepositoryShardingAnnotationInterceptor-PointcutAdvisor";
+		String beanName = REPOSITORY_SHARDING_POINTCUT_ADVISOR_BEAN;
+
 		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
 			log.info("Creating RepositoryShardingAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
 
@@ -255,7 +243,8 @@ public class MixedDataSourceBeanRegister implements Constants {
 	 * @param beanDefinitionRegistry
 	 */
 	private void registryMasterSlaveAnnotationInterceptor(BeanDefinitionRegistry beanDefinitionRegistry) {
-		String beanName = "MasterSlaveAnnotationInterceptor-PointcutAdvisor";
+		String beanName = MASTER_SLAVE_POINTCUT_ADVISOR_BEAN;
+
 		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
 			log.info("Creating MasterSlaveAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
 
@@ -270,4 +259,65 @@ public class MixedDataSourceBeanRegister implements Constants {
 			));
 		}
 	}
+
+	/**
+	 * registry TableShardingAnnotationInterceptor
+	 *
+	 * @param beanDefinitionRegistry
+	 */
+	private void registryTableShardingAnnotationInterceptor(BeanDefinitionRegistry beanDefinitionRegistry) {
+		String beanName = TABLE_SHARDING_POINTCUT_ADVISOR_BEAN;
+
+		if (beanDefinitionRegistry.containsBeanDefinition(TABLE_SHARDING_POINTCUT_ADVISOR_BEAN)) {
+			log.info("Creating TableShardingAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
+
+			TableShardingAnnotationInterceptor interceptor = new TableShardingAnnotationInterceptor();
+			AspectJExpressionPointcut          pointcut    = new AspectJExpressionPointcut();
+			pointcut.setExpression(TABLE_SHARDING_POINTCUT_EXPRESSION);
+
+			BeanUtils.registryBean(beanName, beanDefinitionRegistry, DefaultPointcutAdvisor.class, Arrays.asList(
+					new PropertyValue("pointcut", pointcut),
+					new PropertyValue("advice", interceptor),
+					new PropertyValue("order", TABLE_SHARDING_POINTCUT_ORDER)
+			));
+		}
+	}
+
+	/**
+	 * registry MyBatisTableShardingPlugin
+	 *
+	 * @param beanDefinitionRegistry
+	 */
+	private void registryMybatisTableShardingPlugin(BeanDefinitionRegistry beanDefinitionRegistry) {
+		String beanName = MYBATIS_TABLE_SHARDING_PLUGIN_BEAN;
+
+		// mybatis class must be in classloader
+		if (ClassUtils.isPresent(MYBATIS_Param_ANNOTATION_CLASS, null)) {
+
+			if (!beanDefinitionRegistry.containsBeanDefinition(beanName))
+				BeanUtils.registryBean(beanName, beanDefinitionRegistry, MyBatisTableShardingPlugin.class);
+		}
+	}
+
+	/**
+	 * registry BeanFactoryPostProcessor for modify beanDefinition
+	 *
+	 * @param mixedDataSourceRegisterMBean
+	 * @param beanDefinitionRegistry
+	 */
+	private void registryBeanFactoryPostProcessor(MixedDataSourceRegisterMBean mixedDataSourceRegisterMBean, BeanDefinitionRegistry beanDefinitionRegistry) {
+		String beanName = MIXED_DATA_BEANFACTORY_POST_PROCESSOR_BEAN;
+		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
+			List<MixedDataSourceRegisterMBean> mixedDataSourceRegisterMBeanList = new ArrayList<>();
+			mixedDataSourceRegisterMBeanList.add(mixedDataSourceRegisterMBean);
+			BeanUtils.registryBean(beanName, beanDefinitionRegistry, MixedDataBeanFactoryPostProcessor.class, Arrays.asList(
+					new PropertyValue("mixedDataSourceRegisterMBeanList", mixedDataSourceRegisterMBeanList)
+			));
+		} else {
+			BeanDefinition                     beanDefinition                   = beanDefinitionRegistry.getBeanDefinition(beanName);
+			List<MixedDataSourceRegisterMBean> mixedDataSourceRegisterMBeanList = (List<MixedDataSourceRegisterMBean>) beanDefinition.getPropertyValues().get("mixedDataSourceRegisterMBeanList");
+			mixedDataSourceRegisterMBeanList.add(mixedDataSourceRegisterMBean);
+		}
+	}
+
 }

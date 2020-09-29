@@ -33,6 +33,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+		log.debug("Enter into RepositoryShardingAnnotationInterceptor invocation:{}", methodInvocation.toString());
 
 		// 1. 获取实际运行的方法
 		Method realMethod = MethodUtils.realMethod(methodInvocation);

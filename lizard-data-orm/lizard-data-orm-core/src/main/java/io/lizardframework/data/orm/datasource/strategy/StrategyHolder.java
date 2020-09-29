@@ -3,6 +3,7 @@ package io.lizardframework.data.orm.datasource.strategy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -15,7 +16,9 @@ import java.util.Stack;
 public class StrategyHolder {
 
 	// save thread DataSourceStrategy stack
-	private static final ThreadLocal<Stack<DataSourceStrategy>> DATASOURCE_STRATEGY_STACK = new ThreadLocal<>();
+	private static final ThreadLocal<Stack<DataSourceStrategy>>  DATASOURCE_STRATEGY_STACK     = new ThreadLocal<>();
+	// save thread Table Sharding stack
+	private static final ThreadLocal<Stack<Map<String, String>>> TABLE_SHARDING_STRATEGY_STACK = new ThreadLocal<>();
 
 	public static Stack<DataSourceStrategy> getStrategyStack() {
 		return DATASOURCE_STRATEGY_STACK.get();
@@ -67,5 +70,36 @@ public class StrategyHolder {
 		}
 
 		return stack.peek();
+	}
+
+	// ------- Table Sharding -------- //
+
+	public static Map<String, String> getTableShardingStrategy() {
+		Stack<Map<String, String>> stack = TABLE_SHARDING_STRATEGY_STACK.get();
+		if (CollectionUtils.isEmpty(stack)) {
+			return null;
+		}
+
+		return stack.peek();
+	}
+
+	public static void addTableShardingStrategy(Map<String, String> strategy) {
+		Stack<Map<String, String>> stack = TABLE_SHARDING_STRATEGY_STACK.get();
+		if (stack == null) {
+			stack = new Stack<>();
+		}
+
+		stack.push(strategy);
+		TABLE_SHARDING_STRATEGY_STACK.set(stack);
+	}
+
+	public static void removeTableShardingStrategy() {
+		Stack<Map<String, String>> stack = TABLE_SHARDING_STRATEGY_STACK.get();
+		if (CollectionUtils.isEmpty(stack)) return;
+
+		stack.pop();
+		if (CollectionUtils.isEmpty(stack)) {
+			TABLE_SHARDING_STRATEGY_STACK.remove();
+		}
 	}
 }

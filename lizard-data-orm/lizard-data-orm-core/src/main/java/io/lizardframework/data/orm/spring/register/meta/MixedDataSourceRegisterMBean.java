@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2020-09-28
  */
 @Data
-public class DataSourceRegisterMBean {
+public class MixedDataSourceRegisterMBean {
 
 	private String mixedDataSourceName;
 	private String mybatisSqlSessionFactory;

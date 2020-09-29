@@ -1,6 +1,7 @@
 package io.lizardframework.data.orm.datasource.meta;
 
 import io.lizardframework.data.enums.MasterSlaveType;
+import io.lizardframework.data.loadbalance.LbNode;
 import io.lizardframework.data.orm.model.AtomDataSourceModel;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ import lombok.Getter;
  * @date 2020-09-21
  */
 @Getter
-public class DataSourceMBean {
+public class DataSourceMBean implements LbNode {
 
 	/**
 	 * datasource bean name
@@ -40,5 +41,10 @@ public class DataSourceMBean {
 		this.atomName = atomDataSourceModel.getAtomName();
 		this.masterSlaveType = atomDataSourceModel.getMasterSlaveType();
 		this.weight = atomDataSourceModel.getWeight();
+	}
+
+	@Override
+	public int weight() {
+		return this.weight;
 	}
 }
