@@ -1,6 +1,6 @@
 package io.lizardframework.data.orm.datasource.strategy;
 
-import io.lizardframework.data.orm.enums.MasterSlaveType;
+import io.lizardframework.data.enums.MasterSlaveType;
 import lombok.Data;
 
 /**
@@ -32,5 +32,12 @@ public class DataSourceStrategy {
 		this.masterSlaveType = masterSlaveType;
 		this.repositoryShardingKey = repositoryShardingKey;
 		this.transaction = transaction;
+	}
+
+	public DataSourceStrategy(DataSourceStrategy strategy) {
+		this.masterSlaveType = strategy.masterSlaveType;
+		this.repositoryShardingKey = strategy.repositoryShardingKey;
+		this.dataSourceKey = strategy.dataSourceKey;
+		this.transaction = strategy.transaction;
 	}
 }

@@ -1,19 +1,18 @@
 package io.lizardframework.data.orm.datasource;
 
 import io.lizardframework.data.enums.LoadBalanceType;
+import io.lizardframework.data.enums.MasterSlaveType;
 import io.lizardframework.data.loadbalance.LoadBalanceAlgorithm;
 import io.lizardframework.data.loadbalance.LoadBalanceAlgorithmFactory;
 import io.lizardframework.data.orm.datasource.meta.DataSourceMBean;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
-import io.lizardframework.data.orm.enums.MasterSlaveType;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;

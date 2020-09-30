@@ -1,6 +1,6 @@
 package io.lizardframework.data.orm.annotation;
 
-import io.lizardframework.data.orm.enums.MasterSlaveType;
+import io.lizardframework.data.enums.MasterSlaveType;
 
 import java.lang.annotation.*;
 
