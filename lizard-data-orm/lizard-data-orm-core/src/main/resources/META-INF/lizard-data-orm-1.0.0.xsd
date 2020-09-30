@@ -23,6 +23,15 @@
 					</xsd:documentation>
 				</xsd:annotation>
 			</xsd:attribute>
+			<xsd:attribute name="mybatis-sqlsession-factory" type="xsd:string" use="optional">
+				<xsd:annotation>
+					<xsd:documentation>
+						<![CDATA[
+                            The Mybatis SqlSessionFactoryBean Spring Bean Name. if you don't use mybatis, needn't set value
+                        ]]>
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:attribute>
 		</xsd:complexType>
 	</xsd:element>
 </xsd:schema>

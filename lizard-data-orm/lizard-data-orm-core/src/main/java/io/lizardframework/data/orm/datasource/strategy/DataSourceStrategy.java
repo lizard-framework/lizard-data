@@ -28,6 +28,9 @@ public class DataSourceStrategy {
 	 */
 	private boolean         transaction = false;
 
+	public DataSourceStrategy() {
+	}
+
 	public DataSourceStrategy(MasterSlaveType masterSlaveType, String repositoryShardingKey, boolean transaction) {
 		this.masterSlaveType = masterSlaveType;
 		this.repositoryShardingKey = repositoryShardingKey;

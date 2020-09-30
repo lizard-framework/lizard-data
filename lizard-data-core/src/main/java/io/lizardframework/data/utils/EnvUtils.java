@@ -20,7 +20,8 @@ public class EnvUtils {
 	 * @param environment
 	 */
 	public static void initEnvironment(Environment environment) {
-		EnvUtils.environment = environment;
+		if (EnvUtils.environment == null)
+			EnvUtils.environment = environment;
 	}
 
 	/**
