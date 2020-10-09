@@ -11,7 +11,7 @@ import org.springframework.core.env.Environment;
  * @author xueqi
  * @date 2020-09-30
  */
-@Order(100) // order must be more than lizard-data and lizard-cache
+@Order(Integer.MAX_VALUE - 1) // order must be more than lizard-data and lizard-cache
 @Slf4j
 public class LizardDataFrameworkInitializer implements ApplicationContextInitializer<GenericApplicationContext> {
 

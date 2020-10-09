@@ -1,5 +1,6 @@
 package io.lizardframework.data.utils;
 
+import io.lizardframework.data.CommonConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @date 2020-09-26
  */
 @Slf4j
-public class NetUtils {
+public class NetUtils implements CommonConstants {
 
 	public static String post(Map<String, String> params, String url) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -26,7 +27,7 @@ public class NetUtils {
 		HttpPost post = new HttpPost(url);
 
 		String       requestJson  = JSONUtils.toJSONString(params);
-		StringEntity stringEntity = new StringEntity(requestJson, "UTF-8");
+		StringEntity stringEntity = new StringEntity(requestJson, UTF_8);
 		stringEntity.setContentType("application/json");
 
 		CloseableHttpResponse response = null;
@@ -41,7 +42,7 @@ public class NetUtils {
 
 			HttpEntity entity = response.getEntity();
 			if (entity != null && response.getStatusLine().getStatusCode() == 200) {
-				return EntityUtils.toString(entity, "UTF-8");
+				return EntityUtils.toString(entity, UTF_8);
 			}
 		} catch (Exception e) {
 			log.warn("Http post url:{} fail. params:{}", url, requestJson, e);

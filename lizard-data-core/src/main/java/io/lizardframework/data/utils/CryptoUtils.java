@@ -1,5 +1,6 @@
 package io.lizardframework.data.utils;
 
+import io.lizardframework.data.CommonConstants;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -19,7 +20,7 @@ public class CryptoUtils {
 	private static final String ALGORITHM            = "DESede";
 	private static final String CIPHER_ALGORITHM_ECB = "DESede/ECB/PKCS5Padding";
 	private static final String CIPHER_ALGORITHM_CBC = "DESede/CBC/PKCS5Padding";
-	private static final String CHARSET              = "utf-8";
+	private static final String CHARSET              = CommonConstants.UTF_8;
 	private static final byte[] KEYIV                = {'f', 'o', 'a', 'o', 'c', 'u', 'e', 'n'};
 
 	private static SecretKey generateKey(String password) throws Exception {

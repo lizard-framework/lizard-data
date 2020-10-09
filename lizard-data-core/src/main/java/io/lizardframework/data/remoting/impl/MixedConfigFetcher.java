@@ -1,5 +1,6 @@
 package io.lizardframework.data.remoting.impl;
 
+import io.lizardframework.data.CommonConstants;
 import io.lizardframework.data.enums.MixedType;
 import io.lizardframework.data.remoting.Fetcher;
 import io.lizardframework.data.utils.EnvUtils;
@@ -22,7 +23,7 @@ import java.util.Map;
  * @date 2020-09-26
  */
 @Slf4j
-public class MixedConfigFetcher extends Fetcher {
+public class MixedConfigFetcher extends Fetcher implements CommonConstants {
 	private static final String API_GET_MIXED_CONFIG_ORM   = "api.getMixedConfig.orm";
 	private static final String API_GET_MIXED_CONFIG_CACHE = "api.getMixedConfig.cache";
 
@@ -127,7 +128,7 @@ public class MixedConfigFetcher extends Fetcher {
 	 */
 	private void saveBakFile(String mixedName, MixedType mixedType, String data) {
 		try {
-			FileUtils.write(bakFile(mixedName, mixedType), data, Charset.forName("UTF-8"), false);
+			FileUtils.write(bakFile(mixedName, mixedType), data, Charset.forName(UTF_8), false);
 		} catch (Exception e) {
 			log.warn("Save mixed config bak file fail.", e);
 		}
@@ -142,7 +143,7 @@ public class MixedConfigFetcher extends Fetcher {
 	 */
 	private String loadBakFile(String mixedName, MixedType mixedType) {
 		try {
-			return FileUtils.readFileToString(bakFile(mixedName, mixedType), Charset.forName("UTF-8"));
+			return FileUtils.readFileToString(bakFile(mixedName, mixedType), Charset.forName(UTF_8));
 		} catch (Exception e) {
 			log.warn("Load mixed config bak file from local fail.", e);
 		}
