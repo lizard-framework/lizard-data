@@ -14,8 +14,8 @@ import io.lizardframework.data.orm.model.AtomDataSourceModel;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
 import io.lizardframework.data.orm.plugin.MyBatisTableShardingPlugin;
-import io.lizardframework.data.orm.spring.register.beans.MixedDataBeanFactoryPostProcessor;
-import io.lizardframework.data.orm.spring.register.beans.MixedDataSourceWarmupListener;
+import io.lizardframework.data.orm.spring.register.extension.MixedDataBeanFactoryPostProcessor;
+import io.lizardframework.data.orm.spring.register.extension.MixedDataSourceWarmupListener;
 import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import io.lizardframework.data.orm.spring.register.meta.MixedDataSourceRegisterMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
@@ -238,15 +238,8 @@ public class MixedDataSourceBeanRegister implements Constants {
 		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
 			log.info("Creating RepositoryShardingAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
 
-			RepositoryShardingAnnotationInterceptor interceptor = new RepositoryShardingAnnotationInterceptor();
-			AspectJExpressionPointcut               pointcut    = new AspectJExpressionPointcut();
-			pointcut.setExpression(REPOSITORY_SHARDING_POINTCUT_EXPRESSION);
-
-			BeanUtils.registryBean(beanName, beanDefinitionRegistry, DefaultPointcutAdvisor.class, Arrays.asList(
-					new PropertyValue("pointcut", pointcut),
-					new PropertyValue("advice", interceptor),
-					new PropertyValue("order", REPOSITORY_SHARDING_POINTCUT_ORDER)
-			));
+			BeanUtils.registryPointcutAdvisorBean(beanName, beanDefinitionRegistry, REPOSITORY_SHARDING_POINTCUT_EXPRESSION,
+					new RepositoryShardingAnnotationInterceptor(), REPOSITORY_SHARDING_POINTCUT_ORDER);
 		}
 	}
 
@@ -261,15 +254,8 @@ public class MixedDataSourceBeanRegister implements Constants {
 		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
 			log.info("Creating MasterSlaveAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
 
-			MasterSlaveAnnotationInterceptor interceptor = new MasterSlaveAnnotationInterceptor();
-			AspectJExpressionPointcut        pointcut    = new AspectJExpressionPointcut();
-			pointcut.setExpression(MASTERSLAVE_POINTCUT_EXPRESSION);
-
-			BeanUtils.registryBean(beanName, beanDefinitionRegistry, DefaultPointcutAdvisor.class, Arrays.asList(
-					new PropertyValue("pointcut", pointcut),
-					new PropertyValue("advice", interceptor),
-					new PropertyValue("order", MASTERSLAVE_POINTCUT_ORDER)
-			));
+			BeanUtils.registryPointcutAdvisorBean(beanName, beanDefinitionRegistry, MASTERSLAVE_POINTCUT_EXPRESSION,
+					new MasterSlaveAnnotationInterceptor(), MASTERSLAVE_POINTCUT_ORDER);
 		}
 	}
 
@@ -284,15 +270,8 @@ public class MixedDataSourceBeanRegister implements Constants {
 		if (beanDefinitionRegistry.containsBeanDefinition(TABLE_SHARDING_POINTCUT_ADVISOR_BEAN)) {
 			log.info("Creating TableShardingAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
 
-			TableShardingAnnotationInterceptor interceptor = new TableShardingAnnotationInterceptor();
-			AspectJExpressionPointcut          pointcut    = new AspectJExpressionPointcut();
-			pointcut.setExpression(TABLE_SHARDING_POINTCUT_EXPRESSION);
-
-			BeanUtils.registryBean(beanName, beanDefinitionRegistry, DefaultPointcutAdvisor.class, Arrays.asList(
-					new PropertyValue("pointcut", pointcut),
-					new PropertyValue("advice", interceptor),
-					new PropertyValue("order", TABLE_SHARDING_POINTCUT_ORDER)
-			));
+			BeanUtils.registryPointcutAdvisorBean(beanName, beanDefinitionRegistry, TABLE_SHARDING_POINTCUT_EXPRESSION,
+					new TableShardingAnnotationInterceptor(), TABLE_SHARDING_POINTCUT_ORDER);
 		}
 	}
 

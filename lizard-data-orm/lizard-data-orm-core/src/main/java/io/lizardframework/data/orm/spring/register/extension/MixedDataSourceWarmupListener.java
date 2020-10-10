@@ -1,4 +1,4 @@
-package io.lizardframework.data.orm.spring.register.beans;
+package io.lizardframework.data.orm.spring.register.extension;
 
 import io.lizardframework.data.orm.datasource.BaseRoutingDataSource;
 import io.lizardframework.data.orm.spring.register.meta.MixedDataSourceRegisterMBean;

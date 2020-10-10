@@ -1,12 +1,16 @@
 package io.lizardframework.data.utils;
 
+import org.aopalliance.intercept.MethodInterceptor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.support.BeanDefinitionDsl;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -69,5 +73,26 @@ public class BeanUtils {
 	 */
 	public static void registryBean(String beanName, BeanDefinitionRegistry beanDefinitionRegistry, Class clazz) {
 		registryBean(beanName, beanDefinitionRegistry, clazz, BeanDefinitionDsl.Scope.SINGLETON, null);
+	}
+
+	/**
+	 * registry AspectJExpressionPointcut Advisor
+	 *
+	 * @param beanName
+	 * @param beanDefinitionRegistry
+	 * @param expression
+	 * @param interceptor
+	 * @param order
+	 */
+	public static void registryPointcutAdvisorBean(String beanName, BeanDefinitionRegistry beanDefinitionRegistry,
+	                                               String expression, MethodInterceptor interceptor, int order) {
+		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+		pointcut.setExpression(expression);
+
+		registryBean(beanName, beanDefinitionRegistry, DefaultPointcutAdvisor.class, Arrays.asList(
+				new PropertyValue("pointcut", pointcut),
+				new PropertyValue("advice", interceptor),
+				new PropertyValue("order", order)
+		));
 	}
 }

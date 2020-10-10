@@ -2,8 +2,8 @@ package io.lizardframework.data.orm;
 
 import io.lizardframework.data.CommonConstants;
 import io.lizardframework.data.orm.plugin.MyBatisTableShardingPlugin;
-import io.lizardframework.data.orm.spring.register.beans.MixedDataBeanFactoryPostProcessor;
-import io.lizardframework.data.orm.spring.register.beans.MixedDataSourceWarmupListener;
+import io.lizardframework.data.orm.spring.register.extension.MixedDataBeanFactoryPostProcessor;
+import io.lizardframework.data.orm.spring.register.extension.MixedDataSourceWarmupListener;
 import org.springframework.util.ClassUtils;
 
 /**
