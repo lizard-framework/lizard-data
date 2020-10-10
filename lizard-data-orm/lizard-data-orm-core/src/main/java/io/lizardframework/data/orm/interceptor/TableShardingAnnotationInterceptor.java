@@ -55,6 +55,7 @@ public class TableShardingAnnotationInterceptor implements MethodInterceptor, Ap
 		} finally {
 			if (needClean) {
 				StrategyHolder.removeTableShardingStrategy();
+				log.debug("Table Sharding strategy has been removed.");
 			}
 		}
 

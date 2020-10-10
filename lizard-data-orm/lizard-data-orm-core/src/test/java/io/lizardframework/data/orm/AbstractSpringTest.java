@@ -15,4 +15,9 @@ public abstract class AbstractSpringTest {
 		return (T) classPathXmlApplicationContext.getBean(beanName);
 	}
 
+	protected <T> T getBean(String beanName) {
+		return getBean("applicationContext-test.xml", beanName);
+	}
+
 }
+

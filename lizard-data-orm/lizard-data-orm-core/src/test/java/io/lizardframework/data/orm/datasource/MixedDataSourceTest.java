@@ -18,10 +18,23 @@ public class MixedDataSourceTest extends AbstractSpringTest {
 
 	@Test
 	public void assertGetOneMixedDataSourceByName() throws SQLException {
-		String beanName = "TestMixedMSDataSource";
+		String beanName = "TestMixedDataSource";
 
 		DataSource dataSource = super.getBean("applicationContext-test.xml", beanName);
 
+		doQuery(dataSource);
+	}
+
+	@Test
+	public void assertGetMultipleDataSourceByName() throws SQLException {
+		DataSource ds1 = super.getBean("applicationContext-test.xml", "TestMixedDataSource");
+		doQuery(ds1);
+
+		DataSource ds2 = super.getBean("applicationContext-test.xml", "TestMixedMSDataSource");
+		doQuery(ds2);
+	}
+
+	private void doQuery(DataSource dataSource) throws SQLException {
 		Connection        connection = dataSource.getConnection();
 		PreparedStatement ps         = connection.prepareStatement("SELECT 1 FROM dual");
 		ResultSet         rs         = ps.executeQuery();
@@ -29,5 +42,4 @@ public class MixedDataSourceTest extends AbstractSpringTest {
 			Assert.assertEquals("1", rs.getString("1"));
 		}
 	}
-
 }

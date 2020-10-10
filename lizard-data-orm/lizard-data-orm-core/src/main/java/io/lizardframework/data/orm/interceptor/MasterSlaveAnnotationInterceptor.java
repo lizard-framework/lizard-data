@@ -71,6 +71,7 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 		} finally {
 			if (needClean) {
 				StrategyHolder.removeDataSourceStrategy();
+				log.debug("MasterSlave DataSource strategy has been removed.");
 			}
 		}
 	}

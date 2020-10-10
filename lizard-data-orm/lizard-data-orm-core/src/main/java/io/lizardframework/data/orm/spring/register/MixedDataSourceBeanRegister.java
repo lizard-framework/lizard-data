@@ -58,28 +58,33 @@ public class MixedDataSourceBeanRegister implements Constants {
 	public void doRegistry(MixedDataSourceRegisterMBean mixedDataSourceRegisterMBean, BeanDefinitionRegistry beanDefinitionRegistry) throws Exception {
 		String mixedDataSourceName = mixedDataSourceRegisterMBean.getMixedDataSourceName();
 
-		// get mixed-data config
-		MixedDataSourceModel mixedDataSourceModel = this.fetchAndConvertModel(mixedDataSourceName);
+		if (!beanDefinitionRegistry.containsBeanDefinition(mixedDataSourceName)) {
 
-		// registry mixed datasource bean
-		this.registryMixDataSourceBean(mixedDataSourceModel, beanDefinitionRegistry);
+			// get mixed-data config
+			MixedDataSourceModel mixedDataSourceModel = this.fetchAndConvertModel(mixedDataSourceName);
 
-		// registry repository sharding interceptor
-		this.registryRepositoryShardingInterceptor(beanDefinitionRegistry);
+			// registry mixed datasource bean
+			this.registryMixDataSourceBean(mixedDataSourceModel, beanDefinitionRegistry);
 
-		// registry master slave interceptor
-		this.registryMasterSlaveAnnotationInterceptor(beanDefinitionRegistry);
+			// registry repository sharding interceptor
+			this.registryRepositoryShardingInterceptor(beanDefinitionRegistry);
 
-		// registry table sharding interceptor
-		this.registryTableShardingAnnotationInterceptor(beanDefinitionRegistry);
+			// registry master slave interceptor
+			this.registryMasterSlaveAnnotationInterceptor(beanDefinitionRegistry);
 
-		// register mybatis table sharding plugin
-		this.registryMybatisTableShardingPlugin(beanDefinitionRegistry);
+			// registry table sharding interceptor
+			this.registryTableShardingAnnotationInterceptor(beanDefinitionRegistry);
 
-		// registry BeanFactoryPostPorcessor for modify bean definition
-		this.registryBeanFactoryPostProcessor(mixedDataSourceRegisterMBean, beanDefinitionRegistry);
+			// register mybatis table sharding plugin
+			this.registryMybatisTableShardingPlugin(beanDefinitionRegistry);
 
-		// report framework version and metric info
+			// registry BeanFactoryPostPorcessor for modify bean definition
+			this.registryBeanFactoryPostProcessor(mixedDataSourceRegisterMBean, beanDefinitionRegistry);
+
+			// report framework version and metric info
+		} else {
+			log.warn("Mixed datasource bean:{} already definition.", mixedDataSourceName);
+		}
 	}
 
 	/**

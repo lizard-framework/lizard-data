@@ -86,6 +86,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 		} finally {
 			if (needClean) {
 				StrategyHolder.removeDataSourceStrategy();
+				log.debug("Repository Sharding DataSource strategy has been removed.");
 			}
 		}
 	}
