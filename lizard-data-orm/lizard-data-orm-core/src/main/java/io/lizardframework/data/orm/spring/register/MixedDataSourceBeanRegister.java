@@ -20,6 +20,7 @@ import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import io.lizardframework.data.orm.spring.register.meta.MixedDataSourceRegisterMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
+import io.lizardframework.data.orm.support.validator.MixedDataSourceModelValidator;
 import io.lizardframework.data.remoting.impl.MixedConfigFetcher;
 import io.lizardframework.data.remoting.impl.SecurityFetcher;
 import io.lizardframework.data.utils.BeanUtils;
@@ -36,7 +37,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
-import io.lizardframework.data.orm.support.validator.MixedDataSourceModelValidator;
 
 import java.util.*;
 
