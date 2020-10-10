@@ -3,6 +3,7 @@ package io.lizardframework.data.orm;
 import io.lizardframework.data.CommonConstants;
 import io.lizardframework.data.orm.plugin.MyBatisTableShardingPlugin;
 import io.lizardframework.data.orm.spring.register.beans.MixedDataBeanFactoryPostProcessor;
+import io.lizardframework.data.orm.spring.register.beans.MixedDataSourceWarmupListener;
 import org.springframework.util.ClassUtils;
 
 /**
@@ -17,6 +18,7 @@ public interface Constants extends CommonConstants {
 	String TABLE_SHARDING_POINTCUT_ADVISOR_BEAN       = "TableShardingAnnotationInterceptor-PointcutAdvisor";
 	String MYBATIS_TABLE_SHARDING_PLUGIN_BEAN         = ClassUtils.getQualifiedName(MyBatisTableShardingPlugin.class);
 	String MIXED_DATA_BEANFACTORY_POST_PROCESSOR_BEAN = ClassUtils.getQualifiedName(MixedDataBeanFactoryPostProcessor.class);
+	String WARM_UP_DATASOURCE_LISTENER                = ClassUtils.getQualifiedName(MixedDataSourceWarmupListener.class);
 
 	// ------- spring ------ //
 	String REPOSITORY_SHARDING_POINTCUT_EXPRESSION = "@annotation(io.lizardframework.data.orm.annotation.RepositorySharding)";

@@ -15,11 +15,11 @@ import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
 import io.lizardframework.data.orm.plugin.MyBatisTableShardingPlugin;
 import io.lizardframework.data.orm.spring.register.beans.MixedDataBeanFactoryPostProcessor;
+import io.lizardframework.data.orm.spring.register.beans.MixedDataSourceWarmupListener;
 import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import io.lizardframework.data.orm.spring.register.meta.MixedDataSourceRegisterMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
-import io.lizardframework.data.orm.validator.MixedDataSourceModelValidator;
 import io.lizardframework.data.remoting.impl.MixedConfigFetcher;
 import io.lizardframework.data.remoting.impl.SecurityFetcher;
 import io.lizardframework.data.utils.BeanUtils;
@@ -36,6 +36,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
+import io.lizardframework.data.orm.support.validator.MixedDataSourceModelValidator;
 
 import java.util.*;
 
@@ -80,6 +81,9 @@ public class MixedDataSourceBeanRegister implements Constants {
 
 			// registry BeanFactoryPostPorcessor for modify bean definition
 			this.registryBeanFactoryPostProcessor(mixedDataSourceRegisterMBean, beanDefinitionRegistry);
+
+			// registry warm up datasource application listener
+			this.registryWarmupApplicationListener(mixedDataSourceRegisterMBean, beanDefinitionRegistry);
 
 			// report framework version and metric info
 		} else {
@@ -329,4 +333,24 @@ public class MixedDataSourceBeanRegister implements Constants {
 		}
 	}
 
+	/**
+	 * registry warm up datasource application listener
+	 *
+	 * @param mixedDataSourceRegisterMBean
+	 * @param beanDefinitionRegistry
+	 */
+	private void registryWarmupApplicationListener(MixedDataSourceRegisterMBean mixedDataSourceRegisterMBean, BeanDefinitionRegistry beanDefinitionRegistry) {
+		String beanName = WARM_UP_DATASOURCE_LISTENER;
+		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
+			List<MixedDataSourceRegisterMBean> mixedDataSourceRegisterMBeanList = new ArrayList<>();
+			mixedDataSourceRegisterMBeanList.add(mixedDataSourceRegisterMBean);
+			BeanUtils.registryBean(beanName, beanDefinitionRegistry, MixedDataSourceWarmupListener.class, Arrays.asList(
+					new PropertyValue("mixedDataSourceRegisterMBeanList", mixedDataSourceRegisterMBeanList)
+			));
+		} else {
+			BeanDefinition                     beanDefinition                   = beanDefinitionRegistry.getBeanDefinition(beanName);
+			List<MixedDataSourceRegisterMBean> mixedDataSourceRegisterMBeanList = (List<MixedDataSourceRegisterMBean>) beanDefinition.getPropertyValues().get("mixedDataSourceRegisterMBeanList");
+			mixedDataSourceRegisterMBeanList.add(mixedDataSourceRegisterMBean);
+		}
+	}
 }

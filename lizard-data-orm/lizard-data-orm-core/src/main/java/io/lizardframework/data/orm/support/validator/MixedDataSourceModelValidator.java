@@ -1,4 +1,4 @@
-package io.lizardframework.data.orm.validator;
+package io.lizardframework.data.orm.support.validator;
 
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.validator.Validator;
@@ -11,6 +11,6 @@ public class MixedDataSourceModelValidator implements Validator<MixedDataSourceM
 
 	@Override
 	public void validate(MixedDataSourceModel model) {
-
+		// todo:
 	}
 }
