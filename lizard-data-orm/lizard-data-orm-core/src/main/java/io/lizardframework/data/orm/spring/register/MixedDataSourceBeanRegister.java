@@ -20,23 +20,16 @@ import io.lizardframework.data.orm.spring.register.meta.DataSourcePoolMBean;
 import io.lizardframework.data.orm.spring.register.meta.MixedDataSourceRegisterMBean;
 import io.lizardframework.data.orm.spring.register.pool.DataSourcePoolRegisterFactory;
 import io.lizardframework.data.orm.spring.register.pool.IDataSourcePoolRegister;
-import io.lizardframework.data.orm.support.validator.MixedDataSourceModelValidator;
+import io.lizardframework.data.orm.support.parser.MixedDataSourceModelParser;
 import io.lizardframework.data.remoting.impl.MixedConfigFetcher;
-import io.lizardframework.data.remoting.impl.SecurityFetcher;
 import io.lizardframework.data.utils.BeanUtils;
-import io.lizardframework.data.utils.JSONUtils;
-import io.lizardframework.data.validator.Validator;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ContextedRuntimeException;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.ManagedMap;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -48,7 +41,6 @@ import java.util.*;
  */
 @Slf4j
 public class MixedDataSourceBeanRegister implements Constants {
-	private static final Validator<MixedDataSourceModel> MIXED_DATA_SOURCE_MODEL_VALIDATOR = new MixedDataSourceModelValidator();
 
 	/**
 	 * do bean registry processor
@@ -98,34 +90,8 @@ public class MixedDataSourceBeanRegister implements Constants {
 	 * @return
 	 */
 	private MixedDataSourceModel fetchAndConvertModel(String mixedDataSourceName) throws Exception {
-		String               modelJson            = MixedConfigFetcher.getInstance().getMixedConfig(mixedDataSourceName, MixedType.ORM);
-		MixedDataSourceModel mixedDataSourceModel = JSONUtils.getDefaultGson().fromJson(modelJson, MixedDataSourceModel.class);
-
-		// encode database password and username
-		if (!CollectionUtils.isEmpty(mixedDataSourceModel.getRepositories())) {
-			mixedDataSourceModel.getRepositories().forEach(repository -> {
-				List<AtomDataSourceModel> atoms = repository.getAtoms();
-				if (!CollectionUtils.isEmpty(atoms)) {
-					atoms.forEach(atom -> {
-						try {
-							atom.setUsername(
-									SecurityFetcher.getInstance().decrypt(atom.getUsername())
-							);
-							atom.setPassword(
-									SecurityFetcher.getInstance().decrypt(atom.getPassword())
-							);
-						} catch (Exception e) {
-							throw new ContextedRuntimeException("Decrypt error. mixed datasource:" + mixedDataSourceName
-									+ " ,repository:" + repository.getRepositoryName()
-									+ " , atom:" + atom.getAtomName(), e);
-						}
-					});
-				}
-			});
-		}
-
-		MIXED_DATA_SOURCE_MODEL_VALIDATOR.validate(mixedDataSourceModel);
-		return mixedDataSourceModel;
+		String modelJson = MixedConfigFetcher.getInstance().getMixedConfig(mixedDataSourceName, MixedType.ORM);
+		return MixedDataSourceModelParser.parse(mixedDataSourceName, modelJson);
 	}
 
 	/**
