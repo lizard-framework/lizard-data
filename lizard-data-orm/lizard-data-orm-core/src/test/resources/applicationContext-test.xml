@@ -8,52 +8,71 @@
        http://www.lizardframework.io/schema/lizard-data-orm http://www.lizardframework.io/schema/lizard-data-orm.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
        default-lazy-init="false">
 
-    <!-- annotation -->
-    <context:annotation-config/>
-    <context:component-scan base-package="io.lizardframework.data.orm.fixture"/>
+	<!-- annotation -->
+	<context:annotation-config/>
+	<context:component-scan base-package="io.lizardframework.data.orm.fixture"/>
 
-    <!-- open @Transactional -->
-    <tx:annotation-driven/>
+	<!-- open @Transactional -->
+	<tx:annotation-driven/>
 
-    <!-- aop -->
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
-
-
-    <!-- mixed datasource: TestMixedDataSource -->
-    <lizard-data-orm:mixed-datasource mixed-name="TestMixedDataSource"
-                                      mybatis-sqlsession-factory="TestMixedDataSourceSqlSessionFactoryBean"/>
-    <!-- transaction manager -->
-    <bean id="TestMixedDataSourceTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="TestMixedDataSource"/>
-    </bean>
-    <!-- mybatis sqlsession factory -->
-    <bean id="TestMixedDataSourceSqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="TestMixedDataSource"/>
-        <property name="mapperLocations" value="classpath*:mappers/simple/*Mapper.xml"/>
-    </bean>
-    <bean id="TestMixedDataSourceMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="io.lizardframework.data.orm.fixture.simple.repository"/>
-        <property name="sqlSessionFactoryBeanName" value="TestMixedDataSourceSqlSessionFactoryBean"/>
-        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
-    </bean>
+	<!-- aop -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
 
-    <!-- mixed datasource: TestMixedMSDataSource -->
-    <lizard-data-orm:mixed-datasource mixed-name="TestMixedMSDataSource"
-                                      mybatis-sqlsession-factory="TestMixedMSDataSourceSqlSessionFactoryBean"/>
-    <!-- transaction manager -->
-    <bean id="TestMixedMSDataSourceTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="TestMixedMSDataSource"/>
-    </bean>
-    <!-- mybatis sqlsession factory -->
-    <bean id="TestMixedMSDataSourceSqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="TestMixedMSDataSource"/>
-        <property name="mapperLocations" value="classpath*:mappers/ms/*Mapper.xml"/>
-    </bean>
-    <bean id="TestMixedMSDataSourceMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="io.lizardframework.data.orm.fixture.ms.repository"/>
-        <property name="sqlSessionFactoryBeanName" value="TestMixedMSDataSourceSqlSessionFactoryBean"/>
-        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
-    </bean>
+	<!-- mixed datasource: TestMixedDataSource -->
+	<lizard-data-orm:mixed-datasource mixed-name="TestMixedDataSource"
+	                                  mybatis-sqlsession-factory="TestMixedDataSourceSqlSessionFactoryBean"/>
+	<!-- transaction manager -->
+	<bean id="TestMixedDataSourceTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="TestMixedDataSource"/>
+	</bean>
+	<!-- mybatis sqlsession factory -->
+	<bean id="TestMixedDataSourceSqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="TestMixedDataSource"/>
+		<property name="mapperLocations" value="classpath*:mappers/simple/*Mapper.xml"/>
+	</bean>
+	<bean id="TestMixedDataSourceMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="io.lizardframework.data.orm.fixture.simple.repository"/>
+		<property name="sqlSessionFactoryBeanName" value="TestMixedDataSourceSqlSessionFactoryBean"/>
+		<property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+	</bean>
+
+
+	<!-- mixed datasource: TestMixedMSDataSource -->
+	<lizard-data-orm:mixed-datasource mixed-name="TestMixedMSDataSource"
+	                                  mybatis-sqlsession-factory="TestMixedMSDataSourceSqlSessionFactoryBean"/>
+	<!-- transaction manager -->
+	<bean id="TestMixedMSDataSourceTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="TestMixedMSDataSource"/>
+	</bean>
+	<!-- mybatis sqlsession factory -->
+	<bean id="TestMixedMSDataSourceSqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="TestMixedMSDataSource"/>
+		<property name="mapperLocations" value="classpath*:mappers/ms/*Mapper.xml"/>
+	</bean>
+	<bean id="TestMixedMSDataSourceMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="io.lizardframework.data.orm.fixture.ms.repository"/>
+		<property name="sqlSessionFactoryBeanName" value="TestMixedMSDataSourceSqlSessionFactoryBean"/>
+		<property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+	</bean>
+
+	<!-- mixed datasource: TestMixedShardingMSDataSource-->
+	<lizard-data-orm:mixed-datasource mixed-name="TestMixedShardingMSDataSource"
+	                                  mybatis-sqlsession-factory="TestMixedShardingMSDataSourceSqlSessionFactoryBean"/>
+	<!-- transaction manager -->
+	<bean id="TestMixedShardingMSDataSourceTx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="TestMixedShardingMSDataSource"/>
+	</bean>
+	<!-- mybatis sqlsession factory -->
+	<bean id="TestMixedShardingMSDataSourceSqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="TestMixedShardingMSDataSource"/>
+		<property name="mapperLocations" value="classpath*:mappers/sharding/*Mapper.xml"/>
+	</bean>
+	<bean id="TestMixedShardingMSDataSourceMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="io.lizardframework.data.orm.fixture.sharding.repository"/>
+		<property name="sqlSessionFactoryBeanName" value="TestMixedShardingMSDataSourceSqlSessionFactoryBean"/>
+		<property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+	</bean>
+
 
 </beans>
