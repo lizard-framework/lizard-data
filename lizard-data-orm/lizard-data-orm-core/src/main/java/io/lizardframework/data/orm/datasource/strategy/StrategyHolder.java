@@ -1,5 +1,6 @@
 package io.lizardframework.data.orm.datasource.strategy;
 
+import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
@@ -38,9 +39,13 @@ public class StrategyHolder {
 		Stack<DataSourceStrategy> stack = DATASOURCE_STRATEGY_STACK.get();
 		if (CollectionUtils.isEmpty(stack)) return;
 
-		stack.pop();
+		DataSourceStrategy strategy = stack.pop();
+		if (log.isDebugEnabled()) {
+			log.debug("DataSource strategy:{} has been clean from thread locak stack.", JSONUtils.toJSONString(strategy));
+		}
+
 		if (CollectionUtils.isEmpty(stack)) {
-			log.debug("Remove datasource key from thread local.");
+			log.debug("Datasource strategy stack has been clean from thread local.");
 			DATASOURCE_STRATEGY_STACK.remove();
 		}
 	}

@@ -18,7 +18,7 @@ public class HintDataSourceManager implements HintSupport<DataSourceStrategy> {
 
 	@Override
 	public void addStrategy(DataSourceStrategy strategy) {
-		log.debug("Hint add datasource strategy:{}", JSONUtils.toJSONString(strategy));
+		log.debug("Adding hint datasource strategy:{}", JSONUtils.toJSONString(strategy));
 		StrategyHolder.addDataSourceStrategy(strategy);
 	}
 

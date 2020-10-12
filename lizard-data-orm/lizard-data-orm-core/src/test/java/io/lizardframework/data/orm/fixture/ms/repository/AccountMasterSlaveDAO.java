@@ -16,4 +16,6 @@ public interface AccountMasterSlaveDAO {
 	int updateByPrimaryKeySelective(AccountMasterSlaveEntity record);
 
 	int updateByPrimaryKey(AccountMasterSlaveEntity record);
+
+	AccountMasterSlaveEntity selectOne(String accountNo);
 }

@@ -101,21 +101,6 @@ public class DataSourceKey {
 		return dataSourceKey;
 	}
 
-	/**
-	 * get repository sharding key
-	 *
-	 * @return
-	 */
-	public String getRepositoryShardingKey() {
-		Stack<DataSourceStrategy> stack = StrategyHolder.getStrategyStack();
-		if (CollectionUtils.isEmpty(stack)) {
-			return null;
-		}
-
-		DataSourceStrategy strategy = stack.peek();
-		return strategy.getRepositoryShardingKey();
-	}
-
 	// --------//
 
 	/**
@@ -165,7 +150,11 @@ public class DataSourceKey {
 
 		LoadBalanceType      loadBalanceType = this.repositoryLoadBalanceMapper.get(shardingKey);
 		LoadBalanceAlgorithm algorithm       = LoadBalanceAlgorithmFactory.getAlgorithm(loadBalanceType);
-		return algorithm.selector(shardingKey, slaveList);
+
+		DataSourceMBean dataSourceMBean = algorithm.selector(shardingKey, slaveList);
+
+		log.debug("Select master/slave datasource: {}, load_balance:{}", dataSourceMBean, loadBalanceType);
+		return dataSourceMBean;
 	}
 
 	/**

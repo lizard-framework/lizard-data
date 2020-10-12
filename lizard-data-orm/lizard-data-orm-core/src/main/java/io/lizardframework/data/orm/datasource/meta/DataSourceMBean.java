@@ -47,4 +47,15 @@ public class DataSourceMBean implements LbNode {
 	public int weight() {
 		return this.weight;
 	}
+
+	@Override
+	public String toString() {
+		return "DataSourceMBean{" +
+				"beanName='" + beanName + '\'' +
+				", repositoryName='" + repositoryName + '\'' +
+				", atomName='" + atomName + '\'' +
+				", masterSlaveType=" + masterSlaveType +
+				", weight=" + weight +
+				'}';
+	}
 }
