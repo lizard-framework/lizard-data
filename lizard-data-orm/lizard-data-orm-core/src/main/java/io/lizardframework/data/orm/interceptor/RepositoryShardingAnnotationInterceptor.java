@@ -51,11 +51,11 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 
 			// 如果当前线程中没有DataSourceStrategy，表示第一次进入到@RepositorySharding注解的方法
 			if (dataSourceStrategy == null) {
-				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null");
 
 				dataSourceStrategy = new DataSourceStrategy(null,
 						getShardingkey(rsAnno, methodInvocation, realMethod),
 						txAnno != null);
+				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null. {}", dataSourceStrategy);
 
 				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
@@ -65,12 +65,12 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 						(Propagation.REQUIRES_NEW.equals(txAnno.propagation())
 								|| Propagation.NOT_SUPPORTED.equals(txAnno.propagation()))
 				) {
-					log.debug("Adding new datasource strategy, because transaction propagation is: {}", txAnno.propagation());
 
 					// @RepositorySharding只负责分库，不负责读写
 					DataSourceStrategy newStrategy = new DataSourceStrategy(null,
 							getShardingkey(rsAnno, methodInvocation, realMethod),
 							true);
+					log.debug("Adding new datasource strategy, because transaction propagation is: {}. {}", txAnno.propagation(), newStrategy);
 
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
@@ -78,12 +78,12 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 
 				// 当前线程已经在一个事务中，即使标注@RepositorySharding注解，也不再切换分库数据源
 			} else {
-				log.debug("Adding new new datasource strategy, because no run in transaction");
 
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
 				DataSourceStrategy newStrategy = new DataSourceStrategy(null,
 						getShardingkey(rsAnno, methodInvocation, realMethod),
 						txAnno != null);
+				log.debug("Adding new new datasource strategy, because no run in transaction. {}", newStrategy);
 
 				StrategyHolder.addDataSourceStrategy(newStrategy);
 				needClean = true;

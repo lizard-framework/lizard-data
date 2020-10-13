@@ -31,45 +31,45 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="io.lizardframework.data.orm.fixture.sharding.repository.entity.TransactionEntity">
-    insert into $[t_transaction]
+    insert into $[t_transaction]$
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <if test="record.id != null">
         id,
       </if>
-      <if test="orderNo != null">
+      <if test="record.orderNo != null">
         order_no,
       </if>
-      <if test="txNo != null">
+      <if test="record.txNo != null">
         tx_no,
       </if>
-      <if test="amount != null">
+      <if test="record.amount != null">
         amount,
       </if>
-      <if test="createTime != null">
+      <if test="record.createTime != null">
         create_time,
       </if>
-      <if test="updateTime != null">
+      <if test="record.updateTime != null">
         update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
+      <if test="record.id != null">
+        #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="orderNo != null">
-        #{orderNo,jdbcType=VARCHAR},
+      <if test="record.orderNo != null">
+        #{record.orderNo,jdbcType=VARCHAR},
       </if>
-      <if test="txNo != null">
-        #{txNo,jdbcType=VARCHAR},
+      <if test="record.txNo != null">
+        #{record.txNo,jdbcType=VARCHAR},
       </if>
-      <if test="amount != null">
-        #{amount,jdbcType=DECIMAL},
+      <if test="record.amount != null">
+        #{record.amount,jdbcType=DECIMAL},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="record.createTime != null">
+        #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="record.updateTime != null">
+        #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>

@@ -3,6 +3,7 @@ package io.lizardframework.data.orm.interceptor;
 import io.lizardframework.data.orm.Constants;
 import io.lizardframework.data.orm.annotation.TableSharding;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
+import io.lizardframework.data.utils.JSONUtils;
 import io.lizardframework.data.utils.MethodUtils;
 import io.lizardframework.data.utils.SpELUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +38,8 @@ public class TableShardingAnnotationInterceptor implements MethodInterceptor, Ap
 
 	@Override
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		log.debug("Enter into TableShardingAnnotationInterceptor invocation:{}", methodInvocation.toString());
+		String invocationInfo = "[" + methodInvocation.toString() + "]";
+		log.debug("Enter into TableShardingAnnotationInterceptor invocation:{}", invocationInfo);
 
 		boolean needClean = false;
 		try {
@@ -48,14 +50,18 @@ public class TableShardingAnnotationInterceptor implements MethodInterceptor, Ap
 
 			// calc table sharding strategy
 			Map<String, String> strategy = getTableShardingStrategy(tsAnno, methodInvocation, realMethod);
+			if (log.isDebugEnabled()) {
+				log.debug("Adding new table sharding strategy. {}", JSONUtils.toJSONString(strategy));
+			}
+
 			StrategyHolder.addTableShardingStrategy(strategy);
 			needClean = true;
 
 			return methodInvocation.proceed();
 		} finally {
 			if (needClean) {
+				log.debug("Cleaning table sharding strategy. invocationInfo:{}", invocationInfo);
 				StrategyHolder.removeTableShardingStrategy();
-				log.debug("Table Sharding strategy has been removed.");
 			}
 		}
 

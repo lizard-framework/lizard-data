@@ -3,9 +3,12 @@ package io.lizardframework.data.orm.fixture.sharding;
 import io.lizardframework.data.orm.AbstractSpringTest;
 import io.lizardframework.data.orm.fixture.sharding.repository.entity.OrderEntity;
 import io.lizardframework.data.orm.fixture.sharding.service.OrderShardingService;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author xueqi
@@ -18,6 +21,7 @@ public class OrderShardingServiceTest extends AbstractSpringTest {
 		OrderShardingService service = super.getBean("OrderShardingService");
 
 		OrderEntity order = new OrderEntity();
+		order.setTxDate(DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS"));
 		order.setAmount(BigDecimal.TEN);
 		order.setAccountNo("AC1602490506081");
 

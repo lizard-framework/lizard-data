@@ -26,9 +26,9 @@ import java.util.Stack;
 @Slf4j
 @AllArgsConstructor
 public class DataSourceKey {
-	// 数据源所属的mix-data名称
+	// 数据源所属的MixedDataSource名称
 	@Setter
-	private String                             mixDataName;
+	private String                             mixedDataSourceName;
 	// repository与写数据源Bean-Name列表映射,每个group必须有且仅有一个有效的写数据源
 	@Setter
 	private Map<String, List<DataSourceMBean>> repositoryMasterAtomDsMapper;
@@ -57,7 +57,7 @@ public class DataSourceKey {
 
 			dataSourceKey = strategy.getDataSourceKey();
 			if (!StringUtils.isEmpty(dataSourceKey)) {
-				log.debug("Mix-Data:{} get datasource key from threadlocal stack head:{}", mixDataName, dataSourceKey);
+				log.debug("MixedDataSource:{} get datasource key from threadlocal stack head:{}", mixedDataSourceName, dataSourceKey);
 				return dataSourceKey;
 			}
 		}
@@ -78,10 +78,12 @@ public class DataSourceKey {
 			// strategy的创建在拦截器中完成，如果strategy为null，直接返回dataSourceKey
 			if (strategy != null) {
 				// 从当前栈顶获取的策略，将datasource key写入
+				log.debug("Setting datasource key:[{}] to {}", dataSourceKey, strategy);
+
 				strategy.setDataSourceKey(dataSourceKey);
 			}
 
-			log.debug("Mix-Data:{} sharding key is null. Single repository read/write datasource key:{}", mixDataName, dataSourceKey);
+			log.debug("MixedDataSource:{} sharding key is null. Single repository read/write datasource key:{}", mixedDataSourceName, dataSourceKey);
 			return dataSourceKey;
 		}
 
@@ -91,13 +93,15 @@ public class DataSourceKey {
 			dataSourceKey = this.selectorMasterDataSource(shardingKey).getBeanName();
 
 			// 针对readWriteType==null的情况，即只有@RepositorySharding注解，默认ReadWriteType.WRITE，并写入到strategy中
+			log.debug("Setting master/slave type:[{}] to {}", MasterSlaveType.MASTER, strategy);
+
 			strategy.setMasterSlaveType(MasterSlaveType.MASTER);
 		} else {
 			dataSourceKey = this.selectorSlaveDataSource(shardingKey).getBeanName();
 		}
 		strategy.setDataSourceKey(dataSourceKey);
 
-		log.debug("Mix-Data:{} sharding key is not empty. Sharding repository and read/write datasource key:{}", mixDataName, dataSourceKey);
+		log.debug("MixedDataSource:{} sharding key is not empty. Sharding repository and read/write datasource key:{}", mixedDataSourceName, dataSourceKey);
 		return dataSourceKey;
 	}
 

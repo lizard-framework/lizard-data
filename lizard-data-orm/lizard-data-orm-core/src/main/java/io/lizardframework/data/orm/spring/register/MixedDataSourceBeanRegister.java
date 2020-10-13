@@ -204,8 +204,10 @@ public class MixedDataSourceBeanRegister implements Constants {
 		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
 			log.info("Creating RepositoryShardingAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
 
+			BeanUtils.registryBean(REPOSITORY_SHARDING_INTERCEPTOR_BEAN, beanDefinitionRegistry, RepositoryShardingAnnotationInterceptor.class);
+
 			BeanUtils.registryPointcutAdvisorBean(beanName, beanDefinitionRegistry, REPOSITORY_SHARDING_POINTCUT_EXPRESSION,
-					new RepositoryShardingAnnotationInterceptor(), REPOSITORY_SHARDING_POINTCUT_ORDER);
+					new RuntimeBeanReference(REPOSITORY_SHARDING_INTERCEPTOR_BEAN), REPOSITORY_SHARDING_POINTCUT_ORDER);
 		}
 	}
 
@@ -220,8 +222,10 @@ public class MixedDataSourceBeanRegister implements Constants {
 		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
 			log.info("Creating MasterSlaveAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
 
+			BeanUtils.registryBean(MASTER_SLAVE_INTERCEPTOR_BEAN, beanDefinitionRegistry, MasterSlaveAnnotationInterceptor.class);
+
 			BeanUtils.registryPointcutAdvisorBean(beanName, beanDefinitionRegistry, MASTERSLAVE_POINTCUT_EXPRESSION,
-					new MasterSlaveAnnotationInterceptor(), MASTERSLAVE_POINTCUT_ORDER);
+					new RuntimeBeanReference(MASTER_SLAVE_INTERCEPTOR_BEAN), MASTERSLAVE_POINTCUT_ORDER);
 		}
 	}
 
@@ -233,11 +237,13 @@ public class MixedDataSourceBeanRegister implements Constants {
 	private void registryTableShardingAnnotationInterceptor(BeanDefinitionRegistry beanDefinitionRegistry) {
 		String beanName = TABLE_SHARDING_POINTCUT_ADVISOR_BEAN;
 
-		if (beanDefinitionRegistry.containsBeanDefinition(TABLE_SHARDING_POINTCUT_ADVISOR_BEAN)) {
+		if (!beanDefinitionRegistry.containsBeanDefinition(beanName)) {
 			log.info("Creating TableShardingAnnotationInterceptor PointcutAdvisor bean definition, bean name:{}", beanName);
 
+			BeanUtils.registryBean(TABLE_SHARDING_INTERCEPTOR_BEAN, beanDefinitionRegistry, TableShardingAnnotationInterceptor.class);
+
 			BeanUtils.registryPointcutAdvisorBean(beanName, beanDefinitionRegistry, TABLE_SHARDING_POINTCUT_EXPRESSION,
-					new TableShardingAnnotationInterceptor(), TABLE_SHARDING_POINTCUT_ORDER);
+					new RuntimeBeanReference(TABLE_SHARDING_INTERCEPTOR_BEAN), TABLE_SHARDING_POINTCUT_ORDER);
 		}
 	}
 

@@ -103,8 +103,8 @@ public class AccountMasterSlaveServiceImpl implements AccountMasterSlaveService,
 	}
 
 	@Override
-	@Transactional(value = "TestMixedMSDataSourceTx")
-	//@Transactional(value = "TestMixedMSDataSourceTx", propagation = Propagation.REQUIRES_NEW)
+	//@Transactional(value = "TestMixedMSDataSourceTx")
+	@Transactional(value = "TestMixedMSDataSourceTx", propagation = Propagation.REQUIRES_NEW)
 	@MasterSlave(type = MasterSlaveType.SLAVE)
 	public AccountMasterSlaveEntity selectOneByTxAndSlave(String accountNo) {
 		return accountMasterSlaveDAO.selectOne(accountNo);

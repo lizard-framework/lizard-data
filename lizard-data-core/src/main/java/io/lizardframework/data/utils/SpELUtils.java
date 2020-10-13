@@ -43,7 +43,7 @@ public class SpELUtils {
 			}
 		}
 
-		return expressionParser.parseExpression(expression).getValue();
+		return expressionParser.parseExpression(expression).getValue(context);
 	}
 
 }

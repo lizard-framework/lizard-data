@@ -11,7 +11,7 @@ public interface OrderDAO {
 
 	int insert(OrderEntity record);
 
-	@TableSharding(strategy = "T(io.lizardframework.data.orm.fixture.sharding.strategy.OrderTableShardingStrategy.strategy(#record.orderNo))")
+	@TableSharding(strategy = "T(io.lizardframework.data.orm.fixture.sharding.strategy.OrderTableShardingStrategy).strategy(#record.orderNo)")
 	int insertSelective(@Param("record") OrderEntity record);
 
 	OrderEntity selectByPrimaryKey(Long id);

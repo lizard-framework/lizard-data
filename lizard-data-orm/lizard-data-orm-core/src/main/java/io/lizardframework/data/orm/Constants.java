@@ -1,6 +1,9 @@
 package io.lizardframework.data.orm;
 
 import io.lizardframework.data.CommonConstants;
+import io.lizardframework.data.orm.interceptor.MasterSlaveAnnotationInterceptor;
+import io.lizardframework.data.orm.interceptor.RepositoryShardingAnnotationInterceptor;
+import io.lizardframework.data.orm.interceptor.TableShardingAnnotationInterceptor;
 import io.lizardframework.data.orm.plugin.MyBatisTableShardingPlugin;
 import io.lizardframework.data.orm.spring.register.extension.MixedDataBeanFactoryPostProcessor;
 import io.lizardframework.data.orm.spring.register.extension.MixedDataSourceWarmupListener;
@@ -13,9 +16,14 @@ import org.springframework.util.ClassUtils;
 public interface Constants extends CommonConstants {
 
 	// ------- bean name ------- //
-	String MASTER_SLAVE_POINTCUT_ADVISOR_BEAN         = "MasterSlaveAnnotationInterceptor-PointcutAdvisor";
-	String REPOSITORY_SHARDING_POINTCUT_ADVISOR_BEAN  = "RepositoryShardingAnnotationInterceptor-PointcutAdvisor";
-	String TABLE_SHARDING_POINTCUT_ADVISOR_BEAN       = "TableShardingAnnotationInterceptor-PointcutAdvisor";
+	String MASTER_SLAVE_POINTCUT_ADVISOR_BEAN        = "MasterSlaveAnnotationInterceptor-PointcutAdvisor";
+	String REPOSITORY_SHARDING_POINTCUT_ADVISOR_BEAN = "RepositoryShardingAnnotationInterceptor-PointcutAdvisor";
+	String TABLE_SHARDING_POINTCUT_ADVISOR_BEAN      = "TableShardingAnnotationInterceptor-PointcutAdvisor";
+
+	String MASTER_SLAVE_INTERCEPTOR_BEAN        = ClassUtils.getQualifiedName(MasterSlaveAnnotationInterceptor.class);
+	String REPOSITORY_SHARDING_INTERCEPTOR_BEAN = ClassUtils.getQualifiedName(RepositoryShardingAnnotationInterceptor.class);
+	String TABLE_SHARDING_INTERCEPTOR_BEAN      = ClassUtils.getQualifiedName(TableShardingAnnotationInterceptor.class);
+
 	String MYBATIS_TABLE_SHARDING_PLUGIN_BEAN         = ClassUtils.getQualifiedName(MyBatisTableShardingPlugin.class);
 	String MIXED_DATA_BEANFACTORY_POST_PROCESSOR_BEAN = ClassUtils.getQualifiedName(MixedDataBeanFactoryPostProcessor.class);
 	String WARM_UP_DATASOURCE_LISTENER                = ClassUtils.getQualifiedName(MixedDataSourceWarmupListener.class);

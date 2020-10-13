@@ -40,9 +40,7 @@ public class StrategyHolder {
 		if (CollectionUtils.isEmpty(stack)) return;
 
 		DataSourceStrategy strategy = stack.pop();
-		if (log.isDebugEnabled()) {
-			log.debug("DataSource strategy:{} has been clean from thread locak stack.", JSONUtils.toJSONString(strategy));
-		}
+		log.debug("DataSource strategy:[{}] has been clean from thread locak stack.", strategy);
 
 		if (CollectionUtils.isEmpty(stack)) {
 			log.debug("Datasource strategy stack has been clean from thread local.");
@@ -102,8 +100,13 @@ public class StrategyHolder {
 		Stack<Map<String, String>> stack = TABLE_SHARDING_STRATEGY_STACK.get();
 		if (CollectionUtils.isEmpty(stack)) return;
 
-		stack.pop();
+		Map<String, String> strategy = stack.pop();
+		if (log.isDebugEnabled())
+			log.debug("TableSharding strategy:[{}] has been clean from thread locak stack.", JSONUtils.toJSONString(strategy));
+
 		if (CollectionUtils.isEmpty(stack)) {
+			log.debug("TableSharding strategy stack has been clean from thread local.");
+
 			TABLE_SHARDING_STRATEGY_STACK.remove();
 		}
 	}

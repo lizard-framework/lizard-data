@@ -28,7 +28,7 @@ public class OrderShardingServiceImpl implements OrderShardingService {
 	private TransactionDAO transactionDAO;
 
 	@Override
-	@RepositorySharding(strategy = "#orderRepositoryShardingStrategy.strategy(#order.accountNo)")
+	@RepositorySharding(strategy = "@orderRepositoryShardingStrategy.strategy(#order.accountNo)")
 	public void saveOrderAndTx(OrderEntity order) {
 		Date date = new Date();
 

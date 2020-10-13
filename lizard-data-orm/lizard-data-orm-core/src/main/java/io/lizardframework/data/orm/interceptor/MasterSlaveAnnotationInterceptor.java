@@ -42,9 +42,9 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 
 			// 如果当前线程中没有DataSourceStrategy，表示第一次进入@ReadWrite注解的方法
 			if (dataSourceStrategy == null) {
-				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null");
-
 				dataSourceStrategy = new DataSourceStrategy(masterSlave.type(), null, txAnno != null);
+				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null. {}", dataSourceStrategy);
+
 				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
 			} else if (StrategyHolder.hasTransactional()) {
@@ -53,26 +53,29 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 						(Propagation.REQUIRES_NEW.equals(txAnno.propagation())
 								|| Propagation.NOT_SUPPORTED.equals(txAnno.propagation()))
 				) {
-					log.debug("Adding new datasource strategy, because transaction propagation is: {}", txAnno.propagation());
 
 					// @ReadWrite只负责切换读写数据源，新的DataSourceStrategy不从上一个策略中获取分库key
 					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), null, true);
+					log.debug("Adding new datasource strategy, because transaction propagation is: {}. {}", txAnno.propagation(), newStrategy);
+
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
 				} else if (dataSourceStrategy.getMasterSlaveType() == null) {
-					log.debug("Adding new datasource strategy, because currenct transaction assign master/slave type");
 
 					// hasTransactional()==true可能是RepositorySharding拦截器设置的，此时需要判断dataSourceStrategy中的rw type是否存在，如果不存在则添加新的DataSourceStrategy
 					// @Transactional @RepositorySharding @MasterSlave 注解在一起
 					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), dataSourceStrategy.getRepositoryShardingKey(), true);
+					log.debug("Adding new datasource strategy, because currenct transaction assign master/slave type. {}", newStrategy);
+
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
 				}
 			} else {
-				log.debug("Adding new new datasource strategy, because no run in transaction");
 
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
 				DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), dataSourceStrategy.getRepositoryShardingKey(), txAnno != null);
+				log.debug("Adding new new datasource strategy, because no run in transaction. {}", dataSourceStrategy);
+
 				StrategyHolder.addDataSourceStrategy(newStrategy);
 				needClean = true;
 			}

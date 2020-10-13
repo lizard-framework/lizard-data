@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.PropertyValue;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.support.BeanDefinitionDsl;
@@ -85,7 +86,7 @@ public class BeanUtils {
 	 * @param order
 	 */
 	public static void registryPointcutAdvisorBean(String beanName, BeanDefinitionRegistry beanDefinitionRegistry,
-	                                               String expression, MethodInterceptor interceptor, int order) {
+	                                               String expression, RuntimeBeanReference interceptor, int order) {
 		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
 		pointcut.setExpression(expression);
 
