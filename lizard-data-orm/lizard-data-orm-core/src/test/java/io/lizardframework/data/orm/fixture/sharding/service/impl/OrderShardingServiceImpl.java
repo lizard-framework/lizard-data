@@ -1,5 +1,6 @@
 package io.lizardframework.data.orm.fixture.sharding.service.impl;
 
+import io.lizardframework.data.enums.MasterSlaveType;
 import io.lizardframework.data.orm.annotation.RepositorySharding;
 import io.lizardframework.data.orm.fixture.sharding.repository.OrderDAO;
 import io.lizardframework.data.orm.fixture.sharding.repository.TransactionDAO;
@@ -7,10 +8,12 @@ import io.lizardframework.data.orm.fixture.sharding.repository.entity.OrderEntit
 import io.lizardframework.data.orm.fixture.sharding.repository.entity.TransactionEntity;
 import io.lizardframework.data.orm.fixture.sharding.service.OrderShardingService;
 import io.lizardframework.data.orm.fixture.sharding.strategy.OrderTableShardingStrategy;
+import io.lizardframework.data.orm.hint.impl.HintDataSourceManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -49,5 +52,24 @@ public class OrderShardingServiceImpl implements OrderShardingService {
 		transaction.setCreateTime(date);
 		transaction.setUpdateTime(date);
 		transactionDAO.insertSelective(transaction);
+	}
+
+	@Override
+	@RepositorySharding(strategy = "@orderRepositoryShardingStrategy.strategy(#order.accountNo)")
+	@Transactional(value = "TestMixedShardingMSDataSourceTx")
+	public void saveOrderAndTxWithTransaction(OrderEntity order) {
+		this.saveOrderAndTx(order);
+	}
+
+	@Override
+	public void saveOrderAndTxWithRepositoryHint(OrderEntity order) {
+		HintDataSourceManager hint = HintDataSourceManager.getInstance();
+		try {
+			hint.forceRepositorySharding("db_sharding_01", MasterSlaveType.MASTER);
+
+			this.saveOrderAndTx(order);
+		} finally {
+			hint.clear();
+		}
 	}
 }

@@ -15,7 +15,7 @@ public class MasterSlaveDataSource extends BaseRoutingDataSource {
 	protected Object determineCurrentLookupKey() {
 		String dskey = super.dataSourceKey.getDataSourceKey();
 		if (log.isDebugEnabled()) {
-			log.debug("Select read/write atom datasource key is : {}", dskey);
+			log.debug("Select read/write atom datasource key is : '{}'", dskey);
 		}
 
 		return dskey;

@@ -1,7 +1,6 @@
 package io.lizardframework.data.orm.interceptor;
 
 import io.lizardframework.data.orm.annotation.RepositorySharding;
-import io.lizardframework.data.orm.datasource.DataSourceKey;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
 import io.lizardframework.data.utils.MethodUtils;
@@ -32,16 +31,16 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 	private ParameterNameDiscoverer paraNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
 
 	@Override
-	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		String invocationInfo = "[" + methodInvocation.toString() + "]";
-		log.debug("Enter into RepositoryShardingAnnotationInterceptor invocation:{}", invocationInfo);
+	public Object invoke(MethodInvocation invocation) throws Throwable {
+		String invocationInfo = invocation.toString();
+		log.debug("Enter into RepositoryShardingAnnotationInterceptor, invocation: '{}'", invocationInfo);
 
 		// 1. 获取实际运行的方法
-		Method realMethod = MethodUtils.realMethod(methodInvocation);
+		Method realMethod = MethodUtils.realMethod(invocation);
 
 		// 2. 获取@RepositorySharding和@Transactional注解
-		RepositorySharding rsAnno = MethodUtils.getAnnotation(realMethod, methodInvocation, RepositorySharding.class);
-		Transactional      txAnno = MethodUtils.getAnnotation(realMethod, methodInvocation, Transactional.class);
+		RepositorySharding rsAnno = MethodUtils.getAnnotation(realMethod, invocation, RepositorySharding.class);
+		Transactional      txAnno = MethodUtils.getAnnotation(realMethod, invocation, Transactional.class);
 
 		// 是否需要清理DataSourceStrategy标志位
 		boolean needClean = false;
@@ -53,9 +52,9 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 			if (dataSourceStrategy == null) {
 
 				dataSourceStrategy = new DataSourceStrategy(null,
-						getShardingkey(rsAnno, methodInvocation, realMethod),
+						getShardingkey(rsAnno, invocation, realMethod),
 						txAnno != null);
-				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null. {}", dataSourceStrategy);
+				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null. strategy: '{}'", dataSourceStrategy);
 
 				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
@@ -68,9 +67,9 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 
 					// @RepositorySharding只负责分库，不负责读写
 					DataSourceStrategy newStrategy = new DataSourceStrategy(null,
-							getShardingkey(rsAnno, methodInvocation, realMethod),
+							getShardingkey(rsAnno, invocation, realMethod),
 							true);
-					log.debug("Adding new datasource strategy, because transaction propagation is: {}. {}", txAnno.propagation(), newStrategy);
+					log.debug("Adding new datasource strategy, because transaction propagation is: '{}'. strategy: '{}'", txAnno.propagation(), newStrategy);
 
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
@@ -81,18 +80,18 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
 				DataSourceStrategy newStrategy = new DataSourceStrategy(null,
-						getShardingkey(rsAnno, methodInvocation, realMethod),
+						getShardingkey(rsAnno, invocation, realMethod),
 						txAnno != null);
-				log.debug("Adding new new datasource strategy, because no run in transaction. {}", newStrategy);
+				log.debug("Adding new new datasource strategy, because no run in transaction. strategy: '{}'", newStrategy);
 
 				StrategyHolder.addDataSourceStrategy(newStrategy);
 				needClean = true;
 			}
 
-			return methodInvocation.proceed();
+			return invocation.proceed();
 		} finally {
 			if (needClean) {
-				log.debug("Cleaning Repository Sharding DataSource strategy. invocationInfo:{}", methodInvocation);
+				log.debug("Cleaning Repository Sharding DataSource strategy, invocation: '{}'", invocation);
 				StrategyHolder.removeDataSourceStrategy();
 			}
 		}

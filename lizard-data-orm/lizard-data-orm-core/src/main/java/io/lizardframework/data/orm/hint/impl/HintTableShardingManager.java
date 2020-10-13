@@ -18,7 +18,10 @@ public class HintTableShardingManager implements HintSupport<Map<String, String>
 
 	@Override
 	public void addStrategy(Map<String, String> strategy) {
-		log.debug("Hint add table sharding strategy:{}", JSONUtils.toJSONString(strategy));
+		if (log.isDebugEnabled()) {
+			log.debug("Adding hint table sharding strategy: '{}'", JSONUtils.toJSONString(strategy));
+		}
+
 		StrategyHolder.addTableShardingStrategy(strategy);
 	}
 

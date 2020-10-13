@@ -15,7 +15,7 @@ public class RepositoryShardingDataSource extends BaseRoutingDataSource {
 	protected Object determineCurrentLookupKey() {
 		String shardingkey = super.dataSourceKey.getDataSourceKey();
 		if (log.isDebugEnabled()) {
-			log.debug("Select respository datasource key is : {}", shardingkey);
+			log.debug("Select respository datasource key is : '{}'", shardingkey);
 		}
 
 		return shardingkey;

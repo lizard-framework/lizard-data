@@ -18,7 +18,7 @@ public class HintDataSourceManager implements HintSupport<DataSourceStrategy> {
 
 	@Override
 	public void addStrategy(DataSourceStrategy strategy) {
-		log.debug("Adding hint datasource strategy:{}", JSONUtils.toJSONString(strategy));
+		log.debug("Adding hint datasource strategy: '{}'", strategy);
 		StrategyHolder.addDataSourceStrategy(strategy);
 	}
 
@@ -59,6 +59,7 @@ public class HintDataSourceManager implements HintSupport<DataSourceStrategy> {
 
 		DataSourceStrategy currenctStrategy = StrategyHolder.getDataSourceStrategy();
 		if (currenctStrategy == null) {
+			strategy = new DataSourceStrategy();
 			strategy.setRepositoryShardingKey(shardingKey);
 		} else if (currenctStrategy.isTransaction()) {
 			strategy = new DataSourceStrategy(currenctStrategy);
@@ -81,6 +82,7 @@ public class HintDataSourceManager implements HintSupport<DataSourceStrategy> {
 
 		DataSourceStrategy currenctStrategy = StrategyHolder.getDataSourceStrategy();
 		if (currenctStrategy == null) {
+			strategy = new DataSourceStrategy();
 			strategy.setMasterSlaveType(type);
 			strategy.setRepositoryShardingKey(shardingKey);
 		} else if (currenctStrategy.isTransaction()) {

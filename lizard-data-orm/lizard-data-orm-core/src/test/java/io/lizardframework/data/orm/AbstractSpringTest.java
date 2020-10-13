@@ -1,5 +1,6 @@
 package io.lizardframework.data.orm;
 
+import org.junit.After;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -7,10 +8,10 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @date 2020-10-09
  */
 public abstract class AbstractSpringTest {
+	private ClassPathXmlApplicationContext classPathXmlApplicationContext;
 
 	protected <T> T getBean(String xml, String beanName) {
-		ClassPathXmlApplicationContext classPathXmlApplicationContext
-				= new ClassPathXmlApplicationContext("classpath:" + xml);
+		classPathXmlApplicationContext = new ClassPathXmlApplicationContext("classpath:" + xml);
 
 		return (T) classPathXmlApplicationContext.getBean(beanName);
 	}
@@ -19,5 +20,11 @@ public abstract class AbstractSpringTest {
 		return getBean("applicationContext-test.xml", beanName);
 	}
 
+	@After
+	public void after() {
+		if (classPathXmlApplicationContext != null) {
+			classPathXmlApplicationContext.close();
+		}
+	}
 }
 

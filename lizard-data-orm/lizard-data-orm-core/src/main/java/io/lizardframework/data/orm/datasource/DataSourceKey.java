@@ -57,7 +57,7 @@ public class DataSourceKey {
 
 			dataSourceKey = strategy.getDataSourceKey();
 			if (!StringUtils.isEmpty(dataSourceKey)) {
-				log.debug("MixedDataSource:{} get datasource key from threadlocal stack head:{}", mixedDataSourceName, dataSourceKey);
+				log.debug("MixedDataSource: '{}' get datasource key from threadlocal stack head: '{}'", mixedDataSourceName, dataSourceKey);
 				return dataSourceKey;
 			}
 		}
@@ -78,12 +78,12 @@ public class DataSourceKey {
 			// strategy的创建在拦截器中完成，如果strategy为null，直接返回dataSourceKey
 			if (strategy != null) {
 				// 从当前栈顶获取的策略，将datasource key写入
-				log.debug("Setting datasource key:[{}] to {}", dataSourceKey, strategy);
-
 				strategy.setDataSourceKey(dataSourceKey);
+				log.debug("MixedDataSource: '{}' sharding key is null, use strategy: '{}'", mixedDataSourceName, strategy);
+			} else {
+				log.debug("MixedDataSource: '{}' sharding key is null, non strategy, datasource key: '{}'", mixedDataSourceName, dataSourceKey);
 			}
 
-			log.debug("MixedDataSource:{} sharding key is null. Single repository read/write datasource key:{}", mixedDataSourceName, dataSourceKey);
 			return dataSourceKey;
 		}
 
@@ -93,7 +93,7 @@ public class DataSourceKey {
 			dataSourceKey = this.selectorMasterDataSource(shardingKey).getBeanName();
 
 			// 针对readWriteType==null的情况，即只有@RepositorySharding注解，默认ReadWriteType.WRITE，并写入到strategy中
-			log.debug("Setting master/slave type:[{}] to {}", MasterSlaveType.MASTER, strategy);
+			log.debug("MixedDataSource: '{}' sharding key exist, setting master/slave type:'{}' to '{}'", mixedDataSourceName, MasterSlaveType.MASTER, strategy);
 
 			strategy.setMasterSlaveType(MasterSlaveType.MASTER);
 		} else {
@@ -101,7 +101,7 @@ public class DataSourceKey {
 		}
 		strategy.setDataSourceKey(dataSourceKey);
 
-		log.debug("MixedDataSource:{} sharding key is not empty. Sharding repository and read/write datasource key:{}", mixedDataSourceName, dataSourceKey);
+		log.debug("MixedDataSource: '{}' sharding key exist, use strategy: '{}'", mixedDataSourceName, dataSourceKey);
 		return dataSourceKey;
 	}
 
@@ -121,7 +121,9 @@ public class DataSourceKey {
 			throw new IllegalArgumentException("master datasource list is empty. repository: " + shardingKey);
 		}
 
-		return masterList.get(0);
+		DataSourceMBean dataSourceMBean = masterList.get(0);
+		log.debug("MixedDataSource: '{}' select master datasource: '{}'", mixedDataSourceName, dataSourceMBean);
+		return dataSourceMBean;
 	}
 
 	/**
@@ -157,7 +159,7 @@ public class DataSourceKey {
 
 		DataSourceMBean dataSourceMBean = algorithm.selector(shardingKey, slaveList);
 
-		log.debug("Select master/slave datasource: {}, load_balance:{}", dataSourceMBean, loadBalanceType);
+		log.debug("MixedDataSource: '{}' select slave datasource: '{}', load_balance: '{}'", mixedDataSourceName, dataSourceMBean, loadBalanceType);
 		return dataSourceMBean;
 	}
 

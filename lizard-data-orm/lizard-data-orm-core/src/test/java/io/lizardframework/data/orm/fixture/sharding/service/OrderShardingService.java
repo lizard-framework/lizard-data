@@ -15,4 +15,17 @@ public interface OrderShardingService {
 	 */
 	void saveOrderAndTx(OrderEntity order);
 
+	/**
+	 * save order and tx with transaction
+	 *
+	 * @param order
+	 */
+	void saveOrderAndTxWithTransaction(OrderEntity order);
+
+	/**
+	 * save order and tx with hint and non transactional
+	 *
+	 * @param order
+	 */
+	void saveOrderAndTxWithRepositoryHint(OrderEntity order);
 }

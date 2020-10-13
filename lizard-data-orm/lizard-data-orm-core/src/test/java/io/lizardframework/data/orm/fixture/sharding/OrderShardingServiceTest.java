@@ -4,7 +4,6 @@ import io.lizardframework.data.orm.AbstractSpringTest;
 import io.lizardframework.data.orm.fixture.sharding.repository.entity.OrderEntity;
 import io.lizardframework.data.orm.fixture.sharding.service.OrderShardingService;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -23,9 +22,32 @@ public class OrderShardingServiceTest extends AbstractSpringTest {
 		OrderEntity order = new OrderEntity();
 		order.setTxDate(DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS"));
 		order.setAmount(BigDecimal.TEN);
-		order.setAccountNo("AC1602490506081");
+		order.setAccountNo("AC1602490505857");
 
 		service.saveOrderAndTx(order);
 	}
 
+	@Test
+	public void saveOrderAndTxWithTransactionTest() {
+		OrderShardingService service = super.getBean("OrderShardingService");
+
+		OrderEntity order = new OrderEntity();
+		order.setTxDate(DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS"));
+		order.setAmount(BigDecimal.TEN);
+		order.setAccountNo("AC1602490505857");
+
+		service.saveOrderAndTxWithTransaction(order);
+	}
+
+	@Test
+	public void saveOrderAndTxWithRepositoryHintTest() {
+		OrderShardingService service = super.getBean("OrderShardingService");
+
+		OrderEntity order = new OrderEntity();
+		order.setTxDate(DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS"));
+		order.setAmount(BigDecimal.TEN);
+		order.setAccountNo("AC1602490505857");
+
+		service.saveOrderAndTxWithRepositoryHint(order);
+	}
 }

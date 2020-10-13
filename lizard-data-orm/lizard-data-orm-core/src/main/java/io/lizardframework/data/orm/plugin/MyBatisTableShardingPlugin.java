@@ -24,14 +24,14 @@ public class MyBatisTableShardingPlugin implements Interceptor {
 
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {
-		log.debug("Enter into MyBatisTableShardingPlugin, invocation:{}", invocation.toString());
+		log.debug("Enter into MyBatisTableShardingPlugin, invocation: '{}'", invocation.toString());
 
 		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
 		String           originalSql      = SQLConvert.trim(statementHandler.getBoundSql().getSql());
-		log.debug("Original sql:{}", originalSql);
+		log.debug("Original sql: {}", originalSql);
 
 		String targetSql = SQLConvert.convertTableshardingSQL(originalSql);
-		log.debug("Converted sql:{}", targetSql);
+		log.debug("Converted sql: {}", targetSql);
 
 		if (!StringUtils.equals(originalSql, targetSql)) {
 			Field field = BoundSql.class.getDeclaredField("sql");

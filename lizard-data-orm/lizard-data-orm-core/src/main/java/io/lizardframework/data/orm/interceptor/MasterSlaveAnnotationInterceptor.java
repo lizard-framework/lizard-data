@@ -24,8 +24,8 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		String invocationInfo = "[" + invocation.toString() + "]";
-		log.debug("Enter into ReadWriteAnnotationInterceptor: {}", invocationInfo);
+		String invocationInfo = invocation.toString();
+		log.debug("Enter into ReadWriteAnnotationInterceptor, invocation: '{}'", invocationInfo);
 
 		// 获取实际运行的Method
 		Method realMethod = MethodUtils.realMethod(invocation);
@@ -43,7 +43,7 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 			// 如果当前线程中没有DataSourceStrategy，表示第一次进入@ReadWrite注解的方法
 			if (dataSourceStrategy == null) {
 				dataSourceStrategy = new DataSourceStrategy(masterSlave.type(), null, txAnno != null);
-				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null. {}", dataSourceStrategy);
+				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null. strategy: '{}'", dataSourceStrategy);
 
 				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
@@ -56,7 +56,7 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 
 					// @ReadWrite只负责切换读写数据源，新的DataSourceStrategy不从上一个策略中获取分库key
 					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), null, true);
-					log.debug("Adding new datasource strategy, because transaction propagation is: {}. {}", txAnno.propagation(), newStrategy);
+					log.debug("Adding new datasource strategy, because transaction propagation is: '{}'. strategy: '{}'", txAnno.propagation(), newStrategy);
 
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
@@ -65,7 +65,7 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 					// hasTransactional()==true可能是RepositorySharding拦截器设置的，此时需要判断dataSourceStrategy中的rw type是否存在，如果不存在则添加新的DataSourceStrategy
 					// @Transactional @RepositorySharding @MasterSlave 注解在一起
 					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), dataSourceStrategy.getRepositoryShardingKey(), true);
-					log.debug("Adding new datasource strategy, because currenct transaction assign master/slave type. {}", newStrategy);
+					log.debug("Adding new datasource strategy, because currenct transaction assign master/slave type. strategy: '{}'", newStrategy);
 
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
@@ -74,7 +74,7 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
 				DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), dataSourceStrategy.getRepositoryShardingKey(), txAnno != null);
-				log.debug("Adding new new datasource strategy, because no run in transaction. {}", dataSourceStrategy);
+				log.debug("Adding new new datasource strategy, because no run in transaction. strategy: '{}'", dataSourceStrategy);
 
 				StrategyHolder.addDataSourceStrategy(newStrategy);
 				needClean = true;
@@ -83,7 +83,7 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 			return invocation.proceed();
 		} finally {
 			if (needClean) {
-				log.debug("Cleaning MasterSlave DataSource strategy. invocationInfo:{}", invocationInfo);
+				log.debug("Cleaning MasterSlave DataSource strategy, invocation: '{}'", invocationInfo);
 				StrategyHolder.removeDataSourceStrategy();
 			}
 		}

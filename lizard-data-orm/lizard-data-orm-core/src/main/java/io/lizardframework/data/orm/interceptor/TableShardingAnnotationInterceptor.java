@@ -37,30 +37,30 @@ public class TableShardingAnnotationInterceptor implements MethodInterceptor, Ap
 	private ParameterNameDiscoverer paraNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
 
 	@Override
-	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		String invocationInfo = "[" + methodInvocation.toString() + "]";
-		log.debug("Enter into TableShardingAnnotationInterceptor invocation:{}", invocationInfo);
+	public Object invoke(MethodInvocation invocation) throws Throwable {
+		String invocationInfo = invocation.toString();
+		log.debug("Enter into TableShardingAnnotationInterceptor, invocation: '{}'", invocationInfo);
 
 		boolean needClean = false;
 		try {
 			// get real run method
-			Method realMethod = MethodUtils.realMethod(methodInvocation);
+			Method realMethod = MethodUtils.realMethod(invocation);
 
-			TableSharding tsAnno = MethodUtils.getAnnotation(realMethod, methodInvocation, TableSharding.class);
+			TableSharding tsAnno = MethodUtils.getAnnotation(realMethod, invocation, TableSharding.class);
 
 			// calc table sharding strategy
-			Map<String, String> strategy = getTableShardingStrategy(tsAnno, methodInvocation, realMethod);
+			Map<String, String> strategy = getTableShardingStrategy(tsAnno, invocation, realMethod);
 			if (log.isDebugEnabled()) {
-				log.debug("Adding new table sharding strategy. {}", JSONUtils.toJSONString(strategy));
+				log.debug("Adding new table sharding strategy. strategy: '{}'", JSONUtils.toJSONString(strategy));
 			}
 
 			StrategyHolder.addTableShardingStrategy(strategy);
 			needClean = true;
 
-			return methodInvocation.proceed();
+			return invocation.proceed();
 		} finally {
 			if (needClean) {
-				log.debug("Cleaning table sharding strategy. invocationInfo:{}", invocationInfo);
+				log.debug("Cleaning table sharding strategy, invocation: '{}'", invocationInfo);
 				StrategyHolder.removeTableShardingStrategy();
 			}
 		}
