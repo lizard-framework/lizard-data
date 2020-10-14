@@ -60,11 +60,8 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
 				needClean = true;
 			} else if (dataSourceStrategy.isTransaction()) {
-				// 当前线程已经运行在一个事务中,需要根据@Transactional注解判断是否开启新事务(REQUIRES_NEW or NOT_SUPPORTED),开启新事务需要添加新的DataSourceStrategy
-				if (txAnno != null &&
-						(Propagation.REQUIRES_NEW.equals(txAnno.propagation())
-								|| Propagation.NOT_SUPPORTED.equals(txAnno.propagation()))
-				) {
+				// 当前线程已经运行在一个事务中,需要根据@Transactional注解判断是否允许切换连接,添加新的DataSourceStrategy
+				if (TransactionalUtil.allowChangeConnection(txAnno)) {
 
 					// @RepositorySharding只负责分库，不负责读写
 					DataSourceStrategy newStrategy = new DataSourceStrategy(null,
@@ -83,7 +80,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关
 				DataSourceStrategy newStrategy = new DataSourceStrategy(null,
 						getShardingkey(rsAnno, invocation, realMethod),
-						txAnno != null);
+						TransactionalUtil.hasTx(txAnno, false));
 				log.debug("Adding new new datasource strategy, because no run in transaction. strategy: '{}'", newStrategy);
 
 				StrategyHolder.addDataSourceStrategy(newStrategy);

@@ -35,4 +35,13 @@ public class TransactionalUtil {
 		return true;
 	}
 
+	public static boolean allowChangeConnection(Transactional transactional) {
+		if (transactional == null) return true;
+
+		Propagation propagation = transactional.propagation();
+		if (Propagation.NOT_SUPPORTED.equals(propagation) || Propagation.REQUIRES_NEW.equals(propagation))
+			return true;
+
+		return false;
+	}
 }

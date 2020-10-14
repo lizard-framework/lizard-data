@@ -63,7 +63,7 @@ public class OrderShardingServiceImpl implements OrderShardingService, Applicati
 
 	@Override
 	@RepositorySharding(strategy = "@orderRepositoryShardingStrategy.strategy(#order.accountNo)")
-	@Transactional(value = "TestMixedShardingMSDataSourceTx")
+	@Transactional(value = "TestMixedShardingMSDataSourceTx", propagation = Propagation.REQUIRES_NEW)
 	@MasterSlave(type = MasterSlaveType.MASTER)
 	public void saveOrderAndTxWithTransaction(OrderEntity order) {
 		this.saveOrderAndTx(order);
@@ -83,12 +83,11 @@ public class OrderShardingServiceImpl implements OrderShardingService, Applicati
 
 	@Override
 	@RepositorySharding(strategy = "@orderRepositoryShardingStrategy.strategy(#order.accountNo)")
-	@Transactional(value = "TestMixedShardingMSDataSourceTx",propagation = Propagation.NOT_SUPPORTED)
+	@Transactional(value = "TestMixedShardingMSDataSourceTx")
 	public void saveOrderAndTxWithNestTransaction(OrderEntity order) {
 		this.saveOrderAndTx(order);
 
 		OrderShardingService orderShardingService = (OrderShardingService) this.applicationContext.getBean("OrderShardingService");
-		//order.setAccountNo("0908764567898767");
 		orderShardingService.saveOrderAndTxWithTransaction(order);
 	}
 
