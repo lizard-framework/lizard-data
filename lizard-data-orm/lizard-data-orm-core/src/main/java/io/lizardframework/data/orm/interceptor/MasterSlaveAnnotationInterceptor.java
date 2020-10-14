@@ -54,8 +54,8 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 								|| Propagation.NOT_SUPPORTED.equals(txAnno.propagation()))
 				) {
 
-					// @ReadWrite只负责切换读写数据源，新的DataSourceStrategy不从上一个策略中获取分库key
-					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), null, true);
+					// @ReadWrite只负责切换读写数据源，新的DataSourceStrategy从上一个策略中获取分库key(如果是分库场景，到这一步必须确认sharding_key，不论是从外层方法指定，还是当前方法指定)
+					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), dataSourceStrategy.getRepositoryShardingKey(), true);
 					log.debug("Adding new datasource strategy, because transaction propagation is: '{}'. strategy: '{}'", txAnno.propagation(), newStrategy);
 
 					StrategyHolder.addDataSourceStrategy(newStrategy);
@@ -63,9 +63,9 @@ public class MasterSlaveAnnotationInterceptor implements MethodInterceptor {
 				} else if (dataSourceStrategy.getMasterSlaveType() == null) {
 
 					// hasTransactional()==true可能是RepositorySharding拦截器设置的，此时需要判断dataSourceStrategy中的rw type是否存在，如果不存在则添加新的DataSourceStrategy
-					// @Transactional @RepositorySharding @MasterSlave 注解在一起
+					// @Transactional @RepositorySharding @MasterSlave 注解在一起的场景
 					DataSourceStrategy newStrategy = new DataSourceStrategy(masterSlave.type(), dataSourceStrategy.getRepositoryShardingKey(), true);
-					log.debug("Adding new datasource strategy, because currenct transaction assign master/slave type. strategy: '{}'", newStrategy);
+					log.debug("Adding new datasource strategy, because currenct transaction has assigned master/slave type. strategy: '{}'", newStrategy);
 
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;

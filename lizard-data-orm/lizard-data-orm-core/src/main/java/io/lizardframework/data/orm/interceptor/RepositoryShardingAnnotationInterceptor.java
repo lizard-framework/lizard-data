@@ -3,6 +3,7 @@ package io.lizardframework.data.orm.interceptor;
 import io.lizardframework.data.orm.annotation.RepositorySharding;
 import io.lizardframework.data.orm.datasource.strategy.DataSourceStrategy;
 import io.lizardframework.data.orm.datasource.strategy.StrategyHolder;
+import io.lizardframework.data.orm.support.utils.TransactionalUtil;
 import io.lizardframework.data.utils.MethodUtils;
 import io.lizardframework.data.utils.SpELUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,7 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 
 				dataSourceStrategy = new DataSourceStrategy(null,
 						getShardingkey(rsAnno, invocation, realMethod),
-						txAnno != null);
+						TransactionalUtil.hasTx(txAnno, false));
 				log.debug("Adding new datasource strategy, because currenct thread datasource strategy stack is null. strategy: '{}'", dataSourceStrategy);
 
 				StrategyHolder.addDataSourceStrategy(dataSourceStrategy);
@@ -68,14 +69,15 @@ public class RepositoryShardingAnnotationInterceptor implements MethodIntercepto
 					// @RepositorySharding只负责分库，不负责读写
 					DataSourceStrategy newStrategy = new DataSourceStrategy(null,
 							getShardingkey(rsAnno, invocation, realMethod),
-							true);
+							TransactionalUtil.hasTx(txAnno, true));
 					log.debug("Adding new datasource strategy, because transaction propagation is: '{}'. strategy: '{}'", txAnno.propagation(), newStrategy);
 
 					StrategyHolder.addDataSourceStrategy(newStrategy);
 					needClean = true;
+				} else {
+					// 当前线程已经在一个事务中，即使标注@RepositorySharding注解，也不再切换分库数据源
+					log.debug("Needn't add new datasource strategy, because current transaction has assigned strategy: '{}'", dataSourceStrategy);
 				}
-
-				// 当前线程已经在一个事务中，即使标注@RepositorySharding注解，也不再切换分库数据源
 			} else {
 
 				// 当前线程没有运行在事务中，需要添加一个新的DataSourceStrategy,是否有事务与@Transactional注解有关

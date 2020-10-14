@@ -50,4 +50,16 @@ public class OrderShardingServiceTest extends AbstractSpringTest {
 
 		service.saveOrderAndTxWithRepositoryHint(order);
 	}
+
+	@Test
+	public void saveOrderAndTxWithNestTransactionTest() {
+		OrderShardingService service = super.getBean("OrderShardingService");
+
+		OrderEntity order = new OrderEntity();
+		order.setTxDate(DateFormatUtils.format(new Date(), "yyyyMMddHHmmssSSS"));
+		order.setAmount(BigDecimal.TEN);
+		order.setAccountNo("AC1602490505851");
+
+		service.saveOrderAndTxWithNestTransaction(order);
+	}
 }

@@ -28,4 +28,11 @@ public interface OrderShardingService {
 	 * @param order
 	 */
 	void saveOrderAndTxWithRepositoryHint(OrderEntity order);
+
+	/**
+	 * save order and tx with nest transaction
+	 * @param order
+	 */
+	void saveOrderAndTxWithNestTransaction(OrderEntity order);
+
 }

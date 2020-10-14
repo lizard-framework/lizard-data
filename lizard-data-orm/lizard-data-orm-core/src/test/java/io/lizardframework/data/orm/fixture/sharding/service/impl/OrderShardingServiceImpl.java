@@ -1,6 +1,7 @@
 package io.lizardframework.data.orm.fixture.sharding.service.impl;
 
 import io.lizardframework.data.enums.MasterSlaveType;
+import io.lizardframework.data.orm.annotation.MasterSlave;
 import io.lizardframework.data.orm.annotation.RepositorySharding;
 import io.lizardframework.data.orm.fixture.sharding.repository.OrderDAO;
 import io.lizardframework.data.orm.fixture.sharding.repository.TransactionDAO;
@@ -11,8 +12,12 @@ import io.lizardframework.data.orm.fixture.sharding.strategy.OrderTableShardingS
 import io.lizardframework.data.orm.hint.impl.HintDataSourceManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -23,7 +28,9 @@ import java.util.Date;
  */
 @Service("OrderShardingService")
 @Slf4j
-public class OrderShardingServiceImpl implements OrderShardingService {
+public class OrderShardingServiceImpl implements OrderShardingService, ApplicationContextAware {
+
+	private ApplicationContext applicationContext;
 
 	@Autowired
 	private OrderDAO       orderDAO;
@@ -57,6 +64,7 @@ public class OrderShardingServiceImpl implements OrderShardingService {
 	@Override
 	@RepositorySharding(strategy = "@orderRepositoryShardingStrategy.strategy(#order.accountNo)")
 	@Transactional(value = "TestMixedShardingMSDataSourceTx")
+	@MasterSlave(type = MasterSlaveType.MASTER)
 	public void saveOrderAndTxWithTransaction(OrderEntity order) {
 		this.saveOrderAndTx(order);
 	}
@@ -71,5 +79,21 @@ public class OrderShardingServiceImpl implements OrderShardingService {
 		} finally {
 			hint.clear();
 		}
+	}
+
+	@Override
+	@RepositorySharding(strategy = "@orderRepositoryShardingStrategy.strategy(#order.accountNo)")
+	@Transactional(value = "TestMixedShardingMSDataSourceTx",propagation = Propagation.NOT_SUPPORTED)
+	public void saveOrderAndTxWithNestTransaction(OrderEntity order) {
+		this.saveOrderAndTx(order);
+
+		OrderShardingService orderShardingService = (OrderShardingService) this.applicationContext.getBean("OrderShardingService");
+		//order.setAccountNo("0908764567898767");
+		orderShardingService.saveOrderAndTxWithTransaction(order);
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }

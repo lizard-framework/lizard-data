@@ -93,15 +93,13 @@ public class DataSourceKey {
 			dataSourceKey = this.selectorMasterDataSource(shardingKey).getBeanName();
 
 			// 针对readWriteType==null的情况，即只有@RepositorySharding注解，默认ReadWriteType.WRITE，并写入到strategy中
-			log.debug("MixedDataSource: '{}' sharding key exist, setting master/slave type:'{}' to '{}'", mixedDataSourceName, MasterSlaveType.MASTER, strategy);
-
 			strategy.setMasterSlaveType(MasterSlaveType.MASTER);
 		} else {
 			dataSourceKey = this.selectorSlaveDataSource(shardingKey).getBeanName();
 		}
 		strategy.setDataSourceKey(dataSourceKey);
 
-		log.debug("MixedDataSource: '{}' sharding key exist, use strategy: '{}'", mixedDataSourceName, dataSourceKey);
+		log.debug("MixedDataSource: '{}' sharding key exist, use strategy: '{}'", mixedDataSourceName, strategy);
 		return dataSourceKey;
 	}
 
