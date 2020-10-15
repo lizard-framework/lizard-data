@@ -14,7 +14,16 @@ spring:
     hikari:
       maximum-pool-size: 20
       minimum-idle: 3
-
+  freemarker:
+    template-loader-path: classpath:/templates
+    cache: false
+    charset: utf-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    request-context-attribute: request
+    suffix: .ftl
 
 
 crypto:
