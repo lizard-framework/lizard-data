@@ -44,4 +44,8 @@ public interface Constants extends CommonConstants {
 	// ------- config key ------- //
 	String MIXED_DATA_NAMES_KEY                           = "lizard.data.orm.mixed.names";
 	String MIXED_DATA_mybatisSqlSessionFactory_KEY_FORMAT = "lizard.data.orm.%s.mybatisSqlSessionFactory";
+
+	// ------- spring customer label attribute name ------- //
+	String ATTRIBUTE_MIXED_NAME                     = "mixed-name";
+	String ATTRIBUTE_MYBATIS_SQLSESSIONFACTORY_BEAN = "mybatis-sqlsession-factory";
 }

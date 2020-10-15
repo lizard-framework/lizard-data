@@ -8,8 +8,12 @@ import lombok.Data;
  */
 @Data
 public class MixedDataSourceRegisterMBean {
-
+	/**
+	 * mixed datasource name
+	 */
 	private String mixedDataSourceName;
+	/**
+	 * mybatis sqlsessionfactorybean name
+	 */
 	private String mybatisSqlSessionFactory;
-
 }

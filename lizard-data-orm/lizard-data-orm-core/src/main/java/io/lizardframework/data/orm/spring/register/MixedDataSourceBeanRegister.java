@@ -54,7 +54,7 @@ public class MixedDataSourceBeanRegister implements Constants {
 		if (!beanDefinitionRegistry.containsBeanDefinition(mixedDataSourceName)) {
 
 			// get mixed-data config
-			MixedDataSourceModel mixedDataSourceModel = this.fetchAndConvertModel(mixedDataSourceName);
+			MixedDataSourceModel mixedDataSourceModel = this.fetchAndConvertModel(mixedDataSourceRegisterMBean);
 
 			// registry mixed datasource bean
 			this.registryMixDataSourceBean(mixedDataSourceModel, beanDefinitionRegistry);
@@ -86,12 +86,11 @@ public class MixedDataSourceBeanRegister implements Constants {
 	/**
 	 * fetch mixed-data-source config and convert to MixedDataSourceModel model
 	 *
-	 * @param mixedDataSourceName
+	 * @param mixedDataSourceRegisterMBean
 	 * @return
 	 */
-	private MixedDataSourceModel fetchAndConvertModel(String mixedDataSourceName) throws Exception {
-		String modelJson = MixedConfigFetcher.getInstance().getMixedConfig(mixedDataSourceName, MixedType.ORM);
-		return MixedDataSourceModelParser.parse(mixedDataSourceName, modelJson);
+	private MixedDataSourceModel fetchAndConvertModel(MixedDataSourceRegisterMBean mixedDataSourceRegisterMBean) throws Exception {
+		return MixedDataSourceModelParser.parse(mixedDataSourceRegisterMBean);
 	}
 
 	/**

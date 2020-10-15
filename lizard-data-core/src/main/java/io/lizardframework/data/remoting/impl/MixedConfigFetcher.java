@@ -114,8 +114,7 @@ public class MixedConfigFetcher extends Fetcher implements CommonConstants {
 	 * @return
 	 */
 	private File bakFile(String mixedName, MixedType mixedType) {
-		String usrHome = SystemUtils.getUserHome().getAbsolutePath();
-		String path    = usrHome + "/lizard-data/conf/" + mixedType + "/" + mixedName + ".bak";
+		String path = LOCAL_BAK_FILE_PATH + mixedType + "/" + mixedName + LOCAL_BAK_FILE_EXT;
 		return new File(path);
 	}
 

@@ -1,5 +1,6 @@
 package io.lizardframework.data.orm.spring.xml;
 
+import io.lizardframework.data.orm.Constants;
 import io.lizardframework.data.orm.spring.register.MixedDataSourceBeanRegister;
 import io.lizardframework.data.orm.spring.register.meta.MixedDataSourceRegisterMBean;
 import io.lizardframework.data.spring.AbstractXMLBeanDefinitionParser;
@@ -16,7 +17,7 @@ import org.w3c.dom.Element;
  * @date 2020-09-22
  */
 @Slf4j
-public class MixedDataSourceBeanDefinitionParser extends AbstractXMLBeanDefinitionParser {
+public class MixedDataSourceBeanDefinitionParser extends AbstractXMLBeanDefinitionParser implements Constants {
 
 	private static final MixedDataSourceBeanRegister MIXED_DATA_SOURCE_BEAN_REGISTER = new MixedDataSourceBeanRegister();
 
@@ -25,13 +26,13 @@ public class MixedDataSourceBeanDefinitionParser extends AbstractXMLBeanDefiniti
 		try {
 			BeanDefinitionRegistry beanDefinitionRegistry = parserContext.getRegistry();
 			// get mixed-datasource name
-			String mixedName = element.getAttribute("mixed-name");
+			String mixedName = element.getAttribute(ATTRIBUTE_MIXED_NAME);
 			if (StringUtils.isNotEmpty(mixedName)) {
 				MixedDataSourceRegisterMBean mixedDataSourceRegisterMBean = new MixedDataSourceRegisterMBean();
 				mixedDataSourceRegisterMBean.setMixedDataSourceName(mixedName);
 
 				// get mybatis-sqlsession-factory name
-				String mybatisSqlsessionFactory = element.getAttribute("mybatis-sqlsession-factory");
+				String mybatisSqlsessionFactory = element.getAttribute(ATTRIBUTE_MYBATIS_SQLSESSIONFACTORY_BEAN);
 				if (StringUtils.isNotEmpty(mybatisSqlsessionFactory)) {
 					mixedDataSourceRegisterMBean.setMybatisSqlSessionFactory(mybatisSqlsessionFactory);
 				}
