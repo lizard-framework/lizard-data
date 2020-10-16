@@ -5,11 +5,14 @@
 
     <!-- base css -->
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="dist/css/ionicons.min.css"/>
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="/dist/css/ionicons.min.css"/>
+    <!-- jsGrid -->
+    <link rel="stylesheet" href="/plugins/jsgrid/jsgrid.min.css">
+    <link rel="stylesheet" href="/plugins/jsgrid/jsgrid-theme.min.css">
+    <!-- Theme style-->
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 </#macro>
 
 <#macro navbar>
@@ -144,7 +147,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="/" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png"
+            <img src="/dist/img/AdminLTELogo.png"
                  alt="AdminLTE Logo"
                  class="brand-image img-circle elevation-3"
                  style="opacity: .8">
@@ -239,9 +242,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
+                                <a href="/resources/databases" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>数据库资源</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="../UI/general.html" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>General</p>
+                                    <p>缓存资源</p>
                                 </a>
                             </li>
                         </ul>
@@ -273,11 +282,15 @@
 
 <#macro jsfile>
     <!-- jQuery -->
-    <script src="plugins/jquery/jquery.min.js"></script>
+    <script src="/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- jsGrid -->
+    <script src="/plugins/jsgrid/jsgrid.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="dist/js/adminlte.min.js"></script>
+    <script src="/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="dist/js/demo.js"></script>
+    <script src="/dist/js/demo.js"></script>
+    <!-- api js -->
+    <script src="/dist/js/api.js"></script>
 </#macro>

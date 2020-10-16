@@ -24,6 +24,8 @@ spring:
     expose-session-attributes: false
     request-context-attribute: request
     suffix: .ftl
+    settings:
+      template_update_delay: 0
 
 
 crypto:
