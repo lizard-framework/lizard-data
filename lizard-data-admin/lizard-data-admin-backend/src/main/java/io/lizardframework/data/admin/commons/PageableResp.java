@@ -11,7 +11,6 @@ import lombok.Getter;
 public class PageableResp<T> extends Resp {
 
 	private long itemsCount;
-	private T    dataResult;
 
 	public PageableResp(T data) {
 		super(data);
@@ -31,7 +30,6 @@ public class PageableResp<T> extends Resp {
 
 	public PageableResp(long itemsCount, T data) {
 		this(data);
-		this.dataResult = data;
 		this.itemsCount = itemsCount;
 	}
 }
