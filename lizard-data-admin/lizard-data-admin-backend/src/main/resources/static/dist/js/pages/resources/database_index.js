@@ -1,9 +1,30 @@
 $(function () {
 
     // id:id_btn_query onClick
-    $("#id_btn_query").click(function() {
+    $("#id_btn_query").click(function () {
         // init table
         initTable();
+    });
+
+    // add database model: before show modal
+    $("#id_add_modal").on("show.bs.modal", function () {
+        $("#id_form_add_db_name").val("");
+        $("#id_form_add_db_host").val("");
+        $("#id_form_add_db_port").val(3306);
+        $("#id_form_add_db_user").val("");
+        $("#id_form_add_db_password").val("");
+    });
+
+    $("#id_form_add_btn").click(function () {
+        const params = {};
+        params.dbType = $("#id_form_add_db_type").val();
+        params.dbName = $("#id_form_add_db_name").val();
+        params.dbHost = $("#id_form_add_db_host").val();
+        params.dbPort = $("#id_form_add_db_port").val();
+        params.dbUsername = $("#id_form_add_db_user").val();
+        params.dbPassword = $("#id_form_add_db_password").val();
+
+        callApi(api_database_add, "PUT", params, null, null);
     });
 });
 

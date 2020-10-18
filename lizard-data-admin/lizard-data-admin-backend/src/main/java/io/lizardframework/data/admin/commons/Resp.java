@@ -14,6 +14,9 @@ public class Resp<T> {
 	private String message = RespMessage.SUCCESS.getMessage();
 	private T      data;
 
+	public Resp() {
+	}
+
 	public Resp(T data) {
 		this.data = data;
 	}

@@ -1,8 +1,11 @@
 package io.lizardframework.data.admin.controller.operator;
 
 import io.lizardframework.data.admin.commons.PageableResp;
+import io.lizardframework.data.admin.commons.Resp;
+import io.lizardframework.data.admin.controller.operator.params.DataBaseAddParam;
 import io.lizardframework.data.admin.controller.operator.params.DataBaseListParam;
 import io.lizardframework.data.admin.model.DataBaseInfoModel;
+import io.lizardframework.data.admin.service.CryptoService;
 import io.lizardframework.data.admin.service.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +22,7 @@ import java.util.List;
 @RequestMapping("/operator/database")
 public class DataBaseOperApiController {
 
+
 	@Autowired
 	private DataBaseService dataBaseService;
 
@@ -34,4 +38,15 @@ public class DataBaseOperApiController {
 		return data;
 	}
 
+	/**
+	 * add database
+	 *
+	 * @param param
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.PUT)
+	public Resp add(DataBaseAddParam param) {
+		dataBaseService.save(param);
+		return new Resp();
+	}
 }

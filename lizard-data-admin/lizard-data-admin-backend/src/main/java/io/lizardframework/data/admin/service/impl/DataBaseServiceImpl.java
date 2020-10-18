@@ -1,10 +1,12 @@
 package io.lizardframework.data.admin.service.impl;
 
 import io.lizardframework.data.admin.commons.PageableResp;
+import io.lizardframework.data.admin.controller.operator.params.DataBaseAddParam;
 import io.lizardframework.data.admin.controller.operator.params.DataBaseListParam;
 import io.lizardframework.data.admin.dao.DbInfoDAO;
 import io.lizardframework.data.admin.dao.entity.DbInfoEntity;
 import io.lizardframework.data.admin.model.DataBaseInfoModel;
+import io.lizardframework.data.admin.service.CryptoService;
 import io.lizardframework.data.admin.service.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,9 @@ import java.util.stream.Collectors;
 public class DataBaseServiceImpl implements DataBaseService {
 
 	@Autowired
-	private DbInfoDAO dbInfoDAO;
+	private CryptoService cryptoService;
+	@Autowired
+	private DbInfoDAO     dbInfoDAO;
 
 	@Override
 	public PageableResp<List<DataBaseInfoModel>> queryPage(DataBaseListParam param) {
@@ -37,5 +41,15 @@ public class DataBaseServiceImpl implements DataBaseService {
 		}
 
 		return new PageableResp<>(count, new ArrayList<>(0));
+	}
+
+	@Override
+	public void save(DataBaseAddParam param) {
+		// encode username and password
+		param.setDbUsername(cryptoService.encrypt(param.getDbUsername()));
+		param.setDbPassword(cryptoService.encrypt(param.getDbPassword()));
+
+		DbInfoEntity entity = param.toEntity();
+		dbInfoDAO.insert(entity);
 	}
 }

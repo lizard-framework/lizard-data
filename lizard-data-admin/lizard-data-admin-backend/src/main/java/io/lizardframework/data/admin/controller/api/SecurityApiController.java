@@ -2,8 +2,8 @@ package io.lizardframework.data.admin.controller.api;
 
 import io.lizardframework.data.admin.commons.Resp;
 import io.lizardframework.data.admin.controller.model.DecryptParams;
-import io.lizardframework.data.utils.CryptoUtils;
-import org.springframework.beans.factory.annotation.Value;
+import io.lizardframework.data.admin.service.CryptoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/security")
 public class SecurityApiController {
 
-	@Value("${crypto.key}")
-	private String cryptoKey;
+	@Autowired
+	private CryptoService cryptoService;
 
 	@RequestMapping(value = "decrypt", consumes = "application/json")
 	public Resp<String> decrypt(@RequestBody DecryptParams params) {
-		String result = CryptoUtils.decryptByECB(cryptoKey, params.getText());
+		String result = cryptoService.decrypt(params.getText());
 
 		return new Resp<>(result);
 	}
