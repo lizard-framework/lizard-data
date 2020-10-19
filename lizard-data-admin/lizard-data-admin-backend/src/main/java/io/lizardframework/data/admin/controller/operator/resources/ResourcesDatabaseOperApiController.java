@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/operator/resources/database")
-public class DatabaseOperApiController {
+public class ResourcesDatabaseOperApiController {
 
 
 	@Autowired
