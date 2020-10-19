@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.controller.operator.params;
+package io.lizardframework.data.admin.controller.operator.resources.params;
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;

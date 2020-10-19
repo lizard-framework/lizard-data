@@ -7,22 +7,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author xueqi
- * @date 2020-10-16
+ * @date 2020-10-19
  */
 @Controller
-@RequestMapping("/resources")
-public class ResourcesPageController {
+@RequestMapping("/application-config")
+public class ApplicationConfigPageController {
 
-	/**
-	 * go to database_index.ftl page
-	 *
-	 * @return
-	 */
-	@RequestMapping(value = "databases", method = RequestMethod.GET)
-	public ModelAndView databaseIndex() {
+	@RequestMapping(value = "database", method = RequestMethod.GET)
+	public ModelAndView databaseConfigList() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("resources/database_index");
+		mav.setViewName("application_config/database-config-list");
 
 		return mav;
 	}
+
 }

@@ -1,23 +1,22 @@
-package io.lizardframework.data.admin.controller.operator;
+package io.lizardframework.data.admin.controller.operator.resources;
 
 import io.lizardframework.data.admin.commons.PageableResp;
 import io.lizardframework.data.admin.commons.Resp;
-import io.lizardframework.data.admin.controller.operator.params.DataBaseAddParam;
-import io.lizardframework.data.admin.controller.operator.params.DataBaseListParam;
+import io.lizardframework.data.admin.controller.operator.resources.params.DataBaseAddParam;
+import io.lizardframework.data.admin.controller.operator.resources.params.DataBaseListParam;
 import io.lizardframework.data.admin.model.DataBaseInfoModel;
 import io.lizardframework.data.admin.service.DataBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author xueqi
  * @date 2020-10-16
  */
 @RestController
-@RequestMapping("/operator/database")
+@RequestMapping("/operator/resources/database")
 public class DatabaseOperApiController {
 
 

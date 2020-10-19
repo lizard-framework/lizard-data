@@ -175,42 +175,23 @@
                     <!-- orm config -->
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
+                            <i class="nav-icon fas fa-book"></i>
                             <p>
-                                ORM配置
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="../../index.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v1</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="../../index2.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v2</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- cache config -->
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-copy"></i>
-                            <p>
-                                Cache配置
+                                应用配置
                                 <i class="fas fa-angle-left right"></i>
-                                <span class="badge badge-info right">6</span>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="../layout/top-nav.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Top Navigation</p>
+                                    <i class="far fa-th nav-icon"></i>
+                                    <p>缓存</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/application-config/database" class="nav-link">
+                                    <i class="far fa-th nav-icon"></i>
+                                    <p>关系型数据库</p>
                                 </a>
                             </li>
                         </ul>
@@ -227,8 +208,8 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="../charts/chartjs.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>ChartJS</p>
+                                    <i class="far fa-th nav-icon"></i>
+                                    <p>版本统计</p>
                                 </a>
                             </li>
                         </ul>
@@ -244,15 +225,15 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="/resources/databases" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>数据库资源</p>
+                                <a href="../UI/general.html" class="nav-link">
+                                    <i class="far fa-th nav-icon"></i>
+                                    <p>缓存</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../UI/general.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>缓存资源</p>
+                                <a href="/resources/databases" class="nav-link">
+                                    <i class="far fa-th nav-icon"></i>
+                                    <p>关系型数据库</p>
                                 </a>
                             </li>
                         </ul>

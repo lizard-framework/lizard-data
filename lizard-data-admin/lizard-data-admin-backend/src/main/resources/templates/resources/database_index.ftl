@@ -20,7 +20,7 @@
                         <ol class="breadcrumb float-sm-left">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item active">资源管理</li>
-                            <li class="breadcrumb-item active">数据库资源</li>
+                            <li class="breadcrumb-item active">关系型数据库</li>
                         </ol>
                     </div>
                     <div class="col-sm-6">

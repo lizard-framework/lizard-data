@@ -1,7 +1,7 @@
-const api_database_list = '/operator/database/list';
-const api_database_add = '/operator/database';
-const api_database_detail = '/operator/database/';
-const api_database_auth = '/operator/database/authinfo/';
+const api_resources_database_list = '/operator/resources/database/list';
+const api_resources_database_add = '/operator/resources/database';
+const api_resources_database_detail = '/operator/resources/database/';
+const api_resources_database_auth = '/operator/resources/database/authinfo/';
 
 // call api
 function callApi(api, method, params, SuccFunc, FailFunc) {
