@@ -68,5 +68,5 @@
 </body>
 
 <@jsfile/>
-<script src="/dist/js/pages/application_config/database-config-list.js"></script>
+<script src="/static/dist/js/pages/application_config/orm-config-list.js"></script>
 </html>

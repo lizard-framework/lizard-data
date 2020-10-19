@@ -13,10 +13,10 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/application-config")
 public class ApplicationConfigPageController {
 
-	@RequestMapping(value = "database", method = RequestMethod.GET)
+	@RequestMapping(value = "orm", method = RequestMethod.GET)
 	public ModelAndView databaseConfigList() {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("application_config/database-config-list");
+		mav.setViewName("application_config/orm-config-list");
 
 		return mav;
 	}
