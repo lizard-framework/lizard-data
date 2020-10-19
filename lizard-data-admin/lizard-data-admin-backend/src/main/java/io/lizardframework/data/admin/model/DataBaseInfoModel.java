@@ -4,8 +4,6 @@ import io.lizardframework.data.admin.dao.entity.DbInfoEntity;
 import lombok.Data;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import java.util.Date;
-
 /**
  * @author xueqi
  * @date 2020-10-16
@@ -23,6 +21,8 @@ public class DataBaseInfoModel {
 	private String createTime;
 	private String updateTime;
 
+	public DataBaseInfoModel() {
+	}
 
 	public DataBaseInfoModel(DbInfoEntity entity) {
 		this.id = entity.getId();
@@ -30,8 +30,6 @@ public class DataBaseInfoModel {
 		this.dbName = entity.getDbName();
 		this.dbHost = entity.getDbHost();
 		this.dbPort = entity.getDbPort();
-		this.dbUsername = entity.getDbUsername();
-		this.dbPassword = entity.getDbPassword();
 		this.createTime = DateFormatUtils.format(entity.getCreateTime(), "yyyy-MM-dd HH:mm:ss");
 		this.updateTime = DateFormatUtils.format(entity.getUpdateTime(), "yyyy-MM-dd HH:mm:ss");
 	}

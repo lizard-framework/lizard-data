@@ -16,4 +16,8 @@ public interface DataBaseService {
 	PageableResp<List<DataBaseInfoModel>> queryPage(DataBaseListParam param);
 
 	void save(DataBaseAddParam param);
+
+	DataBaseInfoModel queryBasicById(Long id);
+
+	DataBaseInfoModel queryAuthInfoById(Long id);
 }

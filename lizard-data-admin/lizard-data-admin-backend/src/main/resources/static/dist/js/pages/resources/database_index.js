@@ -6,7 +6,13 @@ $(function () {
         initTable();
     });
 
-    // add database model: before show modal
+    $("#id_form_query").submit(function (e) {
+        e.preventDefault();
+        // init table
+        initTable();
+    });
+
+    // add database modal: before show modal
     $("#id_add_modal").on("show.bs.modal", function () {
         $("#id_form_add_db_name").val("");
         $("#id_form_add_db_host").val("");
@@ -24,7 +30,12 @@ $(function () {
         params.dbUsername = $("#id_form_add_db_user").val();
         params.dbPassword = $("#id_form_add_db_password").val();
 
-        callApi(api_database_add, "PUT", params, null, null);
+        callApi(api_database_add, "PUT", params, function (result) {
+            alertTopEnd('添加数据库信息成功', 'success', 6000);
+            $("#id_add_modal").modal('hide');
+
+            return null;
+        }, null);
     });
 });
 
@@ -42,7 +53,7 @@ function initTable() {
                 + "<button type=\"button\" class=\"btn btn-info dropdown-toggle dropdown-icon\" data-toggle=\"dropdown\">"
                 + "<span class=\"sr-only\">Toggle Dropdown</span>"
                 + "<div class=\"dropdown-menu\" role=\"menu\">"
-                + "<a class=\"dropdown-item\" href=\"#\">详情</a>"
+                + "<a class=\"dropdown-item\" onclick=\"showDbDetail(" + item.id + ")\">详情</a>"
                 + "<a class=\"dropdown-item\" href=\"#\">依赖详情</a>"
                 + "</div>"
                 + "</button>"
@@ -88,4 +99,30 @@ function initTable() {
             {title: "操作", type: "operField", width: 100, align: "center"}
         ]
     });
+}
+
+// show db detail modal
+function showDbDetail(id) {
+    callApi(api_database_detail + id, 'GET', null, function (result) {
+        $("#id_detail_db_type").html(result.data.dbType);
+        $("#id_detail_db_name").html(result.data.dbName);
+        $("#id_detail_db_host").html(result.data.dbHost);
+        $("#id_detail_db_port").html(result.data.dbPort);
+        $("#id_detail_db_auth").html("<button class=\"btn btn-block btn-danger btn-xs\" onclick=\"showDbAuthInfo(" + id + ")\">Show</button>");
+
+        $("#id_detail_div").hide();
+        $('#id_detail_modal').modal('show');
+        return null;
+    }, null);
+}
+
+// show db connection auth info
+function showDbAuthInfo(id) {
+    $("#id_detail_div").hide();
+    callApi(api_database_auth + id, "GET", null, function (result) {
+        $("#id_detail_db_username").html(result.data.dbUsername);
+        $("#id_detail_db_password").html(result.data.dbPassword);
+
+        $("#id_detail_div").show();
+    }, null);
 }

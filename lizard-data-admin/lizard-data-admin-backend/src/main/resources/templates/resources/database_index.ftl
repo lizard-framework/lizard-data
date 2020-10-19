@@ -39,7 +39,7 @@
 
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form class="form-horizontal">
+                    <form id="id_form_query" class="form-horizontal">
                         <div class="card-body">
                             <div class="form-group row">
                                 <label for="id_db_type" class="col-form-label">Type</label>
@@ -80,6 +80,7 @@
     </div>
     <!-- /.content-wrapper -->
 
+    <!-- add database modal -->
     <div class="modal fade" id="id_add_modal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -193,6 +194,46 @@
         </div>
     </div>
 
+    <!-- databse detail modal -->
+    <div class="modal fade" id="id_detail_modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">数据库详情</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <dl class="row">
+                        <dt class="col-sm-2">Type:</dt>
+                        <dd id="id_detail_db_type" class="col-sm-10"></dd>
+                        <dt class="col-sm-2">Schema:</dt>
+                        <dd id="id_detail_db_name" class="col-sm-10"></dd>
+                        <dt class="col-sm-2">Host:</dt>
+                        <dd id="id_detail_db_host" class="col-sm-10"></dd>
+                        <dt class="col-sm-2">Port:</dt>
+                        <dd id="id_detail_db_port" class="col-sm-10"></dd>
+                        <dt class="col-sm-2">AuthInfo:</dt>
+                        <dd id="id_detail_db_auth" class="col-sm-3"></dd>
+                    </dl>
+
+                    <div class="row" id="id_detail_div">
+                        <div class="callout callout-danger col-sm-12">
+                            <h6><p class="text-danger">Danger!</p></h6>
+                            <dl class="row">
+                                <dt class="col-sm-2">Username:</dt>
+                                <dd id="id_detail_db_username" class="col-sm-10"></dd>
+                                <dt class="col-sm-2">Password:</dt>
+                                <dd id="id_detail_db_password" class="col-sm-10"></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <@footer />
 </div>
 </body>

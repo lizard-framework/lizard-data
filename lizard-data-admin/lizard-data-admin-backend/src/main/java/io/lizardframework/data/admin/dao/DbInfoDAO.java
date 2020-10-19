@@ -27,6 +27,10 @@ public class DbInfoDAO {
 	@Autowired
 	private JdbcTemplate               jdbcTemplate;
 
+	private static final String SELECT_ALL_SQL = "select id as id, db_type as dbType, db_name as dbName, db_host as dbHost, " +
+			"db_port as dbPort, db_username as dbUsername, db_password as dbPassword, create_time as createTime, update_time as updateTime " +
+			"from t_db_info where 1=1 ";
+
 	public long insert(DbInfoEntity entity) {
 		String sql = "insert into t_db_info(db_type, db_name, db_host, db_port, " +
 				"db_username, db_password, create_time, update_time) " +
@@ -50,6 +54,12 @@ public class DbInfoDAO {
 		});
 	}
 
+	public DbInfoEntity selectById(Long id) {
+		String sql = SELECT_ALL_SQL + " and id=?";
+
+		return jdbcTemplate.queryForObject(sql, new Object[]{id}, new BeanPropertyRowMapper<>(DbInfoEntity.class));
+	}
+
 	/**
 	 * select record count
 	 *
@@ -71,13 +81,11 @@ public class DbInfoDAO {
 	 * @return
 	 */
 	public List<DbInfoEntity> selectPage(Map<String, Object> params, Pageable pageable) {
-		StringBuilder sqlBuilder = new StringBuilder("select id as id, db_type as dbType, db_name as dbName, db_host as dbHost, " +
-				"db_port as dbPort, db_username as dbUsername, db_password as dbPassword, create_time as createTime, update_time as updateTime " +
-				"from t_db_info where 1=1 ");
+		StringBuilder sqlBuilder = new StringBuilder(SELECT_ALL_SQL);
 		buildQueryParam(sqlBuilder, params);
 
 		// add page param
-		if (pageable.getOffset() > 0 && pageable.getPageSize() > 0) {
+		if (pageable.getOffset() >= 0 && pageable.getPageSize() > 0) {
 			sqlBuilder.append(" limit :offset, :pageSize");
 			params.put("offset", pageable.getOffset());
 			params.put("pageSize", pageable.getPageSize());

@@ -52,4 +52,22 @@ public class DataBaseServiceImpl implements DataBaseService {
 		DbInfoEntity entity = param.toEntity();
 		dbInfoDAO.insert(entity);
 	}
+
+	@Override
+	public DataBaseInfoModel queryBasicById(Long id) {
+		DbInfoEntity entity = dbInfoDAO.selectById(id);
+
+		return new DataBaseInfoModel(entity);
+	}
+
+	@Override
+	public DataBaseInfoModel queryAuthInfoById(Long id) {
+		DbInfoEntity entity = dbInfoDAO.selectById(id);
+
+		DataBaseInfoModel info = new DataBaseInfoModel();
+		info.setDbUsername(cryptoService.decrypt(entity.getDbUsername()));
+		info.setDbPassword(cryptoService.decrypt(entity.getDbPassword()));
+
+		return info;
+	}
 }
