@@ -189,7 +189,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/application-config/database" class="nav-link">
+                                <a href="/application-config/orm" class="nav-link">
                                     <i class="far fa-th nav-icon"></i>
                                     <p>关系型数据库</p>
                                 </a>

@@ -2,7 +2,7 @@ package io.lizardframework.data.admin.controller.api;
 
 import io.lizardframework.data.admin.commons.Resp;
 import io.lizardframework.data.admin.controller.model.ORMGetMixedConfigParams;
-import io.lizardframework.data.admin.service.ORMDataService;
+import io.lizardframework.data.admin.service.OrmMixedService;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ORMApiController {
 
 	@Autowired
-	private ORMDataService ormDataService;
+	private OrmMixedService ormMixedService;
 
 	/**
 	 * get orm mixed config
@@ -33,7 +33,7 @@ public class ORMApiController {
 	public Resp<MixedDataSourceModel> getMixedConfig(@RequestBody ORMGetMixedConfigParams params) {
 		log.info("[/api/orm/getMixedConfig] request params:{}", JSONUtils.toJSONString(params));
 
-		MixedDataSourceModel model = ormDataService.queryMixedDataSource(params.getMixedName());
+		MixedDataSourceModel model = ormMixedService.queryMixedDataSource(params.getMixedName());
 
 		return new Resp<>(model);
 	}

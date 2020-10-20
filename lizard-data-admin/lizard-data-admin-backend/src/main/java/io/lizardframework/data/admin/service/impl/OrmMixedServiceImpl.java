@@ -1,12 +1,15 @@
 package io.lizardframework.data.admin.service.impl;
 
 import io.lizardframework.data.admin.commons.BizException;
+import io.lizardframework.data.admin.commons.PageableResp;
+import io.lizardframework.data.admin.controller.operator.application.params.OrmMixedListParam;
 import io.lizardframework.data.admin.dao.OrmMixedDAO;
 import io.lizardframework.data.admin.dao.OrmRepositoryDAO;
 import io.lizardframework.data.admin.dao.entity.OrmMixedEntity;
 import io.lizardframework.data.admin.dao.entity.OrmRepositoryAllInfoEntity;
 import io.lizardframework.data.admin.message.RespMessage;
-import io.lizardframework.data.admin.service.ORMDataService;
+import io.lizardframework.data.admin.model.OrmMixedInfoModel;
+import io.lizardframework.data.admin.service.OrmMixedService;
 import io.lizardframework.data.enums.LoadBalanceType;
 import io.lizardframework.data.enums.MasterSlaveType;
 import io.lizardframework.data.enums.State;
@@ -34,7 +37,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class ORMDataServiceImpl implements ORMDataService {
+public class OrmMixedServiceImpl implements OrmMixedService {
 
 	@Autowired
 	private OrmMixedDAO      ormMixedDAO;
@@ -96,6 +99,21 @@ public class ORMDataServiceImpl implements ORMDataService {
 		}
 
 		return mixedDataSourceModel;
+	}
+
+	@Override
+	public PageableResp<List<OrmMixedInfoModel>> queryPage(OrmMixedListParam param) {
+		// 1. query count
+		long count = ormMixedDAO.countPage(param.toMapper());
+
+		// 2. select record
+		List<OrmMixedEntity> list = ormMixedDAO.selectPage(param.toMapper(), param.toPageRequest());
+		if (!CollectionUtils.isEmpty(list)) {
+			List<OrmMixedInfoModel> resultlist = list.stream().map(entity -> new OrmMixedInfoModel(entity)).collect(Collectors.toList());
+			return new PageableResp<>(count, resultlist);
+		}
+
+		return new PageableResp<>(count, new ArrayList<>(0));
 	}
 
 

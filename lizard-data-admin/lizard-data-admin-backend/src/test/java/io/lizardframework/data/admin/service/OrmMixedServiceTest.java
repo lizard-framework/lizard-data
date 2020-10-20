@@ -16,16 +16,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @Slf4j
-public class ORMDataServiceTest {
+public class OrmMixedServiceTest {
 
 	@Autowired
-	private ORMDataService ormDataService;
+	private OrmMixedService ormMixedService;
 
 	@Test
 	public void queryMixedDataSourceTest() {
 		String mixedName = "TestMixedDataSource";
 
-		MixedDataSourceModel model = ormDataService.queryMixedDataSource(mixedName);
+		MixedDataSourceModel model = ormMixedService.queryMixedDataSource(mixedName);
 
 		System.out.println(JSONUtils.toJSONString(model));
 	}

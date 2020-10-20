@@ -3,6 +3,8 @@ const api_resources_database_add = '/operator/resources/database';
 const api_resources_database_detail = '/operator/resources/database/';
 const api_resources_database_auth = '/operator/resources/database/authinfo/';
 
+const api_application_orm_list = '/operator/application-config/orm/list';
+
 // call api
 function callApi(api, method, params, SuccFunc, FailFunc) {
     $.ajax({

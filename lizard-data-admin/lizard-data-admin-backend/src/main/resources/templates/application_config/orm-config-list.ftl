@@ -38,9 +38,9 @@
                     <form id="id_form_query" class="form-horizontal">
                         <div class="card-body">
                             <div class="form-group row">
-                                <label for="id_mixed_datasource" class="col-form-label">Name</label>
+                                <label for="id_mixed_datasource" class="col-form-label">MixedName</label>
                                 <div class="col-sm-3">
-                                    <input type="text" class="form-control form-control-sm" id="id_mixed_datasource"
+                                    <input type="text" class="form-control form-control-sm" id="id_mixed_name"
                                            placeholder="">
                                 </div>
 
@@ -68,5 +68,5 @@
 </body>
 
 <@jsfile/>
-<script src="/static/dist/js/pages/application_config/orm-config-list.js"></script>
+<script src="/dist/js/pages/application_config/orm-config-list.js"></script>
 </html>

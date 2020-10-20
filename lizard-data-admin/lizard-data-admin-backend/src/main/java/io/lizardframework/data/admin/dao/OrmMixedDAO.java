@@ -43,12 +43,22 @@ public class OrmMixedDAO {
 	}
 
 	public List<OrmMixedEntity> selectPage(Map<String, Object> params, Pageable pageable) {
-		return null;
+		StringBuilder sqlBuilder = new StringBuilder(SELECT_ALL_SQL);
+		buildQueryParam(sqlBuilder, params);
+
+		// add page param
+		if (pageable.getOffset() >= 0 && pageable.getPageSize() > 0) {
+			sqlBuilder.append(" limit :offset, :pageSize");
+			params.put("offset", pageable.getOffset());
+			params.put("pageSize", pageable.getPageSize());
+		}
+
+		return namedParameterJdbcTemplate.query(sqlBuilder.toString(), params, new BeanPropertyRowMapper<>(OrmMixedEntity.class));
 	}
 
 	private void buildQueryParam(StringBuilder sqlBuilder, Map<String, Object> params) {
 		if (params.containsKey("mixedName")) {
-			sqlBuilder.append("and mixed_name like mixedName ");
+			sqlBuilder.append("and mixed_name like :mixedName ");
 		}
 	}
 }
