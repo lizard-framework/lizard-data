@@ -5,6 +5,8 @@ const api_resources_database_auth = '/operator/resources/database/authinfo/';
 
 const api_application_orm_list = '/operator/application-config/orm/list';
 
+const page_application_orm_detail = '/application-config/orm/';
+
 // call api
 function callApi(api, method, params, SuccFunc, FailFunc) {
     $.ajax({

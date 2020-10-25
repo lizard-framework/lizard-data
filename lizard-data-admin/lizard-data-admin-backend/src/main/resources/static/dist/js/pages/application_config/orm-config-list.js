@@ -22,7 +22,7 @@ function initTable() {
 
     OperField.prototype = new jsGrid.Field({
         itemTemplate: function (value, item) {
-            return "<button type=\"button\" class=\"btn btn-info btn-sm\">详情</button>";
+            return "<button type=\"button\" class=\"btn btn-info btn-sm\" onclick=\"openDetailPage(" + item.id + ")\">详情</button>";
         }
     });
     jsGrid.fields.operField = OperField;
@@ -63,4 +63,9 @@ function initTable() {
             {title: "操作", type: "operField", width: 80, align: "center"}
         ]
     });
+}
+
+
+function openDetailPage(id) {
+    window.location.href = page_application_orm_detail + id;
 }
