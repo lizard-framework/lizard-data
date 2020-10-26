@@ -103,7 +103,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="id_form_add_db_type">Type</label>
+                                            <label for="id_form_add_db_type" class="col-form-label">Type</label>
                                             <div class="col-sm-4">
                                                 <select class="form-control form-control-sm" id="id_form_add_db_type">
                                                     <option value="mysql">MySQL</option>
@@ -136,7 +136,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="id_form_add_db_host">Host</label>
+                                            <label for="id_form_add_db_host" class="col-form-label">Host</label>
                                             <input type="text" class="form-control form-control-sm"
                                                    id="id_form_add_db_host" placeholder="host address">
                                         </div>
@@ -144,7 +144,7 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="id_form_add_db_port">Port</label>
+                                            <label for="id_form_add_db_port" class="col-form-label">Port</label>
                                             <div class="col-sm-3">
                                                 <input type="number" class="form-control form-control-sm" value="3306"
                                                        id="id_form_add_db_port" placeholder="port">
@@ -167,7 +167,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="id_form_add_db_user">Username</label>
+                                            <label for="id_form_add_db_user" class="col-form-label">Username</label>
                                             <input type="text" class="form-control form-control-sm"
                                                    id="id_form_add_db_user" placeholder="username">
                                         </div>
@@ -175,7 +175,7 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="id_form_add_db_password">Password</label>
+                                            <label for="id_form_add_db_password" class="col-form-label">Password</label>
                                             <input type="text" class="form-control form-control-sm"
                                                    id="id_form_add_db_password" placeholder="password">
                                         </div>

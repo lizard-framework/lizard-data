@@ -13,8 +13,17 @@
     <link rel="stylesheet" href="/plugins/jsgrid/jsgrid-theme.min.css">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <!-- Theme style-->
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+
+    <style>
+        html,body,td,th {
+            font-size: small;
+        }
+    </style>
 </#macro>
 
 <#macro navbar>
@@ -268,10 +277,14 @@
     <script src="/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Select2 -->
+    <script src="/plugins/select2/js/select2.full.min.js"></script>
     <!-- jsGrid -->
     <script src="/plugins/jsgrid/jsgrid.min.js"></script>
     <!-- SweetAlert2 -->
     <script src="/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Bootstrap Switch -->
+    <script src="/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
@@ -280,4 +293,21 @@
     <script src="/dist/js/alert.js"></script>
     <!-- api js -->
     <script src="/dist/js/api.js"></script>
+
+    <script>
+        $(function () {
+            // init bootstrap switch
+            $("input[data-bootstrap-switch]").each(function () {
+                $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            });
+
+            //Initialize Select2 Elements
+            $('.select2').select2()
+
+            //Initialize Select2 Elements
+            $('.select2bs4').select2({
+                theme: 'bootstrap4'
+            })
+        });
+    </script>
 </#macro>
