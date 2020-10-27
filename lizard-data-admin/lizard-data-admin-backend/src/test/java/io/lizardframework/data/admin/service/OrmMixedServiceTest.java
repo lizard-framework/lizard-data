@@ -1,5 +1,6 @@
 package io.lizardframework.data.admin.service;
 
+import io.lizardframework.data.admin.controller.model.ORMGetMixedConfigParams;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,9 @@ public class OrmMixedServiceTest {
 	public void queryMixedDataSourceTest() {
 		String mixedName = "TestMixedDataSource";
 
-		MixedDataSourceModel model = ormMixedService.queryMixedDataSource(mixedName);
+		ORMGetMixedConfigParams params = new ORMGetMixedConfigParams();
+		params.setMixedName(mixedName);
+		MixedDataSourceModel model = ormMixedService.queryMixedDataSource(params);
 
 		System.out.println(JSONUtils.toJSONString(model));
 	}

@@ -2,12 +2,14 @@ package io.lizardframework.data.admin.service.impl;
 
 import io.lizardframework.data.admin.commons.BizException;
 import io.lizardframework.data.admin.commons.PageableResp;
+import io.lizardframework.data.admin.controller.model.ORMGetMixedConfigParams;
 import io.lizardframework.data.admin.controller.operator.application.params.OrmMixedListParam;
 import io.lizardframework.data.admin.dao.OrmMixedDAO;
 import io.lizardframework.data.admin.dao.OrmRepositoryDAO;
 import io.lizardframework.data.admin.dao.entity.OrmMixedEntity;
 import io.lizardframework.data.admin.dao.entity.OrmRepositoryAllInfoEntity;
 import io.lizardframework.data.admin.message.RespMessage;
+import io.lizardframework.data.admin.model.OrmMixedDetailModel;
 import io.lizardframework.data.admin.model.OrmMixedInfoModel;
 import io.lizardframework.data.admin.service.OrmMixedService;
 import io.lizardframework.data.enums.LoadBalanceType;
@@ -21,6 +23,7 @@ import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
 import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -46,14 +49,58 @@ public class OrmMixedServiceImpl implements OrmMixedService {
 
 
 	@Override
-	public MixedDataSourceModel queryMixedDataSource(String mixedDataSourceName) {
+	public MixedDataSourceModel queryMixedDataSource(ORMGetMixedConfigParams params) {
 		// query mixed datasource
-		OrmMixedEntity mixedEntity = ormMixedDAO.selectByMixedName(mixedDataSourceName);
+		OrmMixedEntity mixedEntity = ormMixedDAO.selectByMixedName(params.getMixedName());
 		if (mixedEntity == null) {
 			throw new BizException(RespMessage.ORM_MIXED_DATASOURCE_NOT_EXIST);
 		}
+
+		// check application todo
+
+		return this.entityToDataSourceModel(mixedEntity);
+	}
+
+	@Override
+	public PageableResp<List<OrmMixedInfoModel>> queryPage(OrmMixedListParam param) {
+		// 1. query count
+		long count = ormMixedDAO.countPage(param.toMapper());
+
+		// 2. select record
+		List<OrmMixedEntity> list = ormMixedDAO.selectPage(param.toMapper(), param.toPageRequest());
+		if (!CollectionUtils.isEmpty(list)) {
+			List<OrmMixedInfoModel> resultlist = list.stream().map(entity -> new OrmMixedInfoModel(entity)).collect(Collectors.toList());
+			return new PageableResp<>(count, resultlist);
+		}
+
+		return new PageableResp<>(count, new ArrayList<>(0));
+	}
+
+	@Override
+	public OrmMixedDetailModel queryDetailByMixedName(String mixedName) {
+		// query mixed datasource
+		OrmMixedEntity mixedEntity = ormMixedDAO.selectByMixedName(mixedName);
+		if (mixedEntity == null) {
+			throw new BizException(RespMessage.ORM_MIXED_DATASOURCE_NOT_EXIST);
+		}
+
+		MixedDataSourceModel mixedDataSourceModel = this.entityToDataSourceModel(mixedEntity);
+		OrmMixedDetailModel  detailModel          = new OrmMixedDetailModel(mixedDataSourceModel);
+		detailModel.setMixedDesc(mixedEntity.getMixedDesc());
+		detailModel.setCreateUser(mixedEntity.getCreateUser());
+		detailModel.setCreateTime(DateFormatUtils.format(mixedEntity.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+
+		String configJson = mixedEntity.getConfigParam();
+		if (StringUtils.isNotEmpty(configJson)) {
+			detailModel.setApplicationList(this.getConfigParamApplication(configJson));
+		}
+
+		return detailModel;
+	}
+
+	private MixedDataSourceModel entityToDataSourceModel(OrmMixedEntity mixedEntity) {
 		MixedDataSourceModel mixedDataSourceModel = new MixedDataSourceModel();
-		mixedDataSourceModel.setMixedName(mixedDataSourceName);
+		mixedDataSourceModel.setMixedName(mixedEntity.getMixedName());
 		mixedDataSourceModel.setState(State.convert(mixedEntity.getState()));
 		mixedDataSourceModel.setType(DBType.convert(mixedEntity.getDbType()));
 
@@ -101,20 +148,20 @@ public class OrmMixedServiceImpl implements OrmMixedService {
 		return mixedDataSourceModel;
 	}
 
-	@Override
-	public PageableResp<List<OrmMixedInfoModel>> queryPage(OrmMixedListParam param) {
-		// 1. query count
-		long count = ormMixedDAO.countPage(param.toMapper());
+	/**
+	 * 获取config_param中的application配置
+	 *
+	 * @param configJson
+	 * @return
+	 */
+	private List<String> getConfigParamApplication(String configJson) {
+		String              key          = "application";
+		Map<String, Object> configMapper = JSONUtils.json2Map(configJson);
 
-		// 2. select record
-		List<OrmMixedEntity> list = ormMixedDAO.selectPage(param.toMapper(), param.toPageRequest());
-		if (!CollectionUtils.isEmpty(list)) {
-			List<OrmMixedInfoModel> resultlist = list.stream().map(entity -> new OrmMixedInfoModel(entity)).collect(Collectors.toList());
-			return new PageableResp<>(count, resultlist);
+		if (configMapper != null && configMapper.containsKey(key)) {
+			return (List<String>) configMapper.get(key);
 		}
 
-		return new PageableResp<>(count, new ArrayList<>(0));
+		return new ArrayList<>(0);
 	}
-
-
 }

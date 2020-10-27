@@ -56,7 +56,7 @@
                             </li>
                         </ul>
                         <div class="tab-custom-content">
-                            <p class="lead mb-0">MixedName:XXX</p>
+                            <p class="lead mb-0">MixedName:${detail.mixedName}</p>
                         </div>
                         <div class="tab-content" id="custom-content-above-tabContent">
                             <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel"
@@ -70,7 +70,7 @@
 
                                             <div class="col-sm-4">
                                                 <p class="text-success" class="form-control form-control-sm"
-                                                   id="id_mixed_name">TestMixedDataSource</p>
+                                                   id="id_mixed_name">${detail.mixedName}</p>
                                             </div>
 
                                             <div class="offset-sm-1 col-sm-1">
@@ -78,9 +78,15 @@
                                                        class="col-form-label offset-sm-1">状态：</label>
                                             </div>
                                             <div class="col-sm-4">
-                                                <input type="checkbox" name="my-checkbox" data-on-label="Online" checked
-                                                       data-bootstrap-switch readonly
-                                                       id="id_mixed_state">
+                                                <#if detail.state == "ONLINE">
+                                                    <input type="checkbox" name="my-checkbox" checked
+                                                           data-bootstrap-switch readonly
+                                                           id="id_mixed_state">
+                                                <#else>
+                                                    <input type="checkbox" name="my-checkbox"
+                                                           data-bootstrap-switch readonly
+                                                           id="id_mixed_state">
+                                                </#if>
                                             </div>
                                         </div>
 
@@ -90,8 +96,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="text-muted" class="form-control form-control-sm"
-                                                   id="id_mixed_desc">
-                                                    text-infotext-infotext-infotext-infotext-infotext-infotext-infotext-infotext-infotext-infotext-infotext-info</p>
+                                                   id="id_mixed_desc">${detail.mixedDesc}</p>
                                             </div>
 
                                             <div class="offset-sm-1 col-sm-1">
@@ -99,7 +104,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="text-muted" class="form-control form-control-sm"
-                                                   id="id_mixed_dbType">MySQL</p>
+                                                   id="id_mixed_dbType">${detail.type}</p>
                                             </div>
                                         </div>
 
@@ -108,16 +113,16 @@
                                                 <label for="id_mixed_application" class="col-form-label">应用：</label>
                                             </div>
                                             <div class="col-sm-5">
-                                                <select id="id_mixed_application" class="select2" multiple="multiple"
-                                                        data-placeholder="Select a State" style="width: 100%;">
-                                                    <option value="Alabama">Alabama</option>
-                                                    <option value="Alaska">Alaska</option>
-                                                    <option>California</option>
-                                                    <option>Delaware</option>
-                                                    <option>Tennessee</option>
-                                                    <option>Texas</option>
-                                                    <option>Washington</option>
-                                                </select>
+                                                <#if detail.applicationList?? && (detail.applicationList?size>0)>
+                                                    <select id="id_mixed_application" class="select2"
+                                                            multiple="multiple"
+                                                            data-placeholder="Select a State" style="width: 100%;">
+                                                        <#list detail.applicationList as application>
+                                                            <option value="${application}"
+                                                                    selected>${application}</option>
+                                                        </#list>
+                                                    </select>
+                                                </#if>
                                             </div>
                                         </div>
 
@@ -127,7 +132,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="text-info" class="form-control form-control-sm"
-                                                   id="id_mixed_create_user">xueqi</p>
+                                                   id="id_mixed_create_user">${detail.createUser}</p>
                                             </div>
 
                                             <div class="offset-sm-1 col-sm-1">
@@ -135,52 +140,108 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <p class="text-info" class="form-control form-control-sm"
-                                                   id="id_mixed_create_time">yyyy-mm-dd hh:mm:ss</p>
+                                                   id="id_mixed_create_time">${detail.createTime}</p>
                                             </div>
                                         </div>
                                     </form>
 
                                     <h5 class="mt-4 mb-3">分库配置(Repository Sharding):</h5>
-                                    <div id="accordion">
-                                        <div class="card card-default">
-                                            <div class="card-header">
-                                                <h4 class="card-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion"
-                                                       href="#collapseOne">
-                                                        Repository Name: db_test
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseOne" class="panel-collapse collapse in">
-                                                <h6 class="mt-4 mb-1 ml-4">资源配置(Atom Config):</h6>
-                                                <div class="card-body">
-                                                    <table class="table table-head-fixed text-nowrap">
-                                                        <thead>
-                                                        <tr>
-                                                            <th>Atom名称</th>
-                                                            <th>数据库名称</th>
-                                                            <th>主从类型</th>
-                                                            <th>状态</th>
-                                                            <th>权重</th>
-                                                            <th>连接池类型</th>
-                                                            <th>JDBC配置</th>
-                                                            <th>连接池配置</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <td>master01</td>
-                                                            <td>db_test</td>
-                                                            <td>master</td>
-                                                            <td>online</td>
-                                                            <td>100</td>
-                                                            <td>druid</td>
-                                                            <td>useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&allowMultiQueries=true</td>
-                                                        </tbody>
-                                                    </table>
+                                    <#if detail.repositories?? && (detail.repositories?size > 0)>
+                                        <#list detail.repositories as repository>
+                                            <div id="accordion_${repository.repositoryName}">
+                                                <div class="card card-default">
+                                                    <div class="card-header">
+                                                        <h4 class="card-title">
+                                                            <a data-toggle="collapse"
+                                                               data-parent="#accordion_${repository.repositoryName}"
+                                                               href="#collapseOne_${repository.repositoryName}">
+                                                                Repository Name: ${repository.repositoryName}
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+
+                                                    <div id="collapseOne_${repository.repositoryName}"
+                                                         class="panel-collapse collapse in">
+                                                        <h6 class="mt-4 mb-1 ml-4">属性信息(Repository Config):</h6>
+                                                        <div class="card-body">
+                                                            <form class="form-horizontal ml-2">
+                                                                <div class="form-group row">
+                                                                    <div class="col-sm-1">
+                                                                        <label class="col-form-label">名称：</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-3">
+                                                                        <p class="text-success"
+                                                                           class="form-control form-control-sm">${repository.repositoryName}</p>
+                                                                    </div>
+
+                                                                    <div class="col-sm-1">
+                                                                        <label class="col-form-label">状态：</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-2">
+                                                                        <#if repository.state == "ONLINE">
+                                                                            <p class="text-success"
+                                                                               class="form-control form-control-sm">${repository.state}</p>
+                                                                        <#else >
+                                                                            <p class="text-danger"
+                                                                               class="form-control form-control-sm">${repository.state}</p>
+                                                                        </#if>
+
+                                                                    </div>
+
+                                                                    <div class="col-sm-2">
+                                                                        <label class="col-form-label">负载均衡策略：</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-3">
+                                                                        <p class="text-success"
+                                                                           class="form-control form-control-sm">${repository.loadBalance}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <h6 class="mt-1 mb-1 ml-4">资源配置(Atom Config):</h6>
+                                                        <div class="card-body">
+                                                            <table class="table table-head-fixed text-nowrap">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>Atom名称</th>
+                                                                    <th>数据库名称</th>
+                                                                    <th>主从类型</th>
+                                                                    <th>状态</th>
+                                                                    <th>权重</th>
+                                                                    <th>连接池类型</th>
+                                                                    <th>JDBC配置</th>
+                                                                    <th>连接池配置</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <#list repository.atoms as atom>
+                                                                    <tr>
+                                                                        <td>${atom.atomName}</td>
+                                                                        <td>${atom.database}</td>
+                                                                        <td>${atom.masterSlaveType}</td>
+                                                                        <td>${atom.state}</td>
+                                                                        <td>${atom.weight}</td>
+                                                                        <td>${atom.dataSourcePoolType}</td>
+                                                                        <td><textarea class="form-control" rows="3"
+                                                                                      readonly>${atom.params}</textarea>
+                                                                        </td>
+                                                                        <td><textarea class="form-control" rows="3"
+                                                                                      cols="35"
+                                                                                      readonly>${atom.poolConfig}</textarea>
+                                                                        </td>
+                                                                    </tr>
+                                                                </#list>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </#list>
+                                    </#if>
                                 </div>
                             </div>
 

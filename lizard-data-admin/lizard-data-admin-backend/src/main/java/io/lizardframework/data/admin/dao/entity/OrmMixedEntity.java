@@ -16,6 +16,7 @@ public class OrmMixedEntity {
 	private String    mixedDesc;
 	private String    state;
 	private String    dbType;
+	private String    configParam;
 	private String    createUser;
 	private Timestamp createTime;
 	private Timestamp updateTime;

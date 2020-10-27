@@ -25,7 +25,7 @@ public class OrmMixedDAO {
 	private JdbcTemplate               jdbcTemplate;
 
 	private static final String SELECT_ALL_SQL = "select id, mixed_name as mixedName, mixed_desc as mixedDesc, state, db_type as dbType, " +
-			"create_user as createUser, create_time as createTime, update_time as updateTime " +
+			"config_param as configParam, create_user as createUser, create_time as createTime, update_time as updateTime " +
 			"from t_orm_mixed where 1 = 1 ";
 
 	public OrmMixedEntity selectByMixedName(String mixedName) {

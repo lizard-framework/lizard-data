@@ -1,4 +1,7 @@
 $(function () {
+    // init table
+    initTable();
+
     // id:id_btn_query onClick
     $("#id_btn_query").click(function () {
         // init table
@@ -22,7 +25,7 @@ function initTable() {
 
     OperField.prototype = new jsGrid.Field({
         itemTemplate: function (value, item) {
-            return "<button type=\"button\" class=\"btn btn-info btn-sm\" onclick=\"openDetailPage(" + item.id + ")\">详情</button>";
+            return "<button type=\"button\" class=\"btn btn-info btn-sm\" onclick=\"openDetailPage('" + item.mixedName + "')\">详情</button>";
         }
     });
     jsGrid.fields.operField = OperField;
@@ -66,6 +69,6 @@ function initTable() {
 }
 
 
-function openDetailPage(id) {
-    window.location.href = page_application_orm_detail + id;
+function openDetailPage(mixedName) {
+    window.location.href = page_application_orm_detail + mixedName;
 }

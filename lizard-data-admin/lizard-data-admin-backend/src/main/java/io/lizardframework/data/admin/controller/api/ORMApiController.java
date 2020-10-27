@@ -33,7 +33,7 @@ public class ORMApiController {
 	public Resp<MixedDataSourceModel> getMixedConfig(@RequestBody ORMGetMixedConfigParams params) {
 		log.info("[/api/orm/getMixedConfig] request params:{}", JSONUtils.toJSONString(params));
 
-		MixedDataSourceModel model = ormMixedService.queryMixedDataSource(params.getMixedName());
+		MixedDataSourceModel model = ormMixedService.queryMixedDataSource(params);
 
 		return new Resp<>(model);
 	}
