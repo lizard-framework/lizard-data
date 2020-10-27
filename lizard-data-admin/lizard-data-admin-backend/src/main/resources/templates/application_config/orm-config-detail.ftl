@@ -50,8 +50,8 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="custom-content-code-spring-tab" data-toggle="pill"
-                                   href="#custom-content-above-profile" role="tab"
-                                   aria-controls="custom-content-above-profile"
+                                   href="#custom-content-code-springboot-home" role="tab"
+                                   aria-controls="custom-content-code-springboot-home"
                                    aria-selected="false">代码示例(Spring Boot)</a>
                             </li>
                         </ul>
@@ -247,12 +247,20 @@
 
                             <div class="tab-pane fade" id="custom-content-code-spring-home" role="tabpanel"
                                  aria-labelledby="custom-content-code-spring-tab">
-                            <pre>
-                                <code class="java">
-public class Test {
-    public static void main() {
-    }
-}
+                                <p class="mt-4 mb-0 ml-1">应用配置(applicationContext.xml):</p>
+                                <pre class="pt-0 pl-0 pr-0 pb-0">
+                                <code class="xml mt-0">
+${detail.springXmlCode}
+                                </code>
+                            </pre>
+                            </div>
+
+                            <div class="tab-pane fade" id="custom-content-code-springboot-home" role="tabpanel"
+                                 aria-labelledby="custom-content-code-springboot-tab">
+                                <p class="mt-4 mb-0 ml-1">应用配置(application.properties):</p>
+                                <pre class="pt-0 pl-0 pr-0 pb-0">
+                                <code class="properties mt-0">
+${detail.springBootPropertiesCode}
                                 </code>
                             </pre>
                             </div>

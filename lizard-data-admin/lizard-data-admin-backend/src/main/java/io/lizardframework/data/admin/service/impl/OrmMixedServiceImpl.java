@@ -12,6 +12,7 @@ import io.lizardframework.data.admin.message.RespMessage;
 import io.lizardframework.data.admin.model.OrmMixedDetailModel;
 import io.lizardframework.data.admin.model.OrmMixedInfoModel;
 import io.lizardframework.data.admin.service.OrmMixedService;
+import io.lizardframework.data.admin.support.CodeTemplateSupport;
 import io.lizardframework.data.enums.LoadBalanceType;
 import io.lizardframework.data.enums.MasterSlaveType;
 import io.lizardframework.data.enums.State;
@@ -28,10 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -43,9 +41,11 @@ import java.util.stream.Collectors;
 public class OrmMixedServiceImpl implements OrmMixedService {
 
 	@Autowired
-	private OrmMixedDAO      ormMixedDAO;
+	private OrmMixedDAO         ormMixedDAO;
 	@Autowired
-	private OrmRepositoryDAO ormRepositoryDAO;
+	private OrmRepositoryDAO    ormRepositoryDAO;
+	@Autowired
+	private CodeTemplateSupport codeTemplateSupport;
 
 
 	@Override
@@ -94,6 +94,16 @@ public class OrmMixedServiceImpl implements OrmMixedService {
 		if (StringUtils.isNotEmpty(configJson)) {
 			detailModel.setApplicationList(this.getConfigParamApplication(configJson));
 		}
+
+		// gen sample code: spring xml
+		Map<String, Object> templateParam = new HashMap<>();
+		templateParam.put("MixedDataSourceName", mixedName);
+		String springXmlCode = codeTemplateSupport.genCodeStr("orm_spring_xml.ftl", templateParam, true);
+		detailModel.setSpringXmlCode(springXmlCode);
+
+		// gen sample code: spring boot properties
+		String springBootPropertiesCode = codeTemplateSupport.genCodeStr("orm_springboot_properties.ftl", templateParam, true);
+		detailModel.setSpringBootPropertiesCode(springBootPropertiesCode);
 
 		return detailModel;
 	}

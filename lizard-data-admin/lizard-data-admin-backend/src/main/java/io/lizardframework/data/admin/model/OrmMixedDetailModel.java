@@ -47,6 +47,14 @@ public class OrmMixedDetailModel {
 	 * 创建时间
 	 */
 	private String                         createTime;
+	/**
+	 * spring xml 文件代码
+	 */
+	private String                         springXmlCode;
+	/**
+	 * spring boot properties 文件代码
+	 */
+	private String                         springBootPropertiesCode;
 
 	public OrmMixedDetailModel(MixedDataSourceModel model) {
 		this.setMixedName(model.getMixedName());
