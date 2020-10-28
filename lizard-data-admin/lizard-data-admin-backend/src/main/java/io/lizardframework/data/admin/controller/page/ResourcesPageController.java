@@ -25,4 +25,16 @@ public class ResourcesPageController {
 
 		return mav;
 	}
+
+	/**
+	 * go to application_index.ftl page
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "applications", method = RequestMethod.GET)
+	public ModelAndView application() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("resources/application_index");
+		return mav;
+	}
 }

@@ -162,7 +162,7 @@
                  alt="AdminLTE Logo"
                  class="brand-image img-circle elevation-3"
                  style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <span class="brand-text font-weight-light">Lizard-Data Admin</span>
         </a>
 
         <!-- Sidebar -->
@@ -173,7 +173,7 @@
                     <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <a href="#" class="d-block">xueqi</a>
                 </div>
             </div>
 
@@ -243,6 +243,12 @@
                                 <a href="/resources/databases" class="nav-link">
                                     <i class="far fa-th nav-icon"></i>
                                     <p>关系型数据库</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/resources/applications" class="nav-link">
+                                    <i class="far fa-th nav-icon"></i>
+                                    <p>应用管理</p>
                                 </a>
                             </li>
                         </ul>

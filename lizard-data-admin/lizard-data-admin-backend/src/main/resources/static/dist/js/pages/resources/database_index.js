@@ -1,4 +1,6 @@
 $(function () {
+    // init table
+    initTable();
 
     // id:id_btn_query onClick
     $("#id_btn_query").click(function () {
