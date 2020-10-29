@@ -11,7 +11,7 @@ import java.util.List;
  * @author xueqi
  * @date 2020-10-16
  */
-public interface DataBaseService {
+public interface DatabaseService {
 
 	PageableResp<List<DataBaseInfoModel>> queryPage(DataBaseListParam param);
 

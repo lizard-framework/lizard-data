@@ -226,6 +226,7 @@
                                                                         <td>${atom.weight}</td>
                                                                         <td>${atom.dataSourcePoolType}</td>
                                                                         <td><textarea class="form-control" rows="3"
+                                                                                      cols="30"
                                                                                       readonly>${atom.params}</textarea>
                                                                         </td>
                                                                         <td><textarea class="form-control" rows="3"
@@ -249,20 +250,16 @@
                                  aria-labelledby="custom-content-code-spring-tab">
                                 <p class="mt-4 mb-0 ml-1">应用配置(applicationContext.xml):</p>
                                 <pre class="pt-0 pl-0 pr-0 pb-0">
-                                <code class="xml mt-0">
-${detail.springXmlCode}
-                                </code>
-                            </pre>
+                                    <code class="xml mt-0">${detail.springXmlCode}</code>
+                                </pre>
                             </div>
 
                             <div class="tab-pane fade" id="custom-content-code-springboot-home" role="tabpanel"
                                  aria-labelledby="custom-content-code-springboot-tab">
                                 <p class="mt-4 mb-0 ml-1">应用配置(application.properties):</p>
                                 <pre class="pt-0 pl-0 pr-0 pb-0">
-                                <code class="properties mt-0">
-${detail.springBootPropertiesCode}
-                                </code>
-                            </pre>
+                                    <code class="properties mt-0">${detail.springBootPropertiesCode}</code>
+                                </pre>
                             </div>
                         </div>
                     </div>

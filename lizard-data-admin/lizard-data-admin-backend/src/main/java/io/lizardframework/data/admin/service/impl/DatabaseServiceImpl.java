@@ -7,7 +7,7 @@ import io.lizardframework.data.admin.dao.DbInfoDAO;
 import io.lizardframework.data.admin.dao.entity.DbInfoEntity;
 import io.lizardframework.data.admin.model.DataBaseInfoModel;
 import io.lizardframework.data.admin.service.CryptoService;
-import io.lizardframework.data.admin.service.DataBaseService;
+import io.lizardframework.data.admin.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @date 2020-10-16
  */
 @Service
-public class DataBaseServiceImpl implements DataBaseService {
+public class DatabaseServiceImpl implements DatabaseService {
 
 	@Autowired
 	private CryptoService cryptoService;

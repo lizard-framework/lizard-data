@@ -7,7 +7,6 @@ $(function () {
         // init table
         initTable();
     });
-
     $("#id_form_query").submit(function (e) {
         e.preventDefault();
         // init table
@@ -23,6 +22,7 @@ $(function () {
         $("#id_form_add_db_password").val("");
     });
 
+    // add database button click
     $("#id_form_add_btn").click(function () {
         const params = {};
         params.dbType = $("#id_form_add_db_type").val();

@@ -9,23 +9,18 @@ import java.util.Map;
 
 /**
  * @author xueqi
- * @date 2020-10-16
+ * @date 2020-10-29
  */
 @Data
-public class DataBaseListParam extends PageableParam {
+public class ApplicationListParam extends PageableParam {
 
-	private String dbType;
-	private String dbName;
+	private String applicationName;
 
 	public Map<String, Object> toMapper() {
 		Map<String, Object> params = new HashMap<>();
-		if (StringUtils.isNotEmpty(dbType))
-			params.put("db_type", dbType);
-
-		if (StringUtils.isNotEmpty(dbName))
-			params.put("db_name", dbName);
+		if (StringUtils.isNotEmpty(applicationName))
+			params.put("applicationName", "%" + applicationName + "%");
 
 		return params;
 	}
-
 }

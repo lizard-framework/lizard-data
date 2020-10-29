@@ -5,7 +5,7 @@ import io.lizardframework.data.admin.commons.Resp;
 import io.lizardframework.data.admin.controller.operator.resources.params.DataBaseAddParam;
 import io.lizardframework.data.admin.controller.operator.resources.params.DataBaseListParam;
 import io.lizardframework.data.admin.model.DataBaseInfoModel;
-import io.lizardframework.data.admin.service.DataBaseService;
+import io.lizardframework.data.admin.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class DatabaseOperApiController {
 
 
 	@Autowired
-	private DataBaseService dataBaseService;
+	private DatabaseService databaseService;
 
 	/**
 	 * list query
@@ -31,7 +31,7 @@ public class DatabaseOperApiController {
 	 */
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public PageableResp<List<DataBaseInfoModel>> list(DataBaseListParam param) {
-		PageableResp<List<DataBaseInfoModel>> data = dataBaseService.queryPage(param);
+		PageableResp<List<DataBaseInfoModel>> data = databaseService.queryPage(param);
 		return data;
 	}
 
@@ -43,7 +43,7 @@ public class DatabaseOperApiController {
 	 */
 	@RequestMapping(method = RequestMethod.PUT)
 	public Resp add(@RequestBody DataBaseAddParam param) {
-		dataBaseService.save(param);
+		databaseService.save(param);
 		return new Resp();
 	}
 
@@ -55,7 +55,7 @@ public class DatabaseOperApiController {
 	 */
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
 	public Resp<DataBaseInfoModel> queryBasicInfo(@PathVariable Long id) {
-		DataBaseInfoModel info = dataBaseService.queryBasicById(id);
+		DataBaseInfoModel info = databaseService.queryBasicById(id);
 		return new Resp<>(info);
 	}
 
@@ -67,7 +67,7 @@ public class DatabaseOperApiController {
 	 */
 	@RequestMapping(value = "authinfo/{id}", method = RequestMethod.GET)
 	public Resp<DataBaseInfoModel> queryAuthInfo(@PathVariable Long id) {
-		DataBaseInfoModel info = dataBaseService.queryAuthInfoById(id);
+		DataBaseInfoModel info = databaseService.queryAuthInfoById(id);
 
 		return new Resp<>(info);
 	}

@@ -2,6 +2,7 @@ const api_resources_database_list = '/operator/resources/database/list';
 const api_resources_database_add = '/operator/resources/database';
 const api_resources_database_detail = '/operator/resources/database/';
 const api_resources_database_auth = '/operator/resources/database/authinfo/';
+const api_resources_application_list = '/operator/resources/application/list';
 
 const api_application_orm_list = '/operator/application-config/orm/list';
 
