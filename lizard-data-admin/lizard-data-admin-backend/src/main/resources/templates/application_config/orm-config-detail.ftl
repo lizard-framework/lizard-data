@@ -115,8 +115,7 @@
                                             <div class="col-sm-5">
                                                 <#if detail.applicationList?? && (detail.applicationList?size>0)>
                                                     <select id="id_mixed_application" class="select2"
-                                                            multiple="multiple"
-                                                            data-placeholder="Select a State" style="width: 100%;">
+                                                            multiple="multiple" style="width: 100%;">
                                                         <#list detail.applicationList as application>
                                                             <option value="${application}"
                                                                     selected>${application}</option>
