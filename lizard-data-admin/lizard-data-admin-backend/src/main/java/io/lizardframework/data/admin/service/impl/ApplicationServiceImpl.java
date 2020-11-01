@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +43,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Override
 	public void save(ApplicationAddParam param) {
-		Date date = new Date();
+		Date                  date   = new Date();
 		ApplicationInfoEntity record = new ApplicationInfoEntity();
 
 		record.setApplicationName(param.getApplicationName());
@@ -55,5 +53,19 @@ public class ApplicationServiceImpl implements ApplicationService {
 		record.setUpdateTime(date);
 
 		applicationInfoDAO.save(record);
+	}
+
+	@Override
+	public List<ApplicationInfoModel> queryAll() {
+		Map<String, Object> params = new HashMap<>();
+
+		// 查询全部记录
+		List<ApplicationInfoEntity> list = applicationInfoDAO.selectPage(params, null);
+		if (!CollectionUtils.isEmpty(list)) {
+			List<ApplicationInfoModel> resultlist = list.stream().map(entity -> new ApplicationInfoModel(entity)).collect(Collectors.toList());
+			return resultlist;
+		}
+
+		return new ArrayList<>(0);
 	}
 }

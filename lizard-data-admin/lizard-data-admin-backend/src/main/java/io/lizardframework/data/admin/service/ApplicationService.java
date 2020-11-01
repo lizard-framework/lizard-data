@@ -16,4 +16,6 @@ public interface ApplicationService {
 	PageableResp<List<ApplicationInfoModel>> queryPage(ApplicationListParam param);
 
 	void save(ApplicationAddParam param);
+
+	List<ApplicationInfoModel> queryAll();
 }

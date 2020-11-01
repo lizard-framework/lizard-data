@@ -81,12 +81,22 @@
                             <div class="col-sm-4">
                                 <select id="id_mixed_application" class="select2"
                                         multiple="multiple" style="width: 100%;">
+                                    <#if all_application_list?? && (all_application_list?size > 0)>
+                                        <#list all_application_list as application>
+                                            <option value="${application.applicationName}">${application.applicationName}</option>
+                                        </#list>
+                                    </#if>
                                 </select>
                             </div>
                         </div>
                     </form>
 
                     <h5 class="mt-4 mb-3">分库配置(Repository Sharding):</h5>
+                    <div class="row">
+                        <div class="col-1">
+                            <button type="button" class="btn btn-success btn-sm" id="id_btn_add">+</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

@@ -55,7 +55,7 @@ public class ApplicationInfoDAO {
 		buildQueryParam(sqlBuilder, params);
 
 		// add page param
-		if (pageable.getOffset() >= 0 && pageable.getPageSize() > 0) {
+		if (pageable!= null && (pageable.getOffset() >= 0 && pageable.getPageSize() > 0)) {
 			sqlBuilder.append(" limit :offset, :pageSize");
 			params.put("offset", pageable.getOffset());
 			params.put("pageSize", pageable.getPageSize());
