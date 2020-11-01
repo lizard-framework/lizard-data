@@ -51,6 +51,12 @@
                                         查询
                                     </button>
                                 </div>
+
+                                <div class="col-1">
+                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#id_add_modal">新增
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -59,7 +65,57 @@
                 </div>
             </div>
         </section>
+    </div>
 
+    <!-- add database modal -->
+    <div class="modal fade" id="id_add_modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">新增应用</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="id_form_add_application_name" class="col-form-label">应用名称:</label>
+                                    <input type="text" class="form-control form-control-sm"
+                                           id="id_form_add_application_name">
+                                </div>
+                            </div>
+
+                            <div class="offset-sm-1 col-sm-4">
+                                <div class="form-group">
+                                    <label for="id_form_add_owner_name" class="col-form-label">负责人:</label>
+                                    <input type="text" class="form-control form-control-sm"
+                                           id="id_form_add_owner_name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="id_form_add_application_desc" class="col-form-label">应用描述:</label>
+                                    <input type="text" class="form-control form-control-sm"
+                                           id="id_form_add_application_desc">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="id_form_add_btn">保存</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

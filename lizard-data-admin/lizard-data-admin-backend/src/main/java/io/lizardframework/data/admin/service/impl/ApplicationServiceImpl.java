@@ -1,6 +1,7 @@
 package io.lizardframework.data.admin.service.impl;
 
 import io.lizardframework.data.admin.commons.PageableResp;
+import io.lizardframework.data.admin.controller.operator.resources.params.ApplicationAddParam;
 import io.lizardframework.data.admin.controller.operator.resources.params.ApplicationListParam;
 import io.lizardframework.data.admin.dao.ApplicationInfoDAO;
 import io.lizardframework.data.admin.dao.entity.ApplicationInfoEntity;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,5 +41,19 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 
 		return new PageableResp<>(count, new ArrayList<>(0));
+	}
+
+	@Override
+	public void save(ApplicationAddParam param) {
+		Date date = new Date();
+		ApplicationInfoEntity record = new ApplicationInfoEntity();
+
+		record.setApplicationName(param.getApplicationName());
+		record.setApplicationDesc(param.getApplicationDesc());
+		record.setOwnerName(param.getOwner());
+		record.setCreateTime(date);
+		record.setUpdateTime(date);
+
+		applicationInfoDAO.save(record);
 	}
 }

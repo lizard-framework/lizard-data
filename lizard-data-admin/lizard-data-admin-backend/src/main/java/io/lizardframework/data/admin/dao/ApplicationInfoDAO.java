@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,20 @@ public class ApplicationInfoDAO {
 		buildQueryParam(sqlBuilder, params);
 
 		return namedParameterJdbcTemplate.queryForObject(sqlBuilder.toString(), params, Long.class);
+	}
+
+	public void save(ApplicationInfoEntity entity) {
+		String sql = "insert into t_application_info(application_name, application_desc, owner_name, create_time, update_time) values(?,?,?,?,?)";
+
+		jdbcTemplate.update(sql, ps -> {
+			int index = 0;
+
+			ps.setString(++index, entity.getApplicationName());
+			ps.setString(++index, entity.getApplicationDesc());
+			ps.setString(++index, entity.getOwnerName());
+			ps.setTimestamp(++index, new Timestamp(entity.getCreateTime().getTime()));
+			ps.setTimestamp(++index, new Timestamp(entity.getUpdateTime().getTime()));
+		});
 	}
 
 	public List<ApplicationInfoEntity> selectPage(Map<String, Object> params, Pageable pageable) {

@@ -1,13 +1,13 @@
 package io.lizardframework.data.admin.controller.operator.resources;
 
 import io.lizardframework.data.admin.commons.PageableResp;
+import io.lizardframework.data.admin.commons.Resp;
+import io.lizardframework.data.admin.controller.operator.resources.params.ApplicationAddParam;
 import io.lizardframework.data.admin.controller.operator.resources.params.ApplicationListParam;
 import io.lizardframework.data.admin.model.ApplicationInfoModel;
 import io.lizardframework.data.admin.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,4 +28,9 @@ public class ApplicationOperApiController {
 		return data;
 	}
 
+	@PutMapping
+	public Resp add(@RequestBody ApplicationAddParam param) {
+		applicationService.save(param);
+		return new Resp();
+	}
 }

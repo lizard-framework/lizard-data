@@ -11,6 +11,29 @@ $(function () {
         // init table
         initTable();
     });
+
+    // add application modal: before show modal
+    $("#id_add_modal").on("show.bs.modal", function () {
+        $("#id_form_add_application_name").val("");
+        $("#id_form_add_owner_name").val("");
+        $("#id_form_add_application_desc").val("");
+    });
+
+    // add database button click
+    $("#id_form_add_btn").click(function () {
+        const params = {};
+        params.applicationName = $("#id_form_add_application_name").val();
+        params.applicationDesc = $("#id_form_add_application_desc").val();
+        params.owner = $("#id_form_add_owner_name").val();
+
+        callApi(api_resources_application_add, "PUT", params, function (result) {
+            alertTopEnd('添加应用信息成功', 'success', 6000);
+            $("#id_add_modal").modal('hide');
+            initTable();
+
+            return null;
+        }, null);
+    });
 });
 
 
