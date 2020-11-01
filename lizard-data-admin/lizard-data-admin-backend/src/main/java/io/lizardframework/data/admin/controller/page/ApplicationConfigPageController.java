@@ -21,21 +21,28 @@ public class ApplicationConfigPageController {
 	private OrmMixedService ormMixedService;
 
 	@RequestMapping(value = "orm", method = RequestMethod.GET)
-	public ModelAndView databaseConfigList() {
+	public ModelAndView ormConfigList() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("application_config/orm-config-list");
 
 		return mav;
 	}
 
-	@RequestMapping(value = "orm/{mixedName}", method = RequestMethod.GET)
-	public ModelAndView databaseConfigDetail(@PathVariable("mixedName") String mixedName) {
+	@RequestMapping(value = "orm/detail/{mixedName}", method = RequestMethod.GET)
+	public ModelAndView ormConfigDetail(@PathVariable("mixedName") String mixedName) {
 		OrmMixedDetailModel detail = ormMixedService.queryDetailByMixedName(mixedName);
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("application_config/orm-config-detail");
 		mav.addObject("detail", detail);
 
+		return mav;
+	}
+
+	@RequestMapping(value = "orm/add", method = RequestMethod.GET)
+	public ModelAndView ormConfigAdd() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("application_config/orm-config-add");
 		return mav;
 	}
 }

@@ -13,6 +13,10 @@ $(function () {
         // init table
         initTable();
     });
+
+    $("#id_btn_add").click(function () {
+        window.location.href = page_application_orm_add;
+    });
 });
 
 // init table

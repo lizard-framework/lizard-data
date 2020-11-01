@@ -51,8 +51,7 @@
                                 </div>
 
                                 <div class="col-1">
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                                            data-target="#id_add_modal">新增
+                                    <button type="button" class="btn btn-danger btn-sm" id="id_btn_add">新增
                                     </button>
                                 </div>
                             </div>
