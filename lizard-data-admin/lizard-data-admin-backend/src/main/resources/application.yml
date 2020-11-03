@@ -26,6 +26,11 @@ spring:
     suffix: .ftl
     settings:
       template_update_delay: 0
+  redis:
+    database: 0
+    host: lizard-redis-server
+    port: 6379
+    password: ${DATA_REDIS_PASSWORD}
 
 
 crypto:

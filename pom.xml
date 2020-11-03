@@ -2,277 +2,285 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>io.lizardframework</groupId>
-	<artifactId>lizard-data</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>lizard-data</name>
-	<description>Lizard Data Framework</description>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.lizardframework</groupId>
+    <artifactId>lizard-data</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>lizard-data</name>
+    <description>Lizard Data Framework</description>
 
-	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- dependency version define -->
-		<lombok.version>1.18.12</lombok.version>
-		<slf4j.version>1.7.30</slf4j.version>
-		<apache-commons-lang3.version>3.11</apache-commons-lang3.version>
-		<apache-commons-io.version>2.8.0</apache-commons-io.version>
-		<mysql.driver.version>8.0.21</mysql.driver.version>
-		<alibaba.druid.version>1.1.24</alibaba.druid.version>
-		<hikariCP.version>3.4.5</hikariCP.version>
-		<redisson.version>3.13.4</redisson.version>
-		<gson.version>2.8.6</gson.version>
-		<apache-httpclient.version>4.5.12</apache-httpclient.version>
-		<aspectj-weaver.version>1.9.6</aspectj-weaver.version>
-		<mybatis.version>3.5.5</mybatis.version>
-		<mybatis-spring.version>2.0.5</mybatis-spring.version>
+        <!-- dependency version define -->
+        <lombok.version>1.18.12</lombok.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <apache-commons-lang3.version>3.11</apache-commons-lang3.version>
+        <apache-commons-io.version>2.8.0</apache-commons-io.version>
+        <mysql.driver.version>8.0.21</mysql.driver.version>
+        <alibaba.druid.version>1.1.24</alibaba.druid.version>
+        <hikariCP.version>3.4.5</hikariCP.version>
+        <redisson.version>3.13.4</redisson.version>
+        <redisson-spring-boot.version>3.13.6</redisson-spring-boot.version>
+        <gson.version>2.8.6</gson.version>
+        <apache-httpclient.version>4.5.12</apache-httpclient.version>
+        <aspectj-weaver.version>1.9.6</aspectj-weaver.version>
+        <mybatis.version>3.5.5</mybatis.version>
+        <mybatis-spring.version>2.0.5</mybatis-spring.version>
 
-		<spring.version>5.2.8.RELEASE</spring.version>
-		<spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+        <spring.version>5.2.8.RELEASE</spring.version>
+        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
 
-		<junit.version>4.12</junit.version>
-	</properties>
+        <junit.version>4.12</junit.version>
+    </properties>
 
-	<modules>
-		<module>lizard-data-orm</module>
-		<module>lizard-data-cache</module>
-		<module>lizard-data-core</module>
-		<module>lizard-data-admin</module>
-	</modules>
+    <modules>
+        <module>lizard-data-orm</module>
+        <module>lizard-data-cache</module>
+        <module>lizard-data-core</module>
+        <module>lizard-data-admin</module>
+    </modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<!--## module dependencies ##-->
-			<dependency>
-				<groupId>io.lizardframework</groupId>
-				<artifactId>lizard-data-core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<!-- lizard-data-cache -->
-			<dependency>
-				<groupId>io.lizardframework</groupId>
-				<artifactId>lizard-data-cache</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<!-- lizard-data-orm -->
-			<dependency>
-				<groupId>io.lizardframework</groupId>
-				<artifactId>lizard-data-orm-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.lizardframework</groupId>
-				<artifactId>lizard-data-orm</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<!--## module dependencies ##-->
+    <dependencyManagement>
+        <dependencies>
+            <!--## module dependencies ##-->
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- lizard-data-cache -->
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- lizard-data-orm -->
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-orm-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-orm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--## module dependencies ##-->
 
-			<!--## other dependencies define ##-->
-			<!-- lombok -->
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-				<scope>provided</scope>
-			</dependency>
+            <!--## other dependencies define ##-->
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<!-- slf4j -->
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>jul-to-slf4j</artifactId>
-				<version>${slf4j.version}</version>
-			</dependency>
+            <!-- slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
 
-			<!-- apache commons -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${apache-commons-lang3.version}</version>
-			</dependency>
+            <!-- apache commons -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${apache-commons-lang3.version}</version>
+            </dependency>
 
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>${apache-commons-io.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${apache-commons-io.version}</version>
+            </dependency>
 
-			<!-- # database dependencies scope is provided -->
-			<!-- mysql driver -->
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>${mysql.driver.version}</version>
-				<scope>provided</scope>
-			</dependency>
+            <!-- # database dependencies scope is provided -->
+            <!-- mysql driver -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.driver.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<!-- alibaba druid -->
-			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid</artifactId>
-				<version>${alibaba.druid.version}</version>
-				<scope>provided</scope>
-			</dependency>
+            <!-- alibaba druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${alibaba.druid.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<!-- HikariCP -->
-			<dependency>
-				<groupId>com.zaxxer</groupId>
-				<artifactId>HikariCP</artifactId>
-				<version>${hikariCP.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<!-- # database dependencies scope is provided -->
+            <!-- HikariCP -->
+            <dependency>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hikariCP.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- # database dependencies scope is provided -->
 
-			<!-- # spring dependencies scope is provided -->
-			<!-- Spring Boot -->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>${spring-boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+            <!-- # spring dependencies scope is provided -->
+            <!-- Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
-			<!-- Spring Framework -->
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-jdbc</artifactId>
-				<version>${spring.version}</version>
-				<scope>provided</scope>
-			</dependency>
+            <!-- Spring Framework -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-aop</artifactId>
-				<version>${spring.version}</version>
-				<scope>provided</scope>
-			</dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<!-- # spring dependencies scope is provided -->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- # spring dependencies scope is provided -->
 
-			<!-- # mybatis dependencies scope is provided -->
-			<!-- mybatis -->
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis</artifactId>
-				<version>${mybatis.version}</version>
-				<scope>provided</scope>
-			</dependency>
+            <!-- # mybatis dependencies scope is provided -->
+            <!-- mybatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis-spring</artifactId>
-				<version>${mybatis-spring.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<!-- # mybatis dependencies scope is provided -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${mybatis-spring.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- # mybatis dependencies scope is provided -->
 
-			<!-- # redisson dependencies scope is provided -->
-			<!-- redission -->
-			<dependency>
-				<groupId>org.redisson</groupId>
-				<artifactId>redisson</artifactId>
-				<version>${redisson.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<!-- # redisson dependencies scope is provided -->
+            <!-- # redisson dependencies scope is provided -->
+            <!-- redission -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- # redisson dependencies scope is provided -->
 
-			<!-- aspectj -->
-			<dependency>
-				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjweaver</artifactId>
-				<version>${aspectj-weaver.version}</version>
-			</dependency>
+            <!-- aspectj -->
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>${aspectj-weaver.version}</version>
+            </dependency>
 
-			<!-- gson -->
-			<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>${gson.version}</version>
-			</dependency>
+            <!-- gson -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
 
-			<!-- apache httpclient -->
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>${apache-httpclient.version}</version>
-			</dependency>
+            <!-- apache httpclient -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${apache-httpclient.version}</version>
+            </dependency>
 
-			<!-- junit -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<!--## other dependencies define ##-->
-		</dependencies>
-	</dependencyManagement>
+            <!-- redisson-spring-boot-starter -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson-spring-boot.version}</version>
+            </dependency>
 
-	<!-- all project scope dependencies -->
-	<dependencies>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
+            <!-- junit -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!--## other dependencies define ##-->
+        </dependencies>
+    </dependencyManagement>
 
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
+    <!-- all project scope dependencies -->
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<generateBackupPoms>false</generateBackupPoms>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
