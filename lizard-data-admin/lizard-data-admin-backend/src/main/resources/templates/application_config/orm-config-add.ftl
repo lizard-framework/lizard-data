@@ -2,6 +2,7 @@
 <html>
 <head>
     <#include "../marco/base.ftl"/>
+    <#include "../marco/orm-config-add-base.ftl"/>
     <title>Lizard-Data-Admin</title>
     <@style/>
 </head>
@@ -36,65 +37,72 @@
                 </div>
 
                 <div class="card-body pl-sm-5">
-                    <form id="id_form_query" class="form-horizontal">
-                        <div class="form-group row">
-                            <div class="col-sm-1">
-                                <label for="id_mixed_name" class="col-form-label">名称：</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <input class="form-control" placeholder="Mixed DataSource Name">
-                            </div>
+                    <div class="row offset-sm-3 mb-3">
+                        <@step_bar_1/>
+                    </div>
 
-                            <div class="offset-sm-1 col-sm-1">
-                                <label for="id_mixed_state"
-                                       class="col-form-label offset-sm-1">状态：</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="checkbox" name="my-checkbox" checked
-                                       data-bootstrap-switch readonly
-                                       id="id_mixed_state">
-                            </div>
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <form id="id_form_query" class="form-horizontal">
+                                <div class="form-group row">
+                                    <div class="col-sm-1">
+                                        <label for="id_mixed_name" class="col-form-label">名称：</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input class="form-control" placeholder="Mixed DataSource Name">
+                                    </div>
+
+                                    <div class="offset-sm-1 col-sm-1">
+                                        <label for="id_mixed_state"
+                                               class="col-form-label offset-sm-1">状态：</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" name="my-checkbox" checked
+                                               data-bootstrap-switch readonly
+                                               id="id_mixed_state">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-1">
+                                        <label for="id_mixed_desc" class="col-form-label">描述：</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <textarea class="form-control"></textarea>
+                                    </div>
+
+                                    <div class="offset-sm-1 col-sm-1">
+                                        <label for="id_mixed_dbType" class="col-form-label">数据库：</label>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <select class="form-control">
+                                            <option value="mysql">MYSQL</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-1">
+                                        <label for="id_mixed_application" class="col-form-label">应用：</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <select id="id_mixed_application" class="select2"
+                                                multiple="multiple" style="width: 100%;">
+                                            <#if all_application_list?? && (all_application_list?size > 0)>
+                                                <#list all_application_list as application>
+                                                    <option value="${application.applicationName}">${application.applicationName}</option>
+                                                </#list>
+                                            </#if>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                    </div>
 
-                        <div class="form-group row">
-                            <div class="col-sm-1">
-                                <label for="id_mixed_desc" class="col-form-label">描述：</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <textarea class="form-control"></textarea>
-                            </div>
-
-                            <div class="offset-sm-1 col-sm-1">
-                                <label for="id_mixed_dbType" class="col-form-label">数据库：</label>
-                            </div>
-                            <div class="col-sm-1">
-                                <select class="form-control">
-                                    <option value="mysql">MYSQL</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-sm-1">
-                                <label for="id_mixed_application" class="col-form-label">应用：</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <select id="id_mixed_application" class="select2"
-                                        multiple="multiple" style="width: 100%;">
-                                    <#if all_application_list?? && (all_application_list?size > 0)>
-                                        <#list all_application_list as application>
-                                            <option value="${application.applicationName}">${application.applicationName}</option>
-                                        </#list>
-                                    </#if>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-
-                    <h5 class="mt-4 mb-3">分库配置(Repository Sharding):</h5>
                     <div class="row">
-                        <div class="col-1">
-                            <button type="button" class="btn btn-success btn-sm" id="id_btn_add">+</button>
+                        <div class="offset-sm-10">
+                            <button type="button" class="btn btn-success btn-block" id="id_btn_add">下一步</button>
                         </div>
                     </div>
                 </div>
