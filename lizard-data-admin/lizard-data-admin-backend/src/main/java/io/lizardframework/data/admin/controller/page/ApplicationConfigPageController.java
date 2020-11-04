@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -50,6 +51,8 @@ public class ApplicationConfigPageController {
 		List<ApplicationInfoModel> allApplicationList = applicationService.queryAll();
 
 		ModelAndView mav = new ModelAndView();
+		// 写入reference_id，作为一次添加的标记
+		mav.addObject("reference_id", Instant.now().toEpochMilli() + "");
 		mav.setViewName("application_config/orm-config-add");
 
 		mav.addObject("all_application_list", allApplicationList);

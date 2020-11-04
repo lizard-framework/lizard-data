@@ -10,10 +10,15 @@
     <packaging>pom</packaging>
 
     <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
         <lizard-data.version>1.0.0-SNAPSHOT</lizard-data.version>
         <mysql.driver.version>8.0.21</mysql.driver.version>
         <redisson-spring-boot.version>3.13.6</redisson-spring-boot.version>
+        <lombok.version>1.18.12</lombok.version>
     </properties>
 
     <modules>
@@ -29,6 +34,14 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <!-- redisson-spring-boot-starter -->
@@ -52,7 +65,6 @@
                 <artifactId>lizard-data-core</artifactId>
                 <version>${lizard-data.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.lizardframework</groupId>
                 <artifactId>lizard-data-orm-api</artifactId>

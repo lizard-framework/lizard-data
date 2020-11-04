@@ -1,6 +1,15 @@
 # lizard-data
 
+
 ## lizard-data-orm
+
+**名词解释**
+
+| 名称 | 说明 |
+|----|----|
+| MixedDataSource | 数据库聚合数据源 |
+| RepositoryDataSource | 数据库分库聚合数据源 |
+| AtomDataSource | 数据库原子数据源 |
 
 ### 场景验证结果
 

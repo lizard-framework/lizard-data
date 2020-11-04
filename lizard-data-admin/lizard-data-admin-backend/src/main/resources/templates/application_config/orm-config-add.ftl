@@ -102,6 +102,7 @@
 
                     <div class="row">
                         <div class="offset-sm-10">
+                            <input type="hidden" id="reference_id" value="${reference_id}">
                             <button type="button" class="btn btn-success btn-block" id="id_btn_add">下一步</button>
                         </div>
                     </div>
