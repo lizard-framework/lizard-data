@@ -2,16 +2,62 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<artifactId>lizard-data</artifactId>
-		<groupId>io.lizardframework</groupId>
-		<version>1.0.0-SNAPSHOT</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>lizard-data-admin</artifactId>
-	<packaging>pom</packaging>
-	<modules>
-		<module>lizard-data-admin-backend</module>
-	</modules>
 
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.lizardframework</groupId>
+    <artifactId>lizard-data-admin</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+        <lizard-data.version>1.0.0-SNAPSHOT</lizard-data.version>
+        <mysql.driver.version>8.0.21</mysql.driver.version>
+        <redisson-spring-boot.version>3.13.6</redisson-spring-boot.version>
+    </properties>
+
+    <modules>
+        <module>lizard-data-admin-backend</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- redisson-spring-boot-starter -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson-spring-boot.version}</version>
+            </dependency>
+
+            <!-- mysql driver -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.driver.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- lizard-data -->
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-core</artifactId>
+                <version>${lizard-data.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.lizardframework</groupId>
+                <artifactId>lizard-data-orm-api</artifactId>
+                <version>${lizard-data.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
