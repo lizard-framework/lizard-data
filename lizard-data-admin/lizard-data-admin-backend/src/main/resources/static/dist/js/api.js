@@ -7,8 +7,9 @@ const api_resources_application_add = '/operator/resources/application';
 
 const api_application_orm_list = '/operator/application-config/orm/list';
 
-const page_application_orm_detail = '/application-config/orm/detail/';
-const page_application_orm_add = '/application-config/orm/add';
+// 应用配置-数据源配置-详情页面
+const page_application_config_datasource_detail = '/application-config/datasource/detail/';
+const page_application_config_datasource_add = '/application-config/datasource/addition';
 
 // call api
 function callApi(api, method, params, SuccFunc, FailFunc) {

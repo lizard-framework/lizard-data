@@ -194,13 +194,13 @@
                             <li class="nav-item">
                                 <a href="../layout/top-nav.html" class="nav-link">
                                     <i class="far fa-th nav-icon"></i>
-                                    <p>缓存</p>
+                                    <p>缓存配置(Cache)</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/application-config/orm" class="nav-link">
+                                <a href="/application-config/datasource/index" class="nav-link">
                                     <i class="far fa-th nav-icon"></i>
-                                    <p>关系型数据库</p>
+                                    <p>数据源配置(DataSource)</p>
                                 </a>
                             </li>
                         </ul>
@@ -234,21 +234,21 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../UI/general.html" class="nav-link">
-                                    <i class="far fa-th nav-icon"></i>
-                                    <p>缓存</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/resources-manager/database-manager/index" class="nav-link">
-                                    <i class="far fa-th nav-icon"></i>
-                                    <p>数据库管理</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/resources-manager/application-manager/index" class="nav-link">
+                                <a href="/resources-manager/application/index" class="nav-link">
                                     <i class="far fa-th nav-icon"></i>
                                     <p>应用管理</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../UI/general.html" class="nav-link">
+                                    <i class="far fa-th nav-icon"></i>
+                                    <p>缓存管理</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/resources-manager/database/index" class="nav-link">
+                                    <i class="far fa-th nav-icon"></i>
+                                    <p>数据库管理</p>
                                 </a>
                             </li>
                         </ul>

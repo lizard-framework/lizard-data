@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../marco/base.ftl"/>
-    <#include "../marco/orm-config-add-base.ftl"/>
+    <#include "../../marco/base.ftl"/>
+    <#include "../../marco/orm-config-add-base.ftl"/>
     <title>Lizard-Data-Admin</title>
     <@style/>
 </head>

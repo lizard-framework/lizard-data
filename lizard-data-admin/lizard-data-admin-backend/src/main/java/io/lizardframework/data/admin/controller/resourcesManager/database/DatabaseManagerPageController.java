@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2020-11-04
  */
 @Controller
-@RequestMapping("/resources-manager/database-manager")
+@RequestMapping("/resources-manager/database")
 public class DatabaseManagerPageController {
 
 	/**

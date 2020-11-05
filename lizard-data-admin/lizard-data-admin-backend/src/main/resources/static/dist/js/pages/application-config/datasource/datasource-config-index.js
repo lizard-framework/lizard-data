@@ -15,7 +15,7 @@ $(function () {
     });
 
     $("#id_btn_add").click(function () {
-        window.location.href = page_application_orm_add;
+        window.location.href = page_application_config_datasource_add;
     });
 });
 
@@ -74,5 +74,5 @@ function initTable() {
 
 
 function openDetailPage(mixedName) {
-    window.location.href = page_application_orm_detail + mixedName;
+    window.location.href = page_application_config_datasource_detail + mixedName;
 }

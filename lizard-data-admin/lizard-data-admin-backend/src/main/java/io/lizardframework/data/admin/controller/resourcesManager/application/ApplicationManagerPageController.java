@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2020-11-04
  */
 @Controller
-@RequestMapping("/resources-manager/application-manager")
+@RequestMapping("/resources-manager/application")
 public class ApplicationManagerPageController {
 
 	/**

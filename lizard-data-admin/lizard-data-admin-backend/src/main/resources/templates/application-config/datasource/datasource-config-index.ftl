@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../marco/base.ftl"/>
+    <#include "../../marco/base.ftl"/>
     <title>Lizard-Data-Admin</title>
     <@style/>
 </head>
@@ -67,5 +67,5 @@
 </body>
 
 <@jsfile/>
-<script src="/dist/js/pages/application_config/orm-config-list.js"></script>
+<script src="/dist/js/pages/application-config/datasource/datasource-config-index.js"></script>
 </html>

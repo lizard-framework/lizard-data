@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../marco/base.ftl"/>
+    <#include "../../marco/base.ftl"/>
     <title>Lizard-Data-Admin</title>
     <@style/>
     <!-- highlight -->
@@ -273,5 +273,5 @@
 <!-- highlight -->
 <script src="/plugins/highlight/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script src="/dist/js/pages/application_config/orm-config-detail.js"></script>
+<script src="/dist/js/pages/application-config/datasource/datasource-config-detail.js"></script>
 </html>
