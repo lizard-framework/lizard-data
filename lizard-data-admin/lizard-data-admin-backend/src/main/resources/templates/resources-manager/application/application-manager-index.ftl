@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../marco/base.ftl"/>
+    <#include "../../marco/base.ftl"/>
     <title>Lizard-Data-Admin</title>
     <@style/>
 </head>
@@ -120,5 +120,5 @@
 </div>
 </body>
 <@jsfile/>
-<script src="/dist/js/pages/resources/application_index.js"></script>
+<script src="/dist/js/pages/resources-manager/application/application-manager-index.js"></script>
 </html>

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="/dist/css/adminlte.min.css">
 
     <style>
-        html,body,td,th {
+        html, body, td, th {
             font-size: small;
         }
     </style>
@@ -240,13 +240,13 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/resources/databases" class="nav-link">
+                                <a href="/resources-manager/database-manager/index" class="nav-link">
                                     <i class="far fa-th nav-icon"></i>
-                                    <p>关系型数据库</p>
+                                    <p>数据库管理</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="/resources/applications" class="nav-link">
+                                <a href="/resources-manager/application-manager/index" class="nav-link">
                                     <i class="far fa-th nav-icon"></i>
                                     <p>应用管理</p>
                                 </a>
