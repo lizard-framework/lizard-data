@@ -26,7 +26,7 @@ $(function () {
         params.applicationDesc = $("#id_form_add_application_desc").val();
         params.owner = $("#id_form_add_owner_name").val();
 
-        callApi(api_resources_application_add, "PUT", params, function (result) {
+        callApi(api_resources_manager_application_add, "PUT", params, function (result) {
             alertTopEnd('添加应用信息成功', 'success', 6000);
             $("#id_add_modal").modal('hide');
             initTable();
@@ -60,7 +60,7 @@ function initTable() {
 
                 return $.ajax({
                     type: 'GET',
-                    url: api_resources_application_list,
+                    url: api_resources_manager_application_list,
                     data: filter
                 });
             }

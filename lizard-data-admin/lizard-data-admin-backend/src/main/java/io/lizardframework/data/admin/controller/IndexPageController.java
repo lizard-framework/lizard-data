@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.controller.page;
+package io.lizardframework.data.admin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * 首页page
+ *
  * @author xueqi
  * @date 2020-10-15
  */

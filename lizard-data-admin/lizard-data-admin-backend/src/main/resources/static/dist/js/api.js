@@ -2,10 +2,13 @@ const api_resources_database_list = '/operator/resources/database/list';
 const api_resources_database_add = '/operator/resources/database';
 const api_resources_database_detail = '/operator/resources/database/';
 const api_resources_database_auth = '/operator/resources/database/authinfo/';
-const api_resources_application_list = '/operator/resources/application/list';
-const api_resources_application_add = '/operator/resources/application';
 
 const api_application_orm_list = '/operator/application-config/orm/list';
+
+// api:资源管理-应用管理-应用列表
+const api_resources_manager_application_list = '/api/resources-manager/application/list';
+// api:资源管理-应用管理-添加应用
+const api_resources_manager_application_add = '/api/resources-manager/application/save';
 
 // 应用配置-数据源配置-详情页面
 const page_application_config_datasource_detail = '/application-config/datasource/detail/';

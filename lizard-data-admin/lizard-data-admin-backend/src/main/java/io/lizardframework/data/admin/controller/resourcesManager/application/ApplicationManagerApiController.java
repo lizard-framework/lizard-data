@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.controller.operator.resources;
+package io.lizardframework.data.admin.controller.resourcesManager.application;
 
 import io.lizardframework.data.admin.commons.PageableResp;
 import io.lizardframework.data.admin.commons.Resp;
@@ -12,24 +12,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * 资源管理 - 应用管理 api controller
+ *
  * @author xueqi
- * @date 2020-10-29
+ * @date 2020-11-07
  */
 @RestController
-@RequestMapping("/operator/resources/application")
-public class ApplicationOperApiController {
+@RequestMapping("/api/resources-manager/application")
+public class ApplicationManagerApiController {
 
 	@Autowired
 	private ApplicationService applicationService;
 
-	@RequestMapping(value = "list", method = RequestMethod.GET)
+	/**
+	 * 查询应用列表
+	 *
+	 * @param param
+	 * @return
+	 */
+	@GetMapping(value = "list")
 	public PageableResp<List<ApplicationInfoModel>> list(ApplicationListParam param) {
 		PageableResp<List<ApplicationInfoModel>> data = applicationService.queryPage(param);
 		return data;
 	}
 
-	@PutMapping
-	public Resp add(@RequestBody ApplicationAddParam param) {
+	/**
+	 * 添加应用
+	 *
+	 * @param param
+	 * @return
+	 */
+	@PutMapping(value = "save")
+	public Resp save(@RequestBody ApplicationAddParam param) {
 		applicationService.save(param);
 		return new Resp();
 	}
