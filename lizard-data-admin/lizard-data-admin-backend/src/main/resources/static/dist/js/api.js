@@ -1,14 +1,18 @@
-const api_resources_database_list = '/operator/resources/database/list';
-const api_resources_database_add = '/operator/resources/database';
-const api_resources_database_detail = '/operator/resources/database/';
-const api_resources_database_auth = '/operator/resources/database/authinfo/';
-
 const api_application_orm_list = '/operator/application-config/orm/list';
 
 // api:资源管理-应用管理-应用列表
 const api_resources_manager_application_list = '/api/resources-manager/application/list';
 // api:资源管理-应用管理-添加应用
 const api_resources_manager_application_add = '/api/resources-manager/application/save';
+
+// api:资源管理-数据库管理-应用列表
+const api_resources_manager_database_list = '/api/resources-manager/database/list';
+// api:资源管理-数据库管理-添加数据库
+const api_resources_manager_database_add = '/api/resources-manager/database/save';
+// api:资源管理-数据库管理-数据库详情
+const api_resources_manager_database_detail = "/api/resources-manager/database/detail/";
+// api:资源管理-数据库管理-密码信息
+const api_resources_manager_database_authinfo = '/api/resources-manager/database/authinfo/';
 
 // 应用配置-数据源配置-详情页面
 const page_application_config_datasource_detail = '/application-config/datasource/detail/';

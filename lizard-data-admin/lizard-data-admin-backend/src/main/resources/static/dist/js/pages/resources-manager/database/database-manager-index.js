@@ -32,7 +32,7 @@ $(function () {
         params.dbUsername = $("#id_form_add_db_user").val();
         params.dbPassword = $("#id_form_add_db_password").val();
 
-        callApi(api_resources_database_add, "PUT", params, function (result) {
+        callApi(api_resources_manager_database_add, "PUT", params, function (result) {
             alertTopEnd('添加数据库信息成功', 'success', 6000);
             $("#id_add_modal").modal('hide');
 
@@ -85,7 +85,7 @@ function initTable() {
 
                 return $.ajax({
                     type: 'GET',
-                    url: api_resources_database_list,
+                    url: api_resources_manager_database_list,
                     data: filter
                 });
             }
@@ -105,7 +105,7 @@ function initTable() {
 
 // show db detail modal
 function showDbDetail(id) {
-    callApi(api_resources_database_detail + id, 'GET', null, function (result) {
+    callApi(api_resources_manager_database_detail + id, 'GET', null, function (result) {
         $("#id_detail_db_type").html(result.data.dbType);
         $("#id_detail_db_name").html(result.data.dbName);
         $("#id_detail_db_host").html(result.data.dbHost);
@@ -121,7 +121,7 @@ function showDbDetail(id) {
 // show db connection auth info
 function showDbAuthInfo(id) {
     $("#id_detail_div").hide();
-    callApi(api_resources_database_auth + id, "GET", null, function (result) {
+    callApi(api_resources_manager_database_authinfo + id, "GET", null, function (result) {
         $("#id_detail_db_username").html(result.data.dbUsername);
         $("#id_detail_db_password").html(result.data.dbPassword);
 

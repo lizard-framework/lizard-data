@@ -2,8 +2,8 @@ package io.lizardframework.data.admin.controller.resourcesManager.application;
 
 import io.lizardframework.data.admin.commons.PageableResp;
 import io.lizardframework.data.admin.commons.Resp;
-import io.lizardframework.data.admin.controller.operator.resources.params.ApplicationAddParam;
-import io.lizardframework.data.admin.controller.operator.resources.params.ApplicationListParam;
+import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationAddParam;
+import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationListParam;
 import io.lizardframework.data.admin.model.ApplicationInfoModel;
 import io.lizardframework.data.admin.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;

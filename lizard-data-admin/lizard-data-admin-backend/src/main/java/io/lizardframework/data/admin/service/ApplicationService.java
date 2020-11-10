@@ -1,8 +1,8 @@
 package io.lizardframework.data.admin.service;
 
 import io.lizardframework.data.admin.commons.PageableResp;
-import io.lizardframework.data.admin.controller.operator.resources.params.ApplicationAddParam;
-import io.lizardframework.data.admin.controller.operator.resources.params.ApplicationListParam;
+import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationAddParam;
+import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationListParam;
 import io.lizardframework.data.admin.model.ApplicationInfoModel;
 
 import java.util.List;

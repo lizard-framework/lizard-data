@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.controller.operator.resources.params;
+package io.lizardframework.data.admin.controller.resourcesManager.database.params;
 
 import io.lizardframework.data.admin.dao.entity.DbInfoEntity;
 import lombok.Data;
