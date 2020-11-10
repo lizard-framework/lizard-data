@@ -2,7 +2,7 @@ package io.lizardframework.data.admin.service;
 
 import io.lizardframework.data.admin.commons.PageableResp;
 import io.lizardframework.data.admin.controller.model.ORMGetMixedConfigParams;
-import io.lizardframework.data.admin.controller.operator.application.params.OrmMixedListParam;
+import io.lizardframework.data.admin.controller.applicationConfig.datasource.params.OrmMixedListParam;
 import io.lizardframework.data.admin.model.OrmMixedDetailModel;
 import io.lizardframework.data.admin.model.OrmMixedInfoModel;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;

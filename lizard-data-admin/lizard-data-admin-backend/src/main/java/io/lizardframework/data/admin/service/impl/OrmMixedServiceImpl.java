@@ -3,7 +3,7 @@ package io.lizardframework.data.admin.service.impl;
 import io.lizardframework.data.admin.commons.BizException;
 import io.lizardframework.data.admin.commons.PageableResp;
 import io.lizardframework.data.admin.controller.model.ORMGetMixedConfigParams;
-import io.lizardframework.data.admin.controller.operator.application.params.OrmMixedListParam;
+import io.lizardframework.data.admin.controller.applicationConfig.datasource.params.OrmMixedListParam;
 import io.lizardframework.data.admin.dao.OrmMixedDAO;
 import io.lizardframework.data.admin.dao.OrmRepositoryDAO;
 import io.lizardframework.data.admin.dao.entity.OrmMixedEntity;

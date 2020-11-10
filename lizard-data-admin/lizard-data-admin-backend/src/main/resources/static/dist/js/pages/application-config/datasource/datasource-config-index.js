@@ -53,7 +53,7 @@ function initTable() {
 
                 return $.ajax({
                     type: 'GET',
-                    url: api_application_orm_list,
+                    url: api_application_config_datasource_list,
                     data: filter
                 });
             }

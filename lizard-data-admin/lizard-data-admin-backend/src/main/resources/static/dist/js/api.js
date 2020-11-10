@@ -1,4 +1,5 @@
-const api_application_orm_list = '/operator/application-config/orm/list';
+// api:应用配置-数据源配置-列表查询
+const api_application_config_datasource_list = '/api/application-config/datasource/list';
 
 // api:资源管理-应用管理-应用列表
 const api_resources_manager_application_list = '/api/resources-manager/application/list';
@@ -16,6 +17,7 @@ const api_resources_manager_database_authinfo = '/api/resources-manager/database
 
 // 应用配置-数据源配置-详情页面
 const page_application_config_datasource_detail = '/application-config/datasource/detail/';
+// 应用配置-数据源配置-添加页面
 const page_application_config_datasource_add = '/application-config/datasource/addition';
 
 // call api

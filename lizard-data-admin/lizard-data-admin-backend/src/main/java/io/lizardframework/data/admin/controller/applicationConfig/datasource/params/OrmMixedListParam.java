@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.controller.operator.application.params;
+package io.lizardframework.data.admin.controller.applicationConfig.datasource.params;
 
 import io.lizardframework.data.admin.commons.PageableParam;
 import lombok.Data;
