@@ -1,7 +1,7 @@
 package io.lizardframework.data.admin.controller.api;
 
 import io.lizardframework.data.admin.commons.Resp;
-import io.lizardframework.data.admin.controller.model.ORMGetMixedConfigParams;
+import io.lizardframework.data.admin.controller.api.params.ORMGetMixedConfigParams;
 import io.lizardframework.data.admin.service.OrmMixedService;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.utils.JSONUtils;

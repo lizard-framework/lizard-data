@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.controller.model;
+package io.lizardframework.data.admin.controller.api.params;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package io.lizardframework.data.admin.controller.api;
 
 import io.lizardframework.data.admin.commons.Resp;
-import io.lizardframework.data.admin.controller.model.DecryptParams;
+import io.lizardframework.data.admin.controller.api.params.DecryptParams;
 import io.lizardframework.data.admin.service.CryptoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

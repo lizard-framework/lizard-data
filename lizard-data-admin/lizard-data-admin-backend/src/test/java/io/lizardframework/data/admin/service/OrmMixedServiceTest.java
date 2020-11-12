@@ -1,6 +1,6 @@
 package io.lizardframework.data.admin.service;
 
-import io.lizardframework.data.admin.controller.model.ORMGetMixedConfigParams;
+import io.lizardframework.data.admin.controller.api.params.ORMGetMixedConfigParams;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
 import io.lizardframework.data.utils.JSONUtils;
 import lombok.extern.slf4j.Slf4j;
