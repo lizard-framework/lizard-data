@@ -2,18 +2,21 @@ server:
   port: 8888
 
 spring:
+  # application name
   application:
     name: lizard-data-admin-backend
+  # datasource basic config
   datasource:
     name: DataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://lizard-mysql-server:3306/lizard_data?charset=utf8mb4&useSSL=false
     username: root
     password: ${DATA_MYSQL_PASSWORD}
-
+    # hikari datasource pool config
     hikari:
       maximum-pool-size: 20
       minimum-idle: 3
+  # freemarker config
   freemarker:
     template-loader-path: classpath:/templates
     cache: false
@@ -26,13 +29,18 @@ spring:
     suffix: .ftl
     settings:
       template_update_delay: 0
+  # redis config
   redis:
     database: 0
     host: lizard-redis-server
     port: 6379
     password: ${DATA_REDIS_PASSWORD}
 
+# mybatis config
+mybatis:
+  mapper-locations: classpath*:mybatis-mapper/**/**Mapper.xml
 
+# crypto key config
 crypto:
   key: ${CRYPTO_KEY}
 

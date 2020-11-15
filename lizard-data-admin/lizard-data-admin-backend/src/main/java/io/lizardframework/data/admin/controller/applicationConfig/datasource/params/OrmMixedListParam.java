@@ -1,6 +1,6 @@
 package io.lizardframework.data.admin.controller.applicationConfig.datasource.params;
 
-import io.lizardframework.data.admin.commons.PageableParam;
+import io.lizardframework.data.admin.commons.pageable.PageableParam;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 

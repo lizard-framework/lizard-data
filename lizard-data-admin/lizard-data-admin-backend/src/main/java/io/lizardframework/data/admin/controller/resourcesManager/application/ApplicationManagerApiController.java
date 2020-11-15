@@ -1,6 +1,6 @@
 package io.lizardframework.data.admin.controller.resourcesManager.application;
 
-import io.lizardframework.data.admin.commons.PageableResp;
+import io.lizardframework.data.admin.commons.pageable.PageableResp;
 import io.lizardframework.data.admin.commons.Resp;
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationListParam;

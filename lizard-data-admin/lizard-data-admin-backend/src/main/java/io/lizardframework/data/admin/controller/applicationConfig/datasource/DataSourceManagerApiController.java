@@ -1,6 +1,6 @@
 package io.lizardframework.data.admin.controller.applicationConfig.datasource;
 
-import io.lizardframework.data.admin.commons.PageableResp;
+import io.lizardframework.data.admin.commons.pageable.PageableResp;
 import io.lizardframework.data.admin.controller.applicationConfig.datasource.params.OrmMixedListParam;
 import io.lizardframework.data.admin.model.OrmMixedInfoModel;
 import io.lizardframework.data.admin.service.OrmMixedService;

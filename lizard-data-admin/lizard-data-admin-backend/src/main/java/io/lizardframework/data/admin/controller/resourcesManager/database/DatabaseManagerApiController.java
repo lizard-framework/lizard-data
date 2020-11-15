@@ -1,11 +1,12 @@
 package io.lizardframework.data.admin.controller.resourcesManager.database;
 
-import io.lizardframework.data.admin.commons.PageableResp;
 import io.lizardframework.data.admin.commons.Resp;
+import io.lizardframework.data.admin.commons.pageable.PageResult;
+import io.lizardframework.data.admin.commons.pageable.PageableResp;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseListParam;
 import io.lizardframework.data.admin.model.DataBaseInfoModel;
-import io.lizardframework.data.admin.service.DatabaseService;
+import io.lizardframework.data.admin.service.resources.DatabaseResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ import java.util.List;
 public class DatabaseManagerApiController {
 
 	@Autowired
-	private DatabaseService databaseService;
+	private DatabaseResourceService databaseResourceService;
 
 	/**
 	 * 查询数据库资源列表
@@ -32,19 +33,22 @@ public class DatabaseManagerApiController {
 	 */
 	@GetMapping(value = "list")
 	public PageableResp<List<DataBaseInfoModel>> list(DataBaseListParam param) {
-		PageableResp<List<DataBaseInfoModel>> data = databaseService.queryPage(param);
-		return data;
+		PageResult<DataBaseInfoModel>         result   = databaseResourceService.queryPage(param);
+		PageableResp<List<DataBaseInfoModel>> response = new PageableResp<>(result.getCount(), result.getData());
+
+		return response;
 	}
 
 	/**
-	 * 添加数据库列表
+	 * 添加数据库
 	 *
 	 * @param param
 	 * @return
 	 */
 	@PutMapping(value = "save")
 	public Resp add(@RequestBody DataBaseAddParam param) {
-		databaseService.save(param);
+		databaseResourceService.save(param);
+
 		return new Resp();
 	}
 
@@ -57,7 +61,8 @@ public class DatabaseManagerApiController {
 	 */
 	@GetMapping(value = "detail/{id}")
 	public Resp<DataBaseInfoModel> queryBasicInfo(@PathVariable Long id) {
-		DataBaseInfoModel info = databaseService.queryBasicById(id);
+		DataBaseInfoModel info = databaseResourceService.queryBasicInfo(id);
+
 		return new Resp<>(info);
 	}
 
@@ -69,7 +74,7 @@ public class DatabaseManagerApiController {
 	 */
 	@GetMapping(value = "authinfo/{id}")
 	public Resp<DataBaseInfoModel> queryAuthInfo(@PathVariable Long id) {
-		DataBaseInfoModel info = databaseService.queryAuthInfoById(id);
+		DataBaseInfoModel info = databaseResourceService.queryAuthInfo(id);
 
 		return new Resp<>(info);
 	}

@@ -1,14 +1,14 @@
 package io.lizardframework.data.admin.model;
 
-import io.lizardframework.data.admin.dao.entity.DbInfoEntity;
-import lombok.Data;
+import io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity;
+import lombok.Getter;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 /**
  * @author xueqi
  * @date 2020-10-16
  */
-@Data
+@Getter
 public class DataBaseInfoModel {
 
 	private Long   id;
@@ -21,17 +21,40 @@ public class DataBaseInfoModel {
 	private String createTime;
 	private String updateTime;
 
-	public DataBaseInfoModel() {
+
+	/**
+	 * 根据ResourcesDatabaseEntity构建对象
+	 *
+	 * @param entity
+	 * @param isBasic
+	 * @return
+	 */
+	public static DataBaseInfoModel build(ResourcesDatabaseEntity entity, boolean isBasic) {
+		DataBaseInfoModel model = new DataBaseInfoModel();
+		if (isBasic) {
+			model.id = entity.getId();
+			model.dbType = entity.getDbType();
+			model.dbName = entity.getDbName();
+			model.dbHost = entity.getDbHost();
+			model.dbPort = entity.getDbPort();
+			model.createTime = DateFormatUtils.format(entity.getCreateTime(), "yyyy-MM-dd HH:mm:ss");
+			model.updateTime = DateFormatUtils.format(entity.getUpdateTime(), "yyyy-MM-dd HH:mm:ss");
+		} else {
+			model.dbUsername = entity.getDbUsername();
+			model.dbPassword = entity.getDbPassword();
+		}
+
+		return model;
 	}
 
-	public DataBaseInfoModel(DbInfoEntity entity) {
-		this.id = entity.getId();
-		this.dbType = entity.getDbType();
-		this.dbName = entity.getDbName();
-		this.dbHost = entity.getDbHost();
-		this.dbPort = entity.getDbPort();
-		this.createTime = DateFormatUtils.format(entity.getCreateTime(), "yyyy-MM-dd HH:mm:ss");
-		this.updateTime = DateFormatUtils.format(entity.getUpdateTime(), "yyyy-MM-dd HH:mm:ss");
+	/**
+	 * 设置解码后的敏感信息
+	 *
+	 * @param dbUsername
+	 * @param dbPassword
+	 */
+	public void decryptAuthInfo(String dbUsername, String dbPassword) {
+		this.dbUsername = dbUsername;
+		this.dbPassword = dbPassword;
 	}
-
 }

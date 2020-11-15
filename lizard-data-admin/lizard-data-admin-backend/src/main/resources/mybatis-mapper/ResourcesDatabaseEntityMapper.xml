@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.lizardframework.data.admin.repository.ResourcesDatabaseRepository">
+    <resultMap id="BaseResultMap" type="io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="db_type" jdbcType="VARCHAR" property="dbType"/>
+        <result column="db_name" jdbcType="VARCHAR" property="dbName"/>
+        <result column="db_host" jdbcType="VARCHAR" property="dbHost"/>
+        <result column="db_port" jdbcType="INTEGER" property="dbPort"/>
+        <result column="db_username" jdbcType="VARCHAR" property="dbUsername"/>
+        <result column="db_password" jdbcType="VARCHAR" property="dbPassword"/>
+        <result column="owner_name" jdbcType="VARCHAR" property="ownerName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, db_type, db_name, db_host, db_port, db_username, db_password, owner_name, create_time, 
+    update_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_resources_database
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_resources_database
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_resources_database (db_type, db_name, db_host,
+        db_port, db_username, db_password,
+        owner_name, create_time, update_time
+        )
+        values (#{dbType,jdbcType=VARCHAR}, #{dbName,jdbcType=VARCHAR}, #{dbHost,jdbcType=VARCHAR},
+        #{dbPort,jdbcType=INTEGER}, #{dbUsername,jdbcType=VARCHAR}, #{dbPassword,jdbcType=VARCHAR},
+        #{ownerName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective"
+            parameterType="io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_resources_database
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dbType != null">
+                db_type,
+            </if>
+            <if test="dbName != null">
+                db_name,
+            </if>
+            <if test="dbHost != null">
+                db_host,
+            </if>
+            <if test="dbPort != null">
+                db_port,
+            </if>
+            <if test="dbUsername != null">
+                db_username,
+            </if>
+            <if test="dbPassword != null">
+                db_password,
+            </if>
+            <if test="ownerName != null">
+                owner_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dbType != null">
+                #{dbType,jdbcType=VARCHAR},
+            </if>
+            <if test="dbName != null">
+                #{dbName,jdbcType=VARCHAR},
+            </if>
+            <if test="dbHost != null">
+                #{dbHost,jdbcType=VARCHAR},
+            </if>
+            <if test="dbPort != null">
+                #{dbPort,jdbcType=INTEGER},
+            </if>
+            <if test="dbUsername != null">
+                #{dbUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="dbPassword != null">
+                #{dbPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="ownerName != null">
+                #{ownerName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity">
+        update t_resources_database
+        <set>
+            <if test="dbType != null">
+                db_type = #{dbType,jdbcType=VARCHAR},
+            </if>
+            <if test="dbName != null">
+                db_name = #{dbName,jdbcType=VARCHAR},
+            </if>
+            <if test="dbHost != null">
+                db_host = #{dbHost,jdbcType=VARCHAR},
+            </if>
+            <if test="dbPort != null">
+                db_port = #{dbPort,jdbcType=INTEGER},
+            </if>
+            <if test="dbUsername != null">
+                db_username = #{dbUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="dbPassword != null">
+                db_password = #{dbPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="ownerName != null">
+                owner_name = #{ownerName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity">
+    update t_resources_database
+    set db_type = #{dbType,jdbcType=VARCHAR},
+      db_name = #{dbName,jdbcType=VARCHAR},
+      db_host = #{dbHost,jdbcType=VARCHAR},
+      db_port = #{dbPort,jdbcType=INTEGER},
+      db_username = #{dbUsername,jdbcType=VARCHAR},
+      db_password = #{dbPassword,jdbcType=VARCHAR},
+      owner_name = #{ownerName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <sql id="SQL_WHERE">
+        <if test="params.dbType != null">
+            and db_type = #{params.dbType,jdbcType=VARCHAR}
+        </if>
+        <if test="params.dbName != null">
+            and db_name like #{params.dbName,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <select id="selectCount" resultType="long">
+        select count(0) from t_resources_database where 1 = 1
+        <include refid="SQL_WHERE"/>
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_resources_database where 1 = 1
+        <include refid="SQL_WHERE"/>
+        order by create_time desc
+        <if test="pageable.offset >= 0 and pageable.pageSize > 0">
+            limit #{pageable.offset, jdbcType=INTEGER}, #{pageable.pageSize, jdbcType=INTEGER}
+        </if>
+    </select>
+</mapper>

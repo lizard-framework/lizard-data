@@ -1,6 +1,7 @@
 package io.lizardframework.data.admin.controller.resourcesManager.database.params;
 
-import io.lizardframework.data.admin.commons.PageableParam;
+import io.lizardframework.data.admin.commons.pageable.PageableParam;
+import io.lizardframework.data.orm.enums.DBType;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,16 +15,25 @@ import java.util.Map;
 @Data
 public class DataBaseListParam extends PageableParam {
 
+	/**
+	 * 数据库类型
+	 *
+	 * @see DBType#getValue()
+	 */
 	private String dbType;
+	/**
+	 * 数据库名称
+	 */
 	private String dbName;
 
+	@Override
 	public Map<String, Object> toMapper() {
 		Map<String, Object> params = new HashMap<>();
 		if (StringUtils.isNotEmpty(dbType))
-			params.put("db_type", dbType);
+			params.put("dbType", dbType);
 
 		if (StringUtils.isNotEmpty(dbName))
-			params.put("db_name", dbName);
+			params.put("dbName", "%" + dbName + "%");
 
 		return params;
 	}
