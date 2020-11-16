@@ -14,12 +14,15 @@ import java.util.Map;
 @Data
 public class ApplicationListParam extends PageableParam {
 
+	/**
+	 * 应用名称
+	 */
 	private String applicationName;
 
 	public Map<String, Object> toMapper() {
 		Map<String, Object> params = new HashMap<>();
 		if (StringUtils.isNotEmpty(applicationName))
-			params.put("applicationName", "%" + applicationName + "%");
+			params.put("applicationName", applicationName + "%");
 
 		return params;
 	}

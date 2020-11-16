@@ -1,6 +1,6 @@
 package io.lizardframework.data.admin.commons;
 
-import io.lizardframework.data.admin.message.RespMessage;
+import io.lizardframework.data.admin.message.MessageEnum;
 import lombok.Getter;
 
 /**
@@ -10,8 +10,8 @@ import lombok.Getter;
 @Getter
 public class Resp<T> {
 
-	private String code    = RespMessage.SUCCESS.getCode();
-	private String message = RespMessage.SUCCESS.getMessage();
+	private String code    = MessageEnum.SUCCESS.getCode();
+	private String message = MessageEnum.SUCCESS.getMessage();
 	private T      data;
 
 	public Resp() {
@@ -21,9 +21,9 @@ public class Resp<T> {
 		this.data = data;
 	}
 
-	public Resp(RespMessage respMessage, T data) {
-		this.code = respMessage.getCode();
-		this.message = respMessage.getMessage();
+	public Resp(MessageEnum messageEnum, T data) {
+		this.code = messageEnum.getCode();
+		this.message = messageEnum.getMessage();
 		this.data = data;
 	}
 
@@ -32,8 +32,8 @@ public class Resp<T> {
 		this.message = ex.getRespMessage().getMessage();
 	}
 
-	public Resp(RespMessage respMessage) {
-		this.code = respMessage.getCode();
-		this.message = respMessage.getMessage();
+	public Resp(MessageEnum messageEnum) {
+		this.code = messageEnum.getCode();
+		this.message = messageEnum.getMessage();
 	}
 }

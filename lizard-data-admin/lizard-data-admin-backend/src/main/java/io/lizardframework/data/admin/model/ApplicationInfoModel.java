@@ -1,6 +1,6 @@
 package io.lizardframework.data.admin.model;
 
-import io.lizardframework.data.admin.dao.entity.ApplicationInfoEntity;
+import io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity;
 import lombok.Getter;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -18,7 +18,7 @@ public class ApplicationInfoModel {
 	private String createTime;
 	private String updateTime;
 
-	public ApplicationInfoModel(ApplicationInfoEntity entity) {
+	public ApplicationInfoModel(ResourcesApplicationEntity entity) {
 		this.id = entity.getId();
 		this.applicationName = entity.getApplicationName();
 		this.applicationDesc = entity.getApplicationDesc();

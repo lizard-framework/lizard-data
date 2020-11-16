@@ -1,8 +1,7 @@
 package io.lizardframework.data.admin.commons;
 
-import io.lizardframework.data.admin.message.RespMessage;
+import io.lizardframework.data.admin.message.MessageEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -24,7 +23,7 @@ public class ControllerEnhance {
 		}
 
 		log.error("Controller exception Unknown Exception:", e);
-		return new Resp(RespMessage.UNKNOWN_ERROR);
+		return new Resp(MessageEnum.UNKNOWN_ERROR);
 	}
 
 }

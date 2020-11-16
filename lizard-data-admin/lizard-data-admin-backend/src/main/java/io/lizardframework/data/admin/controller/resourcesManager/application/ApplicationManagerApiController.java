@@ -1,11 +1,12 @@
 package io.lizardframework.data.admin.controller.resourcesManager.application;
 
-import io.lizardframework.data.admin.commons.pageable.PageableResp;
 import io.lizardframework.data.admin.commons.Resp;
+import io.lizardframework.data.admin.commons.pageable.PageResult;
+import io.lizardframework.data.admin.commons.pageable.PageableResp;
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationListParam;
 import io.lizardframework.data.admin.model.ApplicationInfoModel;
-import io.lizardframework.data.admin.service.ApplicationService;
+import io.lizardframework.data.admin.service.resources.ApplicationResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ import java.util.List;
 public class ApplicationManagerApiController {
 
 	@Autowired
-	private ApplicationService applicationService;
+	private ApplicationResourceService applicationResourceService;
 
 	/**
 	 * 查询应用列表
@@ -32,8 +33,10 @@ public class ApplicationManagerApiController {
 	 */
 	@GetMapping(value = "list")
 	public PageableResp<List<ApplicationInfoModel>> list(ApplicationListParam param) {
-		PageableResp<List<ApplicationInfoModel>> data = applicationService.queryPage(param);
-		return data;
+		PageResult<ApplicationInfoModel>         result   = applicationResourceService.queryPage(param);
+		PageableResp<List<ApplicationInfoModel>> response = new PageableResp<>(result.getCount(), result.getData());
+
+		return response;
 	}
 
 	/**
@@ -44,7 +47,7 @@ public class ApplicationManagerApiController {
 	 */
 	@PutMapping(value = "save")
 	public Resp save(@RequestBody ApplicationAddParam param) {
-		applicationService.save(param);
+		applicationResourceService.save(param);
 		return new Resp();
 	}
 }

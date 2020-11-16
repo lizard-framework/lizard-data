@@ -2,7 +2,7 @@ package io.lizardframework.data.admin.commons.pageable;
 
 import io.lizardframework.data.admin.commons.BizException;
 import io.lizardframework.data.admin.commons.Resp;
-import io.lizardframework.data.admin.message.RespMessage;
+import io.lizardframework.data.admin.message.MessageEnum;
 import lombok.Getter;
 
 /**
@@ -18,16 +18,16 @@ public class PageableResp<T> extends Resp {
 		super(data);
 	}
 
-	public PageableResp(RespMessage respMessage, T data) {
-		super(respMessage, data);
+	public PageableResp(MessageEnum messageEnum, T data) {
+		super(messageEnum, data);
 	}
 
 	public PageableResp(BizException ex) {
 		super(ex);
 	}
 
-	public PageableResp(RespMessage respMessage) {
-		super(respMessage);
+	public PageableResp(MessageEnum messageEnum) {
+		super(messageEnum);
 	}
 
 	public PageableResp(long itemsCount, T data) {

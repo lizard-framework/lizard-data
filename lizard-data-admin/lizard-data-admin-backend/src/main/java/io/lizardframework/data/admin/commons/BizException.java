@@ -1,6 +1,6 @@
 package io.lizardframework.data.admin.commons;
 
-import io.lizardframework.data.admin.message.RespMessage;
+import io.lizardframework.data.admin.message.MessageEnum;
 
 /**
  * @author xueqi
@@ -8,14 +8,14 @@ import io.lizardframework.data.admin.message.RespMessage;
  */
 public class BizException extends RuntimeException {
 
-	private RespMessage respMessage;
+	private MessageEnum messageEnum;
 
-	public BizException(RespMessage respMessage) {
+	public BizException(MessageEnum messageEnum) {
 		super();
-		this.respMessage = respMessage;
+		this.messageEnum = messageEnum;
 	}
 
-	public RespMessage getRespMessage() {
-		return respMessage;
+	public MessageEnum getRespMessage() {
+		return messageEnum;
 	}
 }

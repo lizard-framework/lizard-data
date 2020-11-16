@@ -8,7 +8,7 @@ import io.lizardframework.data.admin.dao.OrmMixedDAO;
 import io.lizardframework.data.admin.dao.OrmRepositoryDAO;
 import io.lizardframework.data.admin.dao.entity.OrmMixedEntity;
 import io.lizardframework.data.admin.dao.entity.OrmRepositoryAllInfoEntity;
-import io.lizardframework.data.admin.message.RespMessage;
+import io.lizardframework.data.admin.message.MessageEnum;
 import io.lizardframework.data.admin.model.OrmMixedDetailModel;
 import io.lizardframework.data.admin.model.OrmMixedInfoModel;
 import io.lizardframework.data.admin.service.OrmMixedService;
@@ -53,7 +53,7 @@ public class OrmMixedServiceImpl implements OrmMixedService {
 		// query mixed datasource
 		OrmMixedEntity mixedEntity = ormMixedDAO.selectByMixedName(params.getMixedName());
 		if (mixedEntity == null) {
-			throw new BizException(RespMessage.ORM_MIXED_DATASOURCE_NOT_EXIST);
+			throw new BizException(MessageEnum.ORM_MIXED_DATASOURCE_NOT_EXIST);
 		}
 
 		// check application todo
@@ -81,7 +81,7 @@ public class OrmMixedServiceImpl implements OrmMixedService {
 		// query mixed datasource
 		OrmMixedEntity mixedEntity = ormMixedDAO.selectByMixedName(mixedName);
 		if (mixedEntity == null) {
-			throw new BizException(RespMessage.ORM_MIXED_DATASOURCE_NOT_EXIST);
+			throw new BizException(MessageEnum.ORM_MIXED_DATASOURCE_NOT_EXIST);
 		}
 
 		MixedDataSourceModel mixedDataSourceModel = this.entityToDataSourceModel(mixedEntity);

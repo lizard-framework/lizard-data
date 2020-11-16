@@ -1,8 +1,6 @@
 package io.lizardframework.data.admin.controller.applicationConfig.datasource;
 
-import io.lizardframework.data.admin.model.ApplicationInfoModel;
 import io.lizardframework.data.admin.model.OrmMixedDetailModel;
-import io.lizardframework.data.admin.service.ApplicationService;
 import io.lizardframework.data.admin.service.OrmMixedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * 应用配置 - 数据源配置 page controller
@@ -25,9 +23,7 @@ import java.util.List;
 public class DataSourceManagerPageController {
 
 	@Autowired
-	private OrmMixedService    ormMixedService;
-	@Autowired
-	private ApplicationService applicationService;
+	private OrmMixedService ormMixedService;
 
 	/**
 	 * 数据源配置首页
@@ -71,14 +67,14 @@ public class DataSourceManagerPageController {
 	 */
 	@GetMapping("addition")
 	public ModelAndView addition() {
-		List<ApplicationInfoModel> allApplicationList = applicationService.queryAll();
+
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("application-config/datasource/datasource-config-addition");
 
 		// 写入reference_id，作为一次添加的标记
 		mav.addObject("reference_id", Instant.now().toEpochMilli() + "");
-		mav.addObject("all_application_list", allApplicationList);
+		mav.addObject("all_application_list", new ArrayList<>(0));
 		return mav;
 	}
 }

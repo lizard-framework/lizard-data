@@ -1,100 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.lizardframework.data.admin.repository.ResourcesApplicationRepository">
-  <resultMap id="BaseResultMap" type="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="application_name" jdbcType="VARCHAR" property="applicationName" />
-    <result column="application_desc" jdbcType="VARCHAR" property="applicationDesc" />
-    <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="application_name" jdbcType="VARCHAR" property="applicationName"/>
+        <result column="application_desc" jdbcType="VARCHAR" property="applicationDesc"/>
+        <result column="owner_name" jdbcType="VARCHAR" property="ownerName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, application_name, application_desc, owner_name, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from t_resources_application
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_resources_application
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_resources_application
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_resources_application (application_name, application_desc, 
-      owner_name, create_time, update_time
-      )
-    values (#{applicationName,jdbcType=VARCHAR}, #{applicationDesc,jdbcType=VARCHAR}, 
-      #{ownerName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into t_resources_application
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="applicationName != null">
-        application_name,
-      </if>
-      <if test="applicationDesc != null">
-        application_desc,
-      </if>
-      <if test="ownerName != null">
-        owner_name,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="applicationName != null">
-        #{applicationName,jdbcType=VARCHAR},
-      </if>
-      <if test="applicationDesc != null">
-        #{applicationDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="ownerName != null">
-        #{ownerName,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
-    update t_resources_application
-    <set>
-      <if test="applicationName != null">
-        application_name = #{applicationName,jdbcType=VARCHAR},
-      </if>
-      <if test="applicationDesc != null">
-        application_desc = #{applicationDesc,jdbcType=VARCHAR},
-      </if>
-      <if test="ownerName != null">
-        owner_name = #{ownerName,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
+    <insert id="insert" parameterType="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_resources_application (application_name, application_desc,
+        owner_name, create_time, update_time
+        )
+        values (#{applicationName,jdbcType=VARCHAR}, #{applicationDesc,jdbcType=VARCHAR},
+        #{ownerName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective"
+            parameterType="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_resources_application
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applicationName != null">
+                application_name,
+            </if>
+            <if test="applicationDesc != null">
+                application_desc,
+            </if>
+            <if test="ownerName != null">
+                owner_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applicationName != null">
+                #{applicationName,jdbcType=VARCHAR},
+            </if>
+            <if test="applicationDesc != null">
+                #{applicationDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="ownerName != null">
+                #{ownerName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
+        update t_resources_application
+        <set>
+            <if test="applicationName != null">
+                application_name = #{applicationName,jdbcType=VARCHAR},
+            </if>
+            <if test="applicationDesc != null">
+                application_desc = #{applicationDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="ownerName != null">
+                owner_name = #{ownerName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
     update t_resources_application
     set application_name = #{applicationName,jdbcType=VARCHAR},
       application_desc = #{applicationDesc,jdbcType=VARCHAR},
@@ -103,4 +106,26 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <sql id="SQL_WHERE">
+        <if test="params.applicationName != null">
+            and application_name like #{params.applicationName,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <select id="selectCount" resultType="long">
+        select count(id) from t_resources_application where 1 = 1
+        <include refid="SQL_WHERE"/>
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_resources_application where 1 = 1
+        <include refid="SQL_WHERE"/>
+        order by create_time desc
+        <if test="pageable.offset >= 0 and pageable.pageSize > 0">
+            limit #{pageable.offset, jdbcType=INTEGER}, #{pageable.pageSize, jdbcType=INTEGER}
+        </if>
+    </select>
 </mapper>

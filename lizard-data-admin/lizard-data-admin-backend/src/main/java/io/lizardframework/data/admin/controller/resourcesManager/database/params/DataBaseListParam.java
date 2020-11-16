@@ -33,7 +33,7 @@ public class DataBaseListParam extends PageableParam {
 			params.put("dbType", dbType);
 
 		if (StringUtils.isNotEmpty(dbName))
-			params.put("dbName", "%" + dbName + "%");
+			params.put("dbName", dbName + "%");
 
 		return params;
 	}

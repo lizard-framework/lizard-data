@@ -4,7 +4,7 @@ import io.lizardframework.data.admin.commons.BizException;
 import io.lizardframework.data.admin.commons.pageable.PageResult;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseListParam;
-import io.lizardframework.data.admin.message.RespMessage;
+import io.lizardframework.data.admin.message.MessageEnum;
 import io.lizardframework.data.admin.model.DataBaseInfoModel;
 import io.lizardframework.data.admin.repository.ResourcesDatabaseRepository;
 import io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity;
@@ -44,7 +44,7 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 		long count = resourcesDatabaseRepo.selectCount(paramMapper);
 
 		// 2. query record
-		if (count != 0) {
+		if (count != 0L) {
 			List<ResourcesDatabaseEntity> entityList = resourcesDatabaseRepo.selectPage(paramMapper, param.toPageRequest());
 			if (!CollectionUtils.isEmpty(entityList)) {
 				// convert result object
@@ -80,7 +80,7 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 
 		ResourcesDatabaseEntity entity = resourcesDatabaseRepo.selectByPrimaryKey(id);
 		if (entity == null) {
-			throw new BizException(RespMessage.DATABSE_RESOURCE_NOT_EXIST);
+			throw new BizException(MessageEnum.DATABSE_RESOURCE_NOT_EXIST);
 		}
 
 		DataBaseInfoModel model = DataBaseInfoModel.build(entity, true);
@@ -93,7 +93,7 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 
 		ResourcesDatabaseEntity entity = resourcesDatabaseRepo.selectByPrimaryKey(id);
 		if (entity == null) {
-			throw new BizException(RespMessage.DATABSE_RESOURCE_NOT_EXIST);
+			throw new BizException(MessageEnum.DATABSE_RESOURCE_NOT_EXIST);
 		}
 
 		DataBaseInfoModel model = DataBaseInfoModel.build(entity, false);
