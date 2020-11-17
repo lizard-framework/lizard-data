@@ -12,14 +12,18 @@ import java.util.Map;
  * @date 2020-10-20
  */
 @Data
-public class OrmMixedListParam extends PageableParam {
+public class MixedDataSourceListParam extends PageableParam {
 
+	/**
+	 * 数据源名称
+	 */
 	private String mixedName;
 
+	@Override
 	public Map<String, Object> toMapper() {
 		Map<String, Object> params = new HashMap<>();
 		if (StringUtils.isNotEmpty(mixedName))
-			params.put("mixedName", "%" + mixedName + "%");
+			params.put("mixedName", mixedName + "%");
 
 		return params;
 	}

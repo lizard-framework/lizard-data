@@ -5,7 +5,7 @@ import io.lizardframework.data.admin.commons.pageable.PageResult;
 import io.lizardframework.data.admin.commons.pageable.PageableResp;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseListParam;
-import io.lizardframework.data.admin.model.DataBaseInfoModel;
+import io.lizardframework.data.admin.model.resources.DatabaseInfoModel;
 import io.lizardframework.data.admin.service.resources.DatabaseResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +32,9 @@ public class DatabaseManagerApiController {
 	 * @return
 	 */
 	@GetMapping(value = "list")
-	public PageableResp<List<DataBaseInfoModel>> list(DataBaseListParam param) {
-		PageResult<DataBaseInfoModel>         result   = databaseResourceService.queryPage(param);
-		PageableResp<List<DataBaseInfoModel>> response = new PageableResp<>(result.getCount(), result.getData());
+	public PageableResp<List<DatabaseInfoModel>> list(DataBaseListParam param) {
+		PageResult<DatabaseInfoModel>         result   = databaseResourceService.queryPage(param);
+		PageableResp<List<DatabaseInfoModel>> response = new PageableResp<>(result.getCount(), result.getData());
 
 		return response;
 	}
@@ -60,8 +60,8 @@ public class DatabaseManagerApiController {
 	 * @return
 	 */
 	@GetMapping(value = "detail/{id}")
-	public Resp<DataBaseInfoModel> queryBasicInfo(@PathVariable Long id) {
-		DataBaseInfoModel info = databaseResourceService.queryBasicInfo(id);
+	public Resp<DatabaseInfoModel> queryBasicInfo(@PathVariable Long id) {
+		DatabaseInfoModel info = databaseResourceService.queryBasicInfo(id);
 
 		return new Resp<>(info);
 	}
@@ -73,8 +73,8 @@ public class DatabaseManagerApiController {
 	 * @return
 	 */
 	@GetMapping(value = "authinfo/{id}")
-	public Resp<DataBaseInfoModel> queryAuthInfo(@PathVariable Long id) {
-		DataBaseInfoModel info = databaseResourceService.queryAuthInfo(id);
+	public Resp<DatabaseInfoModel> queryAuthInfo(@PathVariable Long id) {
+		DatabaseInfoModel info = databaseResourceService.queryAuthInfo(id);
 
 		return new Resp<>(info);
 	}

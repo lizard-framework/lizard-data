@@ -3,7 +3,7 @@ package io.lizardframework.data.admin.service.resources;
 import io.lizardframework.data.admin.commons.pageable.PageResult;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseListParam;
-import io.lizardframework.data.admin.model.DataBaseInfoModel;
+import io.lizardframework.data.admin.model.resources.DatabaseInfoModel;
 
 /**
  * @author xueqi
@@ -17,7 +17,7 @@ public interface DatabaseResourceService {
 	 * @param param
 	 * @return
 	 */
-	PageResult<DataBaseInfoModel> queryPage(DataBaseListParam param);
+	PageResult<DatabaseInfoModel> queryPage(DataBaseListParam param);
 
 	/**
 	 * 保存数据库信息
@@ -32,7 +32,7 @@ public interface DatabaseResourceService {
 	 * @param id
 	 * @return
 	 */
-	DataBaseInfoModel queryBasicInfo(Long id);
+	DatabaseInfoModel queryBasicInfo(Long id);
 
 	/**
 	 * 根据id查询数据库连接用户名密码信息
@@ -40,5 +40,5 @@ public interface DatabaseResourceService {
 	 * @param id
 	 * @return
 	 */
-	DataBaseInfoModel queryAuthInfo(Long id);
+	DatabaseInfoModel queryAuthInfo(Long id);
 }

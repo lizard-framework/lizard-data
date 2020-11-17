@@ -1,6 +1,6 @@
 package io.lizardframework.data.admin.controller.applicationConfig.datasource;
 
-import io.lizardframework.data.admin.model.OrmMixedDetailModel;
+import io.lizardframework.data.admin.model.mixed.MixedDataSourceDetailModel;
 import io.lizardframework.data.admin.service.OrmMixedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,7 +48,7 @@ public class DataSourceManagerPageController {
 	 */
 	@GetMapping("detail/{mixedDataSourceName}")
 	public ModelAndView detail(@PathVariable("mixedDataSourceName") String mixedDataSourceName) {
-		OrmMixedDetailModel detail = ormMixedService.queryDetailByMixedName(mixedDataSourceName);
+		MixedDataSourceDetailModel detail = ormMixedService.queryDetailByMixedName(mixedDataSourceName);
 
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("application-config/datasource/datasource-config-detail");

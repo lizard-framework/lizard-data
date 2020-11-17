@@ -5,7 +5,7 @@ import io.lizardframework.data.admin.commons.pageable.PageResult;
 import io.lizardframework.data.admin.commons.pageable.PageableResp;
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationListParam;
-import io.lizardframework.data.admin.model.ApplicationInfoModel;
+import io.lizardframework.data.admin.model.resources.ApplicationInfoModel;
 import io.lizardframework.data.admin.service.resources.ApplicationResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.lizardframework.data.admin.repository.MixedDataSourceRepository">
+    <resultMap id="BaseResultMap" type="io.lizardframework.data.admin.repository.entity.MixedDataSourceEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="mixed_name" jdbcType="VARCHAR" property="mixedName"/>
+        <result column="mixed_desc" jdbcType="VARCHAR" property="mixedDesc"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="db_type" jdbcType="VARCHAR" property="dbType"/>
+        <result column="config_param" jdbcType="CHAR" property="configParam"/>
+        <result column="owner_user" jdbcType="VARCHAR" property="ownerUser"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, mixed_name, mixed_desc, state, db_type, config_param, owner_user, create_user, 
+    create_time, update_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mixed_datasource
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_mixed_datasource
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="io.lizardframework.data.admin.repository.entity.MixedDataSourceEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_mixed_datasource (mixed_name, mixed_desc, state,
+        db_type, config_param, owner_user,
+        create_user, create_time, update_time
+        )
+        values (#{mixedName,jdbcType=VARCHAR}, #{mixedDesc,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR},
+        #{dbType,jdbcType=VARCHAR}, #{configParam,jdbcType=CHAR}, #{ownerUser,jdbcType=VARCHAR},
+        #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="io.lizardframework.data.admin.repository.entity.MixedDataSourceEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_mixed_datasource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mixedName != null">
+                mixed_name,
+            </if>
+            <if test="mixedDesc != null">
+                mixed_desc,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="dbType != null">
+                db_type,
+            </if>
+            <if test="configParam != null">
+                config_param,
+            </if>
+            <if test="ownerUser != null">
+                owner_user,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mixedName != null">
+                #{mixedName,jdbcType=VARCHAR},
+            </if>
+            <if test="mixedDesc != null">
+                #{mixedDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="dbType != null">
+                #{dbType,jdbcType=VARCHAR},
+            </if>
+            <if test="configParam != null">
+                #{configParam,jdbcType=CHAR},
+            </if>
+            <if test="ownerUser != null">
+                #{ownerUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="io.lizardframework.data.admin.repository.entity.MixedDataSourceEntity">
+        update t_mixed_datasource
+        <set>
+            <if test="mixedName != null">
+                mixed_name = #{mixedName,jdbcType=VARCHAR},
+            </if>
+            <if test="mixedDesc != null">
+                mixed_desc = #{mixedDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="dbType != null">
+                db_type = #{dbType,jdbcType=VARCHAR},
+            </if>
+            <if test="configParam != null">
+                config_param = #{configParam,jdbcType=CHAR},
+            </if>
+            <if test="ownerUser != null">
+                owner_user = #{ownerUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="io.lizardframework.data.admin.repository.entity.MixedDataSourceEntity">
+    update t_mixed_datasource
+    set mixed_name = #{mixedName,jdbcType=VARCHAR},
+      mixed_desc = #{mixedDesc,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      db_type = #{dbType,jdbcType=VARCHAR},
+      config_param = #{configParam,jdbcType=CHAR},
+      owner_user = #{ownerUser,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <sql id="SQL_WHERE">
+        <if test="params.mixedName != null">
+            and mixed_name like #{params.mixedName,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <select id="selectCount" resultType="long">
+        select count(0) from t_mixed_datasource where 1 = 1
+        <include refid="SQL_WHERE"/>
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mixed_datasource where 1 = 1
+        <include refid="SQL_WHERE"/>
+        order by create_time desc
+        <if test="pageable.offset >= 0 and pageable.pageSize > 0">
+            limit #{pageable.offset, jdbcType=INTEGER}, #{pageable.pageSize, jdbcType=INTEGER}
+        </if>
+    </select>
+</mapper>

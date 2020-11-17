@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.model;
+package io.lizardframework.data.admin.model.resources;
 
 import io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
  * @date 2020-10-16
  */
 @Getter
-public class DataBaseInfoModel {
+public class DatabaseInfoModel {
 
 	private Long   id;
 	private String dbType;
@@ -29,8 +29,8 @@ public class DataBaseInfoModel {
 	 * @param isBasic
 	 * @return
 	 */
-	public static DataBaseInfoModel build(ResourcesDatabaseEntity entity, boolean isBasic) {
-		DataBaseInfoModel model = new DataBaseInfoModel();
+	public static DatabaseInfoModel build(ResourcesDatabaseEntity entity, boolean isBasic) {
+		DatabaseInfoModel model = new DatabaseInfoModel();
 		if (isBasic) {
 			model.id = entity.getId();
 			model.dbType = entity.getDbType();

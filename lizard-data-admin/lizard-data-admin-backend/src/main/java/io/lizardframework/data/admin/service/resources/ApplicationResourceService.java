@@ -3,7 +3,7 @@ package io.lizardframework.data.admin.service.resources;
 import io.lizardframework.data.admin.commons.pageable.PageResult;
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationListParam;
-import io.lizardframework.data.admin.model.ApplicationInfoModel;
+import io.lizardframework.data.admin.model.resources.ApplicationInfoModel;
 
 /**
  * @author xueqi

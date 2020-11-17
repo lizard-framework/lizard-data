@@ -1,9 +1,10 @@
 package io.lizardframework.data.admin.controller.applicationConfig.datasource;
 
+import io.lizardframework.data.admin.commons.pageable.PageResult;
 import io.lizardframework.data.admin.commons.pageable.PageableResp;
-import io.lizardframework.data.admin.controller.applicationConfig.datasource.params.OrmMixedListParam;
-import io.lizardframework.data.admin.model.OrmMixedInfoModel;
-import io.lizardframework.data.admin.service.OrmMixedService;
+import io.lizardframework.data.admin.controller.applicationConfig.datasource.params.MixedDataSourceListParam;
+import io.lizardframework.data.admin.model.mixed.MixedDataSourceInfoModel;
+import io.lizardframework.data.admin.service.mixed.MixedDataSourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ import java.util.List;
 public class DataSourceManagerApiController {
 
 	@Autowired
-	private OrmMixedService ormMixedService;
+	private MixedDataSourceService mixedDataSourceService;
 
 	/**
 	 * 查询应用配置列表
@@ -31,9 +32,10 @@ public class DataSourceManagerApiController {
 	 * @return
 	 */
 	@GetMapping(value = "list")
-	public PageableResp<List<OrmMixedInfoModel>> list(OrmMixedListParam param) {
-		PageableResp<List<OrmMixedInfoModel>> resp = ormMixedService.queryPage(param);
+	public PageableResp<List<MixedDataSourceInfoModel>> list(MixedDataSourceListParam param) {
+		PageResult<MixedDataSourceInfoModel>         result   = mixedDataSourceService.queryPage(param);
+		PageableResp<List<MixedDataSourceInfoModel>> response = new PageableResp<>(result.getCount(), result.getData());
 
-		return resp;
+		return response;
 	}
 }

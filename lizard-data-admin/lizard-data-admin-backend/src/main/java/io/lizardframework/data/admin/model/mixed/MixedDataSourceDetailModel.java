@@ -1,9 +1,9 @@
-package io.lizardframework.data.admin.model;
+package io.lizardframework.data.admin.model.mixed;
 
+import io.lizardframework.data.admin.model.OrmRepositoryDetailModel;
 import io.lizardframework.data.enums.State;
 import io.lizardframework.data.orm.enums.DBType;
 import io.lizardframework.data.orm.model.MixedDataSourceModel;
-import io.lizardframework.data.orm.model.RepositoryDataSourceModel;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @date 2020-10-27
  */
 @Data
-public class OrmMixedDetailModel {
+public class MixedDataSourceDetailModel {
 	/**
 	 * 混合数据源DataSource在Spring容器中的Bean id，事务管理器、MyBatis会话工厂、JdbcTemplete等通过该id引用DataSource
 	 */
@@ -56,7 +56,7 @@ public class OrmMixedDetailModel {
 	 */
 	private String                         springBootPropertiesCode;
 
-	public OrmMixedDetailModel(MixedDataSourceModel model) {
+	public MixedDataSourceDetailModel(MixedDataSourceModel model) {
 		this.setMixedName(model.getMixedName());
 		this.setState(model.getState());
 		this.setType(model.getType());

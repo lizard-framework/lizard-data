@@ -1,16 +1,13 @@
 package io.lizardframework.data.admin.service.impl;
 
 import io.lizardframework.data.admin.commons.BizException;
-import io.lizardframework.data.admin.commons.pageable.PageableResp;
 import io.lizardframework.data.admin.controller.api.params.ORMGetMixedConfigParams;
-import io.lizardframework.data.admin.controller.applicationConfig.datasource.params.OrmMixedListParam;
 import io.lizardframework.data.admin.dao.OrmMixedDAO;
 import io.lizardframework.data.admin.dao.OrmRepositoryDAO;
 import io.lizardframework.data.admin.dao.entity.OrmMixedEntity;
 import io.lizardframework.data.admin.dao.entity.OrmRepositoryAllInfoEntity;
 import io.lizardframework.data.admin.message.MessageEnum;
-import io.lizardframework.data.admin.model.OrmMixedDetailModel;
-import io.lizardframework.data.admin.model.OrmMixedInfoModel;
+import io.lizardframework.data.admin.model.mixed.MixedDataSourceDetailModel;
 import io.lizardframework.data.admin.service.OrmMixedService;
 import io.lizardframework.data.admin.support.CodeTemplateSupport;
 import io.lizardframework.data.enums.LoadBalanceType;
@@ -62,30 +59,15 @@ public class OrmMixedServiceImpl implements OrmMixedService {
 	}
 
 	@Override
-	public PageableResp<List<OrmMixedInfoModel>> queryPage(OrmMixedListParam param) {
-		// 1. query count
-		long count = ormMixedDAO.countPage(param.toMapper());
-
-		// 2. select record
-		List<OrmMixedEntity> list = ormMixedDAO.selectPage(param.toMapper(), param.toPageRequest());
-		if (!CollectionUtils.isEmpty(list)) {
-			List<OrmMixedInfoModel> resultlist = list.stream().map(entity -> new OrmMixedInfoModel(entity)).collect(Collectors.toList());
-			return new PageableResp<>(count, resultlist);
-		}
-
-		return new PageableResp<>(count, new ArrayList<>(0));
-	}
-
-	@Override
-	public OrmMixedDetailModel queryDetailByMixedName(String mixedName) {
+	public MixedDataSourceDetailModel queryDetailByMixedName(String mixedName) {
 		// query mixed datasource
 		OrmMixedEntity mixedEntity = ormMixedDAO.selectByMixedName(mixedName);
 		if (mixedEntity == null) {
 			throw new BizException(MessageEnum.ORM_MIXED_DATASOURCE_NOT_EXIST);
 		}
 
-		MixedDataSourceModel mixedDataSourceModel = this.entityToDataSourceModel(mixedEntity);
-		OrmMixedDetailModel  detailModel          = new OrmMixedDetailModel(mixedDataSourceModel);
+		MixedDataSourceModel       mixedDataSourceModel = this.entityToDataSourceModel(mixedEntity);
+		MixedDataSourceDetailModel detailModel          = new MixedDataSourceDetailModel(mixedDataSourceModel);
 		detailModel.setMixedDesc(mixedEntity.getMixedDesc());
 		detailModel.setCreateUser(mixedEntity.getCreateUser());
 		detailModel.setCreateTime(DateFormatUtils.format(mixedEntity.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));

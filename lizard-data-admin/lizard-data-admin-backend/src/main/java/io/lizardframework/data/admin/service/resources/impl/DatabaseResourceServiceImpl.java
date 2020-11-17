@@ -5,7 +5,7 @@ import io.lizardframework.data.admin.commons.pageable.PageResult;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseAddParam;
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseListParam;
 import io.lizardframework.data.admin.message.MessageEnum;
-import io.lizardframework.data.admin.model.DataBaseInfoModel;
+import io.lizardframework.data.admin.model.resources.DatabaseInfoModel;
 import io.lizardframework.data.admin.repository.ResourcesDatabaseRepository;
 import io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity;
 import io.lizardframework.data.admin.service.CryptoService;
@@ -36,7 +36,7 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 	private CryptoService               cryptoService;
 
 	@Override
-	public PageResult<DataBaseInfoModel> queryPage(DataBaseListParam param) {
+	public PageResult<DatabaseInfoModel> queryPage(DataBaseListParam param) {
 		Map<String, Object> paramMapper = param.toMapper();
 		log.info("page query database resources. param: '{}'", JSONUtils.toJSONString(paramMapper));
 
@@ -48,7 +48,7 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 			List<ResourcesDatabaseEntity> entityList = resourcesDatabaseRepo.selectPage(paramMapper, param.toPageRequest());
 			if (!CollectionUtils.isEmpty(entityList)) {
 				// convert result object
-				List<DataBaseInfoModel> result = entityList.stream().map(entity -> DataBaseInfoModel.build(entity, true)).collect(Collectors.toList());
+				List<DatabaseInfoModel> result = entityList.stream().map(entity -> DatabaseInfoModel.build(entity, true)).collect(Collectors.toList());
 
 				return new PageResult<>(result, count);
 			}
@@ -75,7 +75,7 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 	}
 
 	@Override
-	public DataBaseInfoModel queryBasicInfo(Long id) {
+	public DatabaseInfoModel queryBasicInfo(Long id) {
 		log.info("query database resource basic info. id: '{}'", id);
 
 		ResourcesDatabaseEntity entity = resourcesDatabaseRepo.selectByPrimaryKey(id);
@@ -83,12 +83,12 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 			throw new BizException(MessageEnum.DATABSE_RESOURCE_NOT_EXIST);
 		}
 
-		DataBaseInfoModel model = DataBaseInfoModel.build(entity, true);
+		DatabaseInfoModel model = DatabaseInfoModel.build(entity, true);
 		return model;
 	}
 
 	@Override
-	public DataBaseInfoModel queryAuthInfo(Long id) {
+	public DatabaseInfoModel queryAuthInfo(Long id) {
 		log.info("query database resource auth info. id: '{}'", id);
 
 		ResourcesDatabaseEntity entity = resourcesDatabaseRepo.selectByPrimaryKey(id);
@@ -96,7 +96,7 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 			throw new BizException(MessageEnum.DATABSE_RESOURCE_NOT_EXIST);
 		}
 
-		DataBaseInfoModel model = DataBaseInfoModel.build(entity, false);
+		DatabaseInfoModel model = DatabaseInfoModel.build(entity, false);
 
 		// 解密结果
 		String username = cryptoService.decrypt(model.getDbUsername());

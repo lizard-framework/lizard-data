@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.model;
+package io.lizardframework.data.admin.model.resources;
 
 import io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity;
 import lombok.Getter;
