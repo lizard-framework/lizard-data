@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.lizardframework.data.admin.repository.MixedDatasourceAtomDAO">
+  <resultMap id="BaseResultMap" type="io.lizardframework.data.admin.repository.entity.MixedDatasourceAtomEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="repository_id" jdbcType="BIGINT" property="repositoryId" />
+    <result column="atom_name" jdbcType="VARCHAR" property="atomName" />
+    <result column="database_id" jdbcType="BIGINT" property="databaseId" />
+    <result column="master_slave_type" jdbcType="VARCHAR" property="masterSlaveType" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="weight" jdbcType="INTEGER" property="weight" />
+    <result column="datasource_pool_type" jdbcType="VARCHAR" property="datasourcePoolType" />
+    <result column="pool_config" jdbcType="CHAR" property="poolConfig" />
+    <result column="jdbc_param" jdbcType="VARCHAR" property="jdbcParam" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, repository_id, atom_name, database_id, master_slave_type, state, weight, datasource_pool_type, 
+    pool_config, jdbc_param, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_mixed_datasource_atom
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_mixed_datasource_atom
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="io.lizardframework.data.admin.repository.entity.MixedDatasourceAtomEntity">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_mixed_datasource_atom (repository_id, atom_name, database_id, 
+      master_slave_type, state, weight, 
+      datasource_pool_type, pool_config, jdbc_param, 
+      create_time, update_time)
+    values (#{repositoryId,jdbcType=BIGINT}, #{atomName,jdbcType=VARCHAR}, #{databaseId,jdbcType=BIGINT}, 
+      #{masterSlaveType,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
+      #{datasourcePoolType,jdbcType=VARCHAR}, #{poolConfig,jdbcType=CHAR}, #{jdbcParam,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="io.lizardframework.data.admin.repository.entity.MixedDatasourceAtomEntity">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_mixed_datasource_atom
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="repositoryId != null">
+        repository_id,
+      </if>
+      <if test="atomName != null">
+        atom_name,
+      </if>
+      <if test="databaseId != null">
+        database_id,
+      </if>
+      <if test="masterSlaveType != null">
+        master_slave_type,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="weight != null">
+        weight,
+      </if>
+      <if test="datasourcePoolType != null">
+        datasource_pool_type,
+      </if>
+      <if test="poolConfig != null">
+        pool_config,
+      </if>
+      <if test="jdbcParam != null">
+        jdbc_param,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="repositoryId != null">
+        #{repositoryId,jdbcType=BIGINT},
+      </if>
+      <if test="atomName != null">
+        #{atomName,jdbcType=VARCHAR},
+      </if>
+      <if test="databaseId != null">
+        #{databaseId,jdbcType=BIGINT},
+      </if>
+      <if test="masterSlaveType != null">
+        #{masterSlaveType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="datasourcePoolType != null">
+        #{datasourcePoolType,jdbcType=VARCHAR},
+      </if>
+      <if test="poolConfig != null">
+        #{poolConfig,jdbcType=CHAR},
+      </if>
+      <if test="jdbcParam != null">
+        #{jdbcParam,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="io.lizardframework.data.admin.repository.entity.MixedDatasourceAtomEntity">
+    update t_mixed_datasource_atom
+    <set>
+      <if test="repositoryId != null">
+        repository_id = #{repositoryId,jdbcType=BIGINT},
+      </if>
+      <if test="atomName != null">
+        atom_name = #{atomName,jdbcType=VARCHAR},
+      </if>
+      <if test="databaseId != null">
+        database_id = #{databaseId,jdbcType=BIGINT},
+      </if>
+      <if test="masterSlaveType != null">
+        master_slave_type = #{masterSlaveType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null">
+        weight = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="datasourcePoolType != null">
+        datasource_pool_type = #{datasourcePoolType,jdbcType=VARCHAR},
+      </if>
+      <if test="poolConfig != null">
+        pool_config = #{poolConfig,jdbcType=CHAR},
+      </if>
+      <if test="jdbcParam != null">
+        jdbc_param = #{jdbcParam,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="io.lizardframework.data.admin.repository.entity.MixedDatasourceAtomEntity">
+    update t_mixed_datasource_atom
+    set repository_id = #{repositoryId,jdbcType=BIGINT},
+      atom_name = #{atomName,jdbcType=VARCHAR},
+      database_id = #{databaseId,jdbcType=BIGINT},
+      master_slave_type = #{masterSlaveType,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      weight = #{weight,jdbcType=INTEGER},
+      datasource_pool_type = #{datasourcePoolType,jdbcType=VARCHAR},
+      pool_config = #{poolConfig,jdbcType=CHAR},
+      jdbc_param = #{jdbcParam,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

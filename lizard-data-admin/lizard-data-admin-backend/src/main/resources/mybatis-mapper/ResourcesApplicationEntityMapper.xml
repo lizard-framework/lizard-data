@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="io.lizardframework.data.admin.repository.ResourcesApplicationRepository">
+<mapper namespace="io.lizardframework.data.admin.repository.ResourcesApplicationDAO">
     <resultMap id="BaseResultMap" type="io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="application_name" jdbcType="VARCHAR" property="applicationName"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="io.lizardframework.data.admin.repository.MixedDataSourceRepository">
+<mapper namespace="io.lizardframework.data.admin.repository.MixedDataSourceDAO">
     <resultMap id="BaseResultMap" type="io.lizardframework.data.admin.repository.entity.MixedDataSourceEntity">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="mixed_name" jdbcType="VARCHAR" property="mixedName"/>
@@ -173,5 +173,11 @@
         <if test="pageable.offset >= 0 and pageable.pageSize > 0">
             limit #{pageable.offset, jdbcType=INTEGER}, #{pageable.pageSize, jdbcType=INTEGER}
         </if>
+    </select>
+
+    <select id="selectByMixedName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mixed_datasource where mixed_name = #{mixedName,jdbcType=VARCHAR}
     </select>
 </mapper>

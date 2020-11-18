@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface ResourcesApplicationRepository {
+public interface ResourcesApplicationDAO {
 	int deleteByPrimaryKey(Long id);
 
 	int insert(ResourcesApplicationEntity record);

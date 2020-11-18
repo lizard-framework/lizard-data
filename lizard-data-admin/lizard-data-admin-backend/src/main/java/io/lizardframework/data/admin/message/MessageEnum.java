@@ -14,7 +14,8 @@ public enum MessageEnum {
 	// 101 - 应用资源管理错误码
 	APPLICATION_RESOURCE_EXIST_ALREADY("101001", "应用已存在"),
 
-	ORM_MIXED_DATASOURCE_NOT_EXIST("100001", "orm mixed datasource not exist"),
+	// 102 - 应用配置错误码
+	MIXED_DATASOURCE_NOT_EXIST("102001", "数据源配置不存在"),
 
 	UNKNOWN_ERROR("999999", "unknown system error"),
 	;

@@ -6,7 +6,7 @@ import io.lizardframework.data.admin.controller.resourcesManager.application.par
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationListParam;
 import io.lizardframework.data.admin.message.MessageEnum;
 import io.lizardframework.data.admin.model.resources.ApplicationInfoModel;
-import io.lizardframework.data.admin.repository.ResourcesApplicationRepository;
+import io.lizardframework.data.admin.repository.ResourcesApplicationDAO;
 import io.lizardframework.data.admin.repository.entity.ResourcesApplicationEntity;
 import io.lizardframework.data.admin.service.resources.ApplicationResourceService;
 import io.lizardframework.data.utils.JSONUtils;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class ApplicationResourceServiceImpl implements ApplicationResourceService {
 
 	@Autowired
-	private ResourcesApplicationRepository resourcesApplicationRepo;
+	private ResourcesApplicationDAO resourcesApplicationDAO;
 
 	@Override
 	public PageResult<ApplicationInfoModel> queryPage(ApplicationListParam param) {
@@ -39,11 +39,11 @@ public class ApplicationResourceServiceImpl implements ApplicationResourceServic
 		log.info("page query application resources. param: '{}'", JSONUtils.toJSONString(paramMapper));
 
 		// 1. query count
-		long count = resourcesApplicationRepo.selectCount(paramMapper);
+		long count = resourcesApplicationDAO.selectCount(paramMapper);
 
 		// 2. query record
 		if (count != 0L) {
-			List<ResourcesApplicationEntity> entityList = resourcesApplicationRepo.selectPage(paramMapper, param.toPageRequest());
+			List<ResourcesApplicationEntity> entityList = resourcesApplicationDAO.selectPage(paramMapper, param.toPageRequest());
 
 			if (!CollectionUtils.isEmpty(entityList)) {
 				// convert result object
@@ -68,7 +68,7 @@ public class ApplicationResourceServiceImpl implements ApplicationResourceServic
 		record.setUpdateTime(date);
 
 		try {
-			resourcesApplicationRepo.insertSelective(record);
+			resourcesApplicationDAO.insertSelective(record);
 		} catch (DuplicateKeyException e) {
 			log.warn("save application resource exist already.", e);
 

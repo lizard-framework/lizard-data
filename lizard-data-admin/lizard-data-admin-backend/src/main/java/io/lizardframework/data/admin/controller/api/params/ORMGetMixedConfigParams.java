@@ -1,6 +1,7 @@
 package io.lizardframework.data.admin.controller.api.params;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * /api/orm/getMixedConfig request params
@@ -8,7 +9,8 @@ import lombok.Data;
  * @author xueqi
  * @date 2020-09-27
  */
-@Data
+@Getter
+@Setter
 public class ORMGetMixedConfigParams {
 
 	private String application;
@@ -16,4 +18,13 @@ public class ORMGetMixedConfigParams {
 	private String mixedName;
 	private String sdkVersion;
 
+	@Override
+	public String toString() {
+		return "ORMGetMixedConfigParams{" +
+				"application='" + application + '\'' +
+				", hostname='" + hostname + '\'' +
+				", mixedName='" + mixedName + '\'' +
+				", sdkVersion='" + sdkVersion + '\'' +
+				'}';
+	}
 }

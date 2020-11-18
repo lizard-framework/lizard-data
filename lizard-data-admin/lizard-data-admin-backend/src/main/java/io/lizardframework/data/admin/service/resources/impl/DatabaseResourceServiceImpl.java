@@ -6,7 +6,7 @@ import io.lizardframework.data.admin.controller.resourcesManager.database.params
 import io.lizardframework.data.admin.controller.resourcesManager.database.params.DataBaseListParam;
 import io.lizardframework.data.admin.message.MessageEnum;
 import io.lizardframework.data.admin.model.resources.DatabaseInfoModel;
-import io.lizardframework.data.admin.repository.ResourcesDatabaseRepository;
+import io.lizardframework.data.admin.repository.ResourcesDatabaseDAO;
 import io.lizardframework.data.admin.repository.entity.ResourcesDatabaseEntity;
 import io.lizardframework.data.admin.service.CryptoService;
 import io.lizardframework.data.admin.service.resources.DatabaseResourceService;
@@ -31,9 +31,9 @@ import java.util.stream.Collectors;
 public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 
 	@Autowired
-	private ResourcesDatabaseRepository resourcesDatabaseRepo;
+	private ResourcesDatabaseDAO resourcesDatabaseDAO;
 	@Autowired
-	private CryptoService               cryptoService;
+	private CryptoService        cryptoService;
 
 	@Override
 	public PageResult<DatabaseInfoModel> queryPage(DataBaseListParam param) {
@@ -41,11 +41,11 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 		log.info("page query database resources. param: '{}'", JSONUtils.toJSONString(paramMapper));
 
 		// 1. query count
-		long count = resourcesDatabaseRepo.selectCount(paramMapper);
+		long count = resourcesDatabaseDAO.selectCount(paramMapper);
 
 		// 2. query record
 		if (count != 0L) {
-			List<ResourcesDatabaseEntity> entityList = resourcesDatabaseRepo.selectPage(paramMapper, param.toPageRequest());
+			List<ResourcesDatabaseEntity> entityList = resourcesDatabaseDAO.selectPage(paramMapper, param.toPageRequest());
 			if (!CollectionUtils.isEmpty(entityList)) {
 				// convert result object
 				List<DatabaseInfoModel> result = entityList.stream().map(entity -> DatabaseInfoModel.build(entity, true)).collect(Collectors.toList());
@@ -71,14 +71,14 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 		entity.setCreateTime(date);
 		entity.setUpdateTime(date);
 
-		resourcesDatabaseRepo.insertSelective(entity);
+		resourcesDatabaseDAO.insertSelective(entity);
 	}
 
 	@Override
 	public DatabaseInfoModel queryBasicInfo(Long id) {
 		log.info("query database resource basic info. id: '{}'", id);
 
-		ResourcesDatabaseEntity entity = resourcesDatabaseRepo.selectByPrimaryKey(id);
+		ResourcesDatabaseEntity entity = resourcesDatabaseDAO.selectByPrimaryKey(id);
 		if (entity == null) {
 			throw new BizException(MessageEnum.DATABSE_RESOURCE_NOT_EXIST);
 		}
@@ -91,7 +91,7 @@ public class DatabaseResourceServiceImpl implements DatabaseResourceService {
 	public DatabaseInfoModel queryAuthInfo(Long id) {
 		log.info("query database resource auth info. id: '{}'", id);
 
-		ResourcesDatabaseEntity entity = resourcesDatabaseRepo.selectByPrimaryKey(id);
+		ResourcesDatabaseEntity entity = resourcesDatabaseDAO.selectByPrimaryKey(id);
 		if (entity == null) {
 			throw new BizException(MessageEnum.DATABSE_RESOURCE_NOT_EXIST);
 		}

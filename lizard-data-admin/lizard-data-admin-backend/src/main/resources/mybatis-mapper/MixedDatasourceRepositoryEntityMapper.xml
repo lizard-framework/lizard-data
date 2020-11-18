@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.lizardframework.data.admin.repository.MixedDatasourceRepositoryDAO">
+    <resultMap id="BaseResultMap"
+               type="io.lizardframework.data.admin.repository.entity.MixedDatasourceRepositoryEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="datasource_id" jdbcType="BIGINT" property="datasourceId"/>
+        <result column="repository_name" jdbcType="VARCHAR" property="repositoryName"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="load_balance" jdbcType="VARCHAR" property="loadBalance"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, datasource_id, repository_name, state, load_balance, create_time, update_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_mixed_datasource_repository
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_mixed_datasource_repository
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="io.lizardframework.data.admin.repository.entity.MixedDatasourceRepositoryEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_mixed_datasource_repository (datasource_id, repository_name, state,
+        load_balance, create_time, update_time
+        )
+        values (#{datasourceId,jdbcType=BIGINT}, #{repositoryName,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR},
+        #{loadBalance,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective"
+            parameterType="io.lizardframework.data.admin.repository.entity.MixedDatasourceRepositoryEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_mixed_datasource_repository
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="datasourceId != null">
+                datasource_id,
+            </if>
+            <if test="repositoryName != null">
+                repository_name,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="loadBalance != null">
+                load_balance,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="datasourceId != null">
+                #{datasourceId,jdbcType=BIGINT},
+            </if>
+            <if test="repositoryName != null">
+                #{repositoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="loadBalance != null">
+                #{loadBalance,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="io.lizardframework.data.admin.repository.entity.MixedDatasourceRepositoryEntity">
+        update t_mixed_datasource_repository
+        <set>
+            <if test="datasourceId != null">
+                datasource_id = #{datasourceId,jdbcType=BIGINT},
+            </if>
+            <if test="repositoryName != null">
+                repository_name = #{repositoryName,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="loadBalance != null">
+                load_balance = #{loadBalance,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"
+            parameterType="io.lizardframework.data.admin.repository.entity.MixedDatasourceRepositoryEntity">
+    update t_mixed_datasource_repository
+    set datasource_id = #{datasourceId,jdbcType=BIGINT},
+      repository_name = #{repositoryName,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      load_balance = #{loadBalance,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="selectAllInfoAndAtomByDataSourceId"
+            resultType="io.lizardframework.data.admin.repository.entity.extend.DataSourceRepositoryAllInfoEntity">
+        SELECT repo.repository_name as repositoryName, repo.state as repositoryState, repo.load_balance as loadBalance,
+        atom.atom_name as atomName, atom.master_slave_type as masterSlaveType, atom.state as atomState, atom.weight as weight,
+        atom.datasource_pool_type as dataSourcePoolType, atom.jdbc_params as jdbcParams, atom.pool_config as poolConfig,
+        db.db_host as `host`, db.db_name as `database`, db.db_port as `port`, db.db_username as `username`, db.db_password as `password`
+        FROM t_mixed_datasource_repository as repo, t_mixed_datasource_atom as atom, t_resources_database as db
+        WHERE repo.datasource_id = #{datasourceId, jdbcType=BIGINT} AND atom.repository_id = repo.id AND atom.database_id = db.id
+    </select>
+</mapper>

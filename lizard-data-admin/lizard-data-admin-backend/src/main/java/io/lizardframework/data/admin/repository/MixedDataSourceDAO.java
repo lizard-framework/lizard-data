@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface MixedDataSourceRepository {
+public interface MixedDataSourceDAO {
 	int deleteByPrimaryKey(Long id);
 
 	int insert(MixedDataSourceEntity record);
@@ -38,4 +38,12 @@ public interface MixedDataSourceRepository {
 	 * @return
 	 */
 	List<MixedDataSourceEntity> selectPage(@Param("params") Map<String, Object> params, @Param("pageable") Pageable pageable);
+
+	/**
+	 * 根据mixedName查询记录
+	 *
+	 * @param mixedName
+	 * @return
+	 */
+	MixedDataSourceEntity selectByMixedName(@Param("mixedName") String mixedName);
 }
