@@ -5,6 +5,8 @@ import io.lizardframework.data.admin.controller.resourcesManager.application.par
 import io.lizardframework.data.admin.controller.resourcesManager.application.params.ApplicationListParam;
 import io.lizardframework.data.admin.model.resources.ApplicationInfoModel;
 
+import java.util.List;
+
 /**
  * @author xueqi
  * @date 2020-11-15
@@ -18,6 +20,14 @@ public interface ApplicationResourceService {
 	 * @return
 	 */
 	PageResult<ApplicationInfoModel> queryPage(ApplicationListParam param);
+
+	/**
+	 * 根据应用名称模糊查询
+	 *
+	 * @param applicationName
+	 * @return
+	 */
+	List<String> queryNameByLikeFuzzy(String applicationName);
 
 	/**
 	 * 保存应用记录

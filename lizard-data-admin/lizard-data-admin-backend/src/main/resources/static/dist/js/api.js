@@ -3,6 +3,8 @@ const api_application_config_datasource_list = '/api/application-config/datasour
 
 // api:资源管理-应用管理-应用列表
 const api_resources_manager_application_list = '/api/resources-manager/application/list';
+// api:资源管理-应用管理-名称查询
+const api_resources_manager_application_name = '/api/resources-manager/application/name/';
 // api:资源管理-应用管理-添加应用
 const api_resources_manager_application_add = '/api/resources-manager/application/save';
 
@@ -17,8 +19,8 @@ const api_resources_manager_database_authinfo = '/api/resources-manager/database
 
 // 应用配置-数据源配置-详情页面
 const page_application_config_datasource_detail = '/application-config/datasource/detail/';
-// 应用配置-数据源配置-添加页面
-const page_application_config_datasource_add = '/application-config/datasource/addition';
+// 应用配置-数据源配置-添加页面-基础配置
+const page_application_config_datasource_add = '/application-config/datasource/addition/basic';
 
 // call api
 function callApi(api, method, params, SuccFunc, FailFunc) {

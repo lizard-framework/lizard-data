@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../../marco/base.ftl"/>
-    <#include "../../marco/orm-config-add-base.ftl"/>
+    <#include "../../../marco/base.ftl"/>
+    <#include "../../../marco/orm-config-add-base.ftl"/>
     <title>Lizard-Data-Admin</title>
     <@style/>
 </head>
@@ -114,4 +114,5 @@
 </body>
 
 <@jsfile/>
+<script src="/dist/js/pages/application-config/datasource/addition/datasource-config-addition-basic.js"></script>
 </html>

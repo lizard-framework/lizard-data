@@ -124,8 +124,10 @@
         from t_resources_application where 1 = 1
         <include refid="SQL_WHERE"/>
         order by create_time desc
-        <if test="pageable.offset >= 0 and pageable.pageSize > 0">
-            limit #{pageable.offset, jdbcType=INTEGER}, #{pageable.pageSize, jdbcType=INTEGER}
+        <if test="pageable != null">
+            <if test="pageable.offset >= 0 and pageable.pageSize > 0">
+                limit #{pageable.offset, jdbcType=INTEGER}, #{pageable.pageSize, jdbcType=INTEGER}
+            </if>
         </if>
     </select>
 </mapper>

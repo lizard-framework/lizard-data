@@ -58,19 +58,19 @@ public class DataSourceManagerPageController {
 	}
 
 	/**
-	 * 数据源新增页面
+	 * 数据源新增页面 - 基础信息
 	 *
 	 * @return <ul>
 	 * <li>reference_id: 添加批次标记</li>
 	 * <li>all_application_list: 所有应用列表</li>
 	 * </ul>
 	 */
-	@GetMapping("addition")
-	public ModelAndView addition() {
+	@GetMapping("addition/basic")
+	public ModelAndView additionBasic() {
 
 
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("application-config/datasource/datasource-config-addition");
+		mav.setViewName("application-config/datasource/addition/datasource-config-addition-basic");
 
 		// 写入reference_id，作为一次添加的标记
 		mav.addObject("reference_id", Instant.now().toEpochMilli() + "");

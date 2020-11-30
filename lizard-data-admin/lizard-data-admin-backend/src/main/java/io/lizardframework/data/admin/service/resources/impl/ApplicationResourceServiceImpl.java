@@ -16,10 +16,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +51,19 @@ public class ApplicationResourceServiceImpl implements ApplicationResourceServic
 		}
 
 		return new PageResult<>(new ArrayList<>(0), count);
+	}
+
+	@Override
+	public List<String> queryNameByLikeFuzzy(String applicationName) {
+		Map<String, Object> paramMapper = new HashMap<>();
+		paramMapper.put("applicationName", applicationName + "%");
+
+		List<ResourcesApplicationEntity> entityList = resourcesApplicationDAO.selectPage(paramMapper, null);
+		if (!CollectionUtils.isEmpty(entityList)) {
+			return entityList.stream().map(ResourcesApplicationEntity::getApplicationName).collect(Collectors.toList());
+		}
+
+		return new ArrayList<>(0);
 	}
 
 	@Override

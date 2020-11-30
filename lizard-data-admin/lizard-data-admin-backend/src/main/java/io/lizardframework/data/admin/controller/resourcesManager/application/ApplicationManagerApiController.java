@@ -40,6 +40,20 @@ public class ApplicationManagerApiController {
 	}
 
 	/**
+	 * 根据名称模糊查询
+	 *
+	 * @param applicationName
+	 * @return
+	 */
+	@GetMapping(value = "name/{applicationName}")
+	public Resp<List<String>> listByName(@PathVariable("applicationName") String applicationName) {
+		List<String> list = applicationResourceService.queryNameByLikeFuzzy(applicationName);
+
+		Resp<List<String>> response = new Resp<>(list);
+		return response;
+	}
+
+	/**
 	 * 添加应用
 	 *
 	 * @param param
