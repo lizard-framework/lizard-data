@@ -10,7 +10,10 @@ import io.lizardframework.data.admin.service.resources.ApplicationResourceServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 资源管理 - 应用管理 api controller
@@ -45,11 +48,21 @@ public class ApplicationManagerApiController {
 	 * @param applicationName
 	 * @return
 	 */
-	@GetMapping(value = "name/{applicationName}")
-	public Resp<List<String>> listByName(@PathVariable("applicationName") String applicationName) {
+	@GetMapping(value = "list/queryByFuzzy")
+	public Resp<List<Map<String, String>>> listByName(@RequestParam("applicationName") String applicationName) {
 		List<String> list = applicationResourceService.queryNameByLikeFuzzy(applicationName);
 
-		Resp<List<String>> response = new Resp<>(list);
+		// 将结果转换为前端select2需要的格式
+		List<Map<String, String>> resultList = new ArrayList<>();
+		list.forEach(application -> {
+			Map<String, String> resultMapper = new HashMap<>();
+			resultMapper.put("id", application);
+			resultMapper.put("text", application);
+
+			resultList.add(resultMapper);
+		});
+
+		Resp<List<Map<String, String>>> response = new Resp<>(resultList);
 		return response;
 	}
 
