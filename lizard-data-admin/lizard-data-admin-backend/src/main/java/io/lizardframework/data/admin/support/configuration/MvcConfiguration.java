@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.configuration;
+package io.lizardframework.data.admin.support.configuration;
 
 import io.lizardframework.data.utils.JSONUtils;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;

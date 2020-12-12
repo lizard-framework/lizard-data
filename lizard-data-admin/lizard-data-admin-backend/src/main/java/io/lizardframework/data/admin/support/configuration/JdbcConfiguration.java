@@ -1,4 +1,4 @@
-package io.lizardframework.data.admin.configuration;
+package io.lizardframework.data.admin.support.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
